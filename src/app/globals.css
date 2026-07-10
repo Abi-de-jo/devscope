@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ──────────────────────────────────────────────────── */
+:root {
+  /* Paper + Ink palette */
+  --ink: #0B0C0E;
+  --paper: #F5F4F0;
+  --paper-alt: #FFFFFF;
+  --accent: #00C2D1;
+  --accent-hover: #00A8B5;
+  --muted: #6B6F76;
+  --border: #0B0C0E;
+
+  /* Typography */
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
+
+  /* Hard shadows */
+  --shadow-sm: 2px 2px 0 var(--ink);
+  --shadow-md: 4px 4px 0 var(--ink);
+  --shadow-lg: 6px 6px 0 var(--ink);
+  --shadow-xl: 8px 8px 0 var(--ink);
+
+  /* Border */
+  --border-width: 1.5px;
+  --radius: 2px;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.uppercase-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: var(--border-width) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translate(2px, 2px);
+}
+
+.btn-primary:active {
+  box-shadow: none;
+  transform: translate(4px, 4px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: var(--border-width) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translate(2px, 2px);
+}
+
+.btn-secondary:active {
+  box-shadow: none;
+  transform: translate(4px, 4px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: var(--border-width) solid var(--ink);
+}
+
+.btn-ghost:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ─── Cards ──────────────────────────────────────────────────────────── */
+.card {
+  background-color: var(--paper-alt);
+  border: var(--border-width) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem;
+}
+
+.card-hover:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translate(-1px, -1px);
+}
+
+/* ─── Spec Table ─────────────────────────────────────────────────────── */
+.spec-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  border: var(--border-width) solid var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.spec-cell {
+  padding: 0.75rem 1rem;
+  border-right: var(--border-width) solid var(--ink);
+  border-bottom: var(--border-width) solid var(--ink);
+}
+
+.spec-cell:last-child {
+  border-right: none;
+}
+
+.spec-key {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.spec-value {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ─── Marquee ────────────────────────────────────────────────────────── */
+.marquee-container {
+  overflow: hidden;
+  border-top: var(--border-width) solid var(--ink);
+  border-bottom: var(--border-width) solid var(--ink);
+  padding: 0.75rem 0;
+}
+
+.marquee-content {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ─── Accent ─────────────────────────────────────────────────────────── */
+.accent-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--accent);
+  border-radius: 50%;
+}
+
+.accent-diamond {
+  display: inline-block;
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+/* ─── Score Display ──────────────────────────────────────────────────── */
+.score-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.score-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+.border-b {
+  border-bottom: var(--border-width) solid var(--ink);
+}
+
+.border-t {
+  border-top: var(--border-width) solid var(--ink);
+}
+
+/* ─── Focus States ───────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content {
+    animation: none;
+  }
+  
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

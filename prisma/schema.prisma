@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Better Auth Tables ────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  githubProfile GithubProfile?
+  analyses      Analysis[]
+  conversations AiConversation[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  accountId         String
+  providerId        String
+  userId            String
+  accessToken       String?
+  refreshToken      String?
+  idToken           String?
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope             String?
+  password          String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  expiresAt    DateTime
+  token        String   @unique
+  ipAddress    String?
+  userAgent    String?
+  userId       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// ─── GitHub Data ───────────────────────────────────────────────────────
+
+model GithubProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  githubId        Int      @unique
+  login           String
+  displayName     String?
+  bio             String?
+  avatarUrl       String?
+  blog            String?
+  location        String?
+  company         String?
+  publicRepos     Int      @default(0)
+  publicGists     Int      @default(0)
+  followers       Int      @default(0)
+  following       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  lastSyncedAt    DateTime?
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  repositories Repository[]
+
+  @@map("github_profiles")
+}
+
+model Repository {
+  id              String   @id @default(cuid())
+  githubId        Int      @unique
+  profileId       String
+  name            String
+  fullName        String
+  description     String?
+  htmlUrl         String
+  homepage        String?
+  language        String?
+  stargazersCount Int      @default(0)
+  forksCount      Int      @default(0)
+  openIssuesCount Int      @default(0)
+  watchersCount   Int      @default(0)
+  size            Int      @default(0)
+  defaultBranch   String   @default("main")
+  isPrivate       Boolean  @default(false)
+  isFork          Boolean  @default(false)
+  topics          String[]
+  license         String?
+  hasReadme       Boolean  @default(false)
+  hasIssues       Boolean  @default(false)
+  hasWiki         Boolean  @default(false)
+  hasPages        Boolean  @default(false)
+  createdAt       DateTime
+  updatedAt       DateTime @updatedAt
+  lastPushedAt    DateTime?
+
+  profile     GithubProfile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  repoScores  RepositoryScore[]
+  analyses    Analysis[]
+
+  @@map("repositories")
+}
+
+// ─── Analysis & Scoring ────────────────────────────────────────────────
+
+model Analysis {
+  id              String   @id @default(cuid())
+  userId          String
+  status          String   @default("pending") // pending | processing | completed | failed
+  overallScore    Int?     // 0-100
+  engineerLevel   String?  // Beginner | Junior | Mid-Level | Senior | Lead | Principal
+  confidenceScore Float?
+  strengths       String[] // top 3 strengths
+  gaps            String[] // top 3 gaps
+  summary         String?  // AI-generated summary
+  costCents       Int      @default(0) // track AI cost per analysis
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  completedAt     DateTime?
+
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scores       AnalysisScore[]
+  repositories Repository[]
+
+  @@map("analyses")
+}
+
+model AnalysisScore {
+  id          String  @id @default(cuid())
+  analysisId  String
+  category    String  // Frontend | Backend | DevOps | Testing | Docs | Architecture
+  score       Int     // 0-100
+  confidence  Float   // 0-1
+  evidence    String? // JSON array of evidence items
+  suggestions String? // JSON array of suggestions
+
+  analysis Analysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  @@unique([analysisId, category])
+  @@map("analysis_scores")
+}
+
+model RepositoryScore {
+  id             String  @id @default(cuid())
+  repositoryId   String
+  analysisId     String?
+  qualityScore   Int?
+  archScore      Int?
+  docScore       Int?
+  testScore      Int?
+  securityScore  Int?
+  maintainScore  Int?
+  deployReady    Float?
+  techDebt       String? // JSON indicators
+  createdAt      DateTime @default(now())
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  analysis   Analysis?  @relation(fields: [analysisId], references: [id], onDelete: SetNull)
+
+  @@map("repository_scores")
+}
+
+// ─── AI & Coaching ─────────────────────────────────────────────────────
+
+model AiConversation {
+  id        String   @id @default(cuid())
+  userId    String
+  messages  Json     // Array of {role, content, timestamp}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("ai_conversations")
+}

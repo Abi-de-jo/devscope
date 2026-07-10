@@ -1,0 +1,55 @@
+import type { Metadata } from "next";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import "./globals.css";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "DevScope — GitHub Wrapped for Engineering Credibility",
+  description:
+    "Connect your GitHub, get a shareable Engineering Score card in 60 seconds, see exactly what's holding you back.",
+  openGraph: {
+    title: "DevScope — GitHub Wrapped for Engineering Credibility",
+    description:
+      "Connect your GitHub, get a shareable Engineering Score card in 60 seconds.",
+    type: "website",
+    siteName: "DevScope",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
+      <body>
+        <Navigation />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+}
