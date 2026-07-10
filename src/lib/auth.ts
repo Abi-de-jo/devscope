@@ -27,4 +27,7 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
+  advanced: {
+    defaultRedirectURL: "/dashboard",
+  },
 });
