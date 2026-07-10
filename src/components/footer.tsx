@@ -1,5 +1,23 @@
 import Link from "next/link";
-import { Github, Twitter, Linkedin } from "lucide-react";
+import { Github, Twitter, Linkedin, ArrowUpRight } from "lucide-react";
+
+const footerLinks = {
+  Product: [
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "How it Works", href: "/#how-it-works" },
+    { label: "Changelog", href: "/changelog" },
+  ],
+  Company: [
+    { label: "About", href: "/about" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
+  ],
+  Legal: [
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "Security", href: "/security" },
+  ],
+};
 
 export function Footer() {
   return (
@@ -13,17 +31,18 @@ export function Footer() {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "3rem 1.5rem",
+          padding: "3rem 1.5rem 2rem",
         }}
       >
-        {/* Top Section */}
+        {/* Top Grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gridTemplateColumns: "1.5fr repeat(3, 1fr)",
             gap: "2rem",
-            marginBottom: "2rem",
+            marginBottom: "2.5rem",
           }}
+          className="footer-grid"
         >
           {/* Brand */}
           <div>
@@ -35,19 +54,19 @@ export function Footer() {
                 fontSize: "1.25rem",
                 color: "var(--ink)",
                 textDecoration: "none",
-                display: "flex",
+                display: "inline-flex",
                 alignItems: "center",
                 gap: "0.5rem",
-                marginBottom: "1rem",
+                marginBottom: "0.75rem",
               }}
             >
               <span
                 style={{
                   backgroundColor: "var(--ink)",
                   color: "var(--paper)",
-                  padding: "0.25rem 0.5rem",
+                  padding: "0.2rem 0.5rem",
                   fontFamily: "var(--font-mono)",
-                  fontSize: "0.75rem",
+                  fontSize: "0.7rem",
                   fontWeight: 600,
                 }}
               >
@@ -61,163 +80,137 @@ export function Footer() {
                 fontSize: "0.875rem",
                 color: "var(--muted)",
                 lineHeight: 1.6,
-                maxWidth: "280px",
+                maxWidth: "260px",
               }}
             >
               GitHub Wrapped for engineering credibility. Connect your GitHub,
               get a shareable score in 60 seconds.
             </p>
+
+            {/* Socials */}
+            <div
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                marginTop: "1.25rem",
+              }}
+            >
+              {[
+                { href: "https://github.com/Abi-de-jo/devscope", label: "GitHub", icon: Github },
+                { href: "https://twitter.com/mozen_in", label: "Twitter", icon: Twitter },
+                { href: "https://linkedin.com/company/mozen-in", label: "LinkedIn", icon: Linkedin },
+              ].map((s) => {
+                const Icon = s.icon;
+                return (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    style={{
+                      width: "2rem",
+                      height: "2rem",
+                      border: "var(--border-width) solid var(--ink)",
+                      borderRadius: "var(--radius)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "var(--ink)",
+                      boxShadow: "var(--shadow-xs)",
+                      backgroundColor: "var(--paper)",
+                      transition: "all 0.12s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "var(--accent)";
+                      e.currentTarget.style.boxShadow = "var(--shadow-sm)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "var(--paper)";
+                      e.currentTarget.style.boxShadow = "var(--shadow-xs)";
+                    }}
+                  >
+                    <Icon size={14} />
+                  </a>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Product */}
-          <div>
-            <h4
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--ink)",
-                marginBottom: "1rem",
-              }}
-            >
-              Product
-            </h4>
-            <ul
-              style={{
-                listStyle: "none",
-                padding: 0,
-                margin: 0,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              {["Dashboard", "How it Works", "Pricing", "Changelog"].map(
-                (item) => (
-                  <li key={item}>
+          {/* Link Columns */}
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h4
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.65rem",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  color: "var(--muted)",
+                  marginBottom: "1rem",
+                }}
+              >
+                {title}
+              </h4>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.6rem",
+                }}
+              >
+                {links.map((link) => (
+                  <li key={link.label}>
                     <Link
-                      href={`/${item.toLowerCase().replace(" ", "-")}`}
+                      href={link.href}
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: "0.875rem",
-                        color: "var(--muted)",
+                        color: "var(--ink)",
                         textDecoration: "none",
+                        transition: "color 0.12s ease",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = "var(--accent)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = "var(--ink)";
                       }}
                     >
-                      {item}
+                      {link.label}
                     </Link>
                   </li>
-                )
-              )}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--ink)",
-                marginBottom: "1rem",
-              }}
-            >
-              Company
-            </h4>
-            <ul
-              style={{
-                listStyle: "none",
-                padding: 0,
-                margin: 0,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              {["About", "Blog", "Careers", "Contact"].map((item) => (
-                <li key={item}>
-                  <Link
-                    href={`/${item.toLowerCase()}`}
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.875rem",
-                      color: "var(--muted)",
-                      textDecoration: "none",
-                    }}
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--ink)",
-                marginBottom: "1rem",
-              }}
-            >
-              Legal
-            </h4>
-            <ul
-              style={{
-                listStyle: "none",
-                padding: 0,
-                margin: 0,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              {["Privacy", "Terms", "Security"].map((item) => (
-                <li key={item}>
-                  <Link
-                    href={`/${item.toLowerCase()}`}
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.875rem",
-                      color: "var(--muted)",
-                      textDecoration: "none",
-                    }}
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        {/* Bottom Section */}
+        {/* Bottom Bar */}
         <div
           style={{
             borderTop: "var(--border-width) solid var(--ink)",
-            paddingTop: "1.5rem",
+            paddingTop: "1.25rem",
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "space-between",
             alignItems: "center",
-            gap: "1rem",
+            gap: "0.75rem",
           }}
         >
           <p
             style={{
               fontFamily: "var(--font-mono)",
-              fontSize: "0.75rem",
+              fontSize: "0.7rem",
               color: "var(--muted)",
+              letterSpacing: "0.02em",
             }}
           >
             © 2026 DevScope by Mozen.in. All rights reserved.
@@ -227,48 +220,66 @@ export function Footer() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "1rem",
+              gap: "1.5rem",
             }}
           >
-            <a
-              href="https://github.com/mozen"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/privacy"
               style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.7rem",
                 color: "var(--muted)",
-                transition: "color 0.2s",
+                textDecoration: "none",
+                transition: "color 0.12s",
               }}
-              aria-label="GitHub"
             >
-              <Github size={18} />
-            </a>
-            <a
-              href="https://twitter.com/mozen_in"
-              target="_blank"
-              rel="noopener noreferrer"
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
               style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.7rem",
                 color: "var(--muted)",
-                transition: "color 0.2s",
+                textDecoration: "none",
+                transition: "color 0.12s",
               }}
-              aria-label="Twitter"
             >
-              <Twitter size={18} />
-            </a>
-            <a
-              href="https://linkedin.com/company/mozen-in"
-              target="_blank"
-              rel="noopener noreferrer"
+              Terms
+            </Link>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.7rem",
                 color: "var(--muted)",
-                transition: "color 0.2s",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.25rem",
+                transition: "color 0.12s",
               }}
-              aria-label="LinkedIn"
             >
-              <Linkedin size={18} />
-            </a>
+              Back to top ↑
+            </button>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .footer-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 }
