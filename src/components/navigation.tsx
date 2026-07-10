@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
+import { signInWithGithub } from "@/lib/auth-client";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -108,14 +109,15 @@ export function Navigation() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/api/auth/signin/github"
+          <button
+            type="button"
+            onClick={() => signInWithGithub()}
             className="btn-primary"
             style={{ padding: "0.625rem 1.25rem", fontSize: "0.75rem" }}
           >
             <GithubIcon size={15} />
             Connect GitHub
-          </Link>
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -182,15 +184,18 @@ export function Navigation() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/api/auth/signin/github"
+              <button
+                type="button"
+                onClick={() => {
+                  setIsOpen(false);
+                  signInWithGithub();
+                }}
                 className="btn-primary"
                 style={{ marginTop: "0.5rem", justifyContent: "center" }}
-                onClick={() => setIsOpen(false)}
               >
                 <GithubIcon size={16} />
                 Connect GitHub
-              </Link>
+              </button>
             </div>
           </motion.div>
         )}

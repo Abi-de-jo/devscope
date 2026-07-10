@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
+import { signInWithGithub } from "@/lib/auth-client";
 
 /* ─── Kinetic Hero ─────────────────────────────────────────────────── */
 
@@ -720,11 +721,11 @@ function CTASection() {
           flexWrap: "wrap",
         }}
       >
-        <Link href="/api/auth/signin/github" className="btn-accent">
+        <button type="button" onClick={() => signInWithGithub()} className="btn-accent">
           <GithubIcon size={18} />
           Connect GitHub
           <ArrowRight size={16} />
-        </Link>
+        </button>
         <Link href="/dashboard" className="btn-secondary">
           See Demo
         </Link>
@@ -801,11 +802,11 @@ export default function Home() {
                 flexWrap: "wrap",
               }}
             >
-              <Link href="/api/auth/signin/github" className="btn-primary">
+              <button type="button" onClick={() => signInWithGithub()} className="btn-primary">
                 <GithubIcon size={18} />
                 Connect GitHub
                 <ArrowRight size={16} />
-              </Link>
+              </button>
               <a href="#proof" className="btn-ghost">
                 See the proof
                 <ArrowDown size={14} />

@@ -7,3 +7,10 @@ const authClient = createAuthClient({
 });
 
 export const { signIn, signOut, useSession } = authClient;
+
+export function signInWithGithub() {
+  return signIn.social({
+    provider: "github",
+    callbackURL: "/dashboard",
+  });
+}
