@@ -6,7 +6,6 @@ import { useRef } from "react";
 import {
   ArrowRight,
   ArrowDown,
-  Github,
   Zap,
   Shield,
   BarChart3,
@@ -14,6 +13,7 @@ import {
   Globe,
   Sparkles,
 } from "lucide-react";
+import { GithubIcon } from "@/components/brand-icons";
 
 /* ─── Kinetic Hero ─────────────────────────────────────────────────── */
 
@@ -446,7 +446,7 @@ const steps = [
     num: "01",
     title: "Connect GitHub",
     desc: "One OAuth click. Public repos only. No private data touched.",
-    icon: Github,
+    icon: GithubIcon,
   },
   {
     num: "02",
@@ -721,7 +721,7 @@ function CTASection() {
         }}
       >
         <Link href="/api/auth/signin/github" className="btn-accent">
-          <Github size={18} />
+          <GithubIcon size={18} />
           Connect GitHub
           <ArrowRight size={16} />
         </Link>
@@ -802,7 +802,7 @@ export default function Home() {
               }}
             >
               <Link href="/api/auth/signin/github" className="btn-primary">
-                <Github size={18} />
+                <GithubIcon size={18} />
                 Connect GitHub
                 <ArrowRight size={16} />
               </Link>

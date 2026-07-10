@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { Github, Twitter, Linkedin, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/brand-icons";
 
 const footerLinks = {
   Product: [
@@ -96,9 +99,9 @@ export function Footer() {
               }}
             >
               {[
-                { href: "https://github.com/Abi-de-jo/devscope", label: "GitHub", icon: Github },
-                { href: "https://twitter.com/mozen_in", label: "Twitter", icon: Twitter },
-                { href: "https://linkedin.com/company/mozen-in", label: "LinkedIn", icon: Linkedin },
+                { href: "https://github.com/Abi-de-jo/devscope", label: "GitHub", icon: GithubIcon },
+                { href: "https://twitter.com/mozen_in", label: "Twitter", icon: TwitterIcon },
+                { href: "https://linkedin.com/company/mozen-in", label: "LinkedIn", icon: LinkedinIcon },
               ].map((s) => {
                 const Icon = s.icon;
                 return (

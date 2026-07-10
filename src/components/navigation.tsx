@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Github } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { GithubIcon } from "@/components/brand-icons";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -112,7 +113,7 @@ export function Navigation() {
             className="btn-primary"
             style={{ padding: "0.625rem 1.25rem", fontSize: "0.75rem" }}
           >
-            <Github size={15} />
+            <GithubIcon size={15} />
             Connect GitHub
           </Link>
         </div>
@@ -187,7 +188,7 @@ export function Navigation() {
                 style={{ marginTop: "0.5rem", justifyContent: "center" }}
                 onClick={() => setIsOpen(false)}
               >
-                <Github size={16} />
+                <GithubIcon size={16} />
                 Connect GitHub
               </Link>
             </div>
