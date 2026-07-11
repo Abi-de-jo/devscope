@@ -155,7 +155,7 @@ async function callOpenRouter(prompt: string): Promise<string> {
     headers: {
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+      "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001",
       "X-Title": "DevScope Engineering Score",
     },
     body: JSON.stringify({

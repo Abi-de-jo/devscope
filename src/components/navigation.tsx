@@ -5,11 +5,12 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
-import { signInWithGithub } from "@/lib/auth-client";
+import { signInWithGithub, useSession, signOut } from "@/lib/auth-client";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { data: session, isPending } = useSession();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -109,15 +110,43 @@ export function Navigation() {
               {link.label}
             </Link>
           ))}
-          <button
-            type="button"
-            onClick={() => signInWithGithub()}
-            className="btn-primary"
-            style={{ padding: "0.625rem 1.25rem", fontSize: "0.75rem" }}
-          >
-            <GithubIcon size={15} />
-            Connect GitHub
-          </button>
+          {isPending ? (
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--muted)" }}>
+              Loading...
+            </div>
+          ) : session ? (
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              {session.user.image && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={session.user.image}
+                  alt={session.user.name || "User avatar"}
+                  style={{ width: "24px", height: "24px", borderRadius: "50%", border: "var(--border-width) solid var(--ink)" }}
+                />
+              )}
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, color: "var(--ink)" }}>
+                {session.user.name || session.user.email}
+              </span>
+              <button
+                type="button"
+                onClick={() => signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } })}
+                className="btn-secondary"
+                style={{ padding: "0.5rem 1rem", fontSize: "0.75rem" }}
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => signInWithGithub()}
+              className="btn-primary"
+              style={{ padding: "0.625rem 1.25rem", fontSize: "0.75rem" }}
+            >
+              <GithubIcon size={15} />
+              Connect GitHub
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -184,18 +213,51 @@ export function Navigation() {
                   {link.label}
                 </Link>
               ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setIsOpen(false);
-                  signInWithGithub();
-                }}
-                className="btn-primary"
-                style={{ marginTop: "0.5rem", justifyContent: "center" }}
-              >
-                <GithubIcon size={16} />
-                Connect GitHub
-              </button>
+              {isPending ? (
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--muted)", textAlign: "center", padding: "0.5rem 0" }}>
+                  Loading...
+                </div>
+              ) : session ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "0.5rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.5rem 0" }}>
+                    {session.user.image && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={session.user.image}
+                        alt={session.user.name || "User avatar"}
+                        style={{ width: "28px", height: "28px", borderRadius: "50%", border: "var(--border-width) solid var(--ink)" }}
+                      />
+                    )}
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--ink)" }}>
+                      {session.user.name || session.user.email}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsOpen(false);
+                      signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } });
+                    }}
+                    className="btn-secondary"
+                    style={{ justifyContent: "center" }}
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    signInWithGithub();
+                  }}
+                  className="btn-primary"
+                  style={{ marginTop: "0.5rem", justifyContent: "center" }}
+                >
+                  <GithubIcon size={16} />
+                  Connect GitHub
+                </button>
+              )}
             </div>
           </motion.div>
         )}

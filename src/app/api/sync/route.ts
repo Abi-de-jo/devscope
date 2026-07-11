@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { fullSync } from "@/lib/github";
@@ -7,7 +8,7 @@ export async function POST() {
   try {
     // Get session
     const session = await auth.api.getSession({
-      headers: new Headers(),
+      headers: await headers(),
     });
 
     if (!session?.user) {

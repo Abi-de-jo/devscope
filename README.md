@@ -67,7 +67,7 @@ npx prisma migrate dev
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3001](http://localhost:3001).
 
 ---
 
@@ -77,7 +77,7 @@ Open [http://localhost:3000](http://localhost:3000).
 |---|---|
 | `DATABASE_URL` | Neon PostgreSQL connection string |
 | `BETTER_AUTH_SECRET` | Random secret for Better Auth sessions |
-| `BETTER_AUTH_URL` | App URL (e.g. `http://localhost:3000`) |
+| `BETTER_AUTH_URL` | App URL (e.g. `http://localhost:3001`) |
 | `GITHUB_CLIENT_ID` | GitHub OAuth app client ID |
 | `GITHUB_CLIENT_SECRET` | GitHub OAuth app client secret |
 | `OPENROUTER_API_KEY` | OpenRouter API key for AI scoring |

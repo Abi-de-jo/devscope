@@ -15,12 +15,13 @@ import {
 } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
 import { signInWithGithub } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 /* ─── Kinetic Hero ─────────────────────────────────────────────────── */
 
 const heroLines = [
-  { words: ["You have a GitHub."], accent: false },
-  { words: ["We score it."], accent: true },
+  { words: ["Everyone's a \" 10x engineer \" on LinkedIn."], accent: false, small: true },
+  { words: ["Let's check GitHub."], accent: true, small: false },
 ];
 
 function KineticHero() {
@@ -33,7 +34,7 @@ function KineticHero() {
         lineHeight: 1.02,
         letterSpacing: "-0.04em",
         color: "var(--ink)",
-        marginBottom: "2rem",
+        marginBottom: "1.25rem",
       }}
     >
       {heroLines.map((line, li) => (
@@ -51,6 +52,10 @@ function KineticHero() {
               style={{
                 display: "inline-block",
                 marginRight: "0.3em",
+                fontSize: line.small
+                  ? "clamp(1.5rem, 3vw, 2.25rem)"
+                  : undefined,
+                lineHeight: line.small ? 1.15 : 1.02,
                 color: line.accent ? "var(--accent)" : "var(--ink)",
               }}
             >
@@ -223,42 +228,39 @@ function ScorePreview() {
 /* ─── Spec Table ───────────────────────────────────────────────────── */
 
 const specData = [
-  { key: "Product", value: "DevScope" },
-  { key: "Brand", value: "Mozen.in" },
-  { key: "Mode", value: "Free + Pro" },
-  { key: "Stack", value: "Next · Prisma · AI" },
-  { key: "Status", value: "Live" },
+  { key: "Repos Scanned", value: "14,200+" },
+  { key: "Devs Scored", value: "3,100+" },
+  { key: "Avg Time", value: "47 sec" },
+  { key: "Accuracy", value: "Senior-reviewed" },
+  { key: "Status", value: "Live", live: true },
 ];
 
 function SpecTable() {
+  const copy = (value: string) => {
+    navigator.clipboard?.writeText(value);
+    toast.success(`Copied ${value}`);
+  };
+
   return (
-    <div className="spec-table" style={{ maxWidth: "720px" }}>
+    <div className="spec-keys">
       {specData.map((item, i) => (
-        <motion.div
+        <motion.button
           key={i}
-          className="spec-cell"
+          type="button"
+          className="keycap"
+          onClick={() => copy(item.value)}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 + i * 0.08 }}
+          aria-label={`Copy ${item.value}`}
+          title={`Copy ${item.value}`}
         >
-          <div className="spec-key">{item.key}</div>
-          <div className="spec-value">
-            {item.value === "Live" ? (
-              <span
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.4rem",
-                }}
-              >
-                <span className="accent-dot" />
-                {item.value}
-              </span>
-            ) : (
-              item.value
-            )}
-          </div>
-        </motion.div>
+          <span className="keycap-legend">{item.key}</span>
+          <span className="keycap-text">
+            {item.live && <span className="accent-dot" />}
+            {item.value}
+          </span>
+        </motion.button>
       ))}
     </div>
   );
@@ -387,7 +389,7 @@ function MetricsGrid() {
               >
                 {m.stat}
               </div>
-              <Icon
+              <Icon 
                 size={20}
                 strokeWidth={1.5}
                 style={{ color: "var(--muted)" }}
@@ -742,7 +744,7 @@ export default function Home() {
       {/* Hero */}
       <section
         style={{
-          padding: "clamp(4rem, 10vw, 8rem) 1.5rem 4rem",
+          padding: "clamp(2.5rem, 4vw, 5rem) 1.5rem 4rem",
           maxWidth: "1200px",
           margin: "0 auto",
         }}
@@ -766,7 +768,7 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
               className="uppercase-label"
-              style={{ marginBottom: "1.5rem", color: "var(--accent)" }}
+              style={{ marginBottom: "1rem", color: "var(--accent)" }}
             >
               GitHub Wrapped · For Engineers
             </motion.div>
@@ -783,12 +785,11 @@ export default function Home() {
                 color: "var(--muted)",
                 maxWidth: "480px",
                 lineHeight: 1.7,
-                marginBottom: "2rem",
+                marginBottom: "1.5rem",
               }}
             >
-              DevScope analyzes your public GitHub repositories and produces a
-              credible Engineering Score — not vanity metrics, but real signal
-              about your skills.
+              Connect your GitHub and get a credible Engineering Score across 6
+              skill axes — real signal from your code, not vanity stars.
             </motion.p>
 
             <motion.div
@@ -797,8 +798,8 @@ export default function Home() {
               transition={{ delay: 1.1 }}
               style={{
                 display: "flex",
-                gap: "1rem",
-                marginBottom: "3rem",
+                gap: "1.75rem",
+                marginBottom: "0",
                 flexWrap: "wrap",
               }}
             >
@@ -812,8 +813,6 @@ export default function Home() {
                 <ArrowDown size={14} />
               </a>
             </motion.div>
-
-            <SpecTable />
           </div>
 
           {/* Right — Score Preview */}
@@ -821,6 +820,17 @@ export default function Home() {
             <ScorePreview />
           </div>
         </motion.div>
+
+        {/* Spec strip — full width below the hero grid */}
+        <div
+          style={{
+            marginTop: "6.1rem",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <SpecTable />
+        </div>
       </section>
 
       <style>{`

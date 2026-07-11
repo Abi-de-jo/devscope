@@ -3,6 +3,8 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { SmoothScroll } from "@/components/smooth-scroll";
+import { Toaster } from "sonner";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -46,9 +48,24 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body>
-        <Navigation />
-        <main>{children}</main>
-        <Footer />
+        <SmoothScroll>
+          <Navigation />
+          <main>{children}</main>
+          <Footer />
+          <Toaster
+            position="bottom-center"
+            toastOptions={{
+              style: {
+                fontFamily: "var(--font-mono)",
+                border: "1.5px solid var(--ink)",
+                borderRadius: "2px",
+                boxShadow: "2px 2px 0 var(--ink)",
+                background: "var(--paper)",
+                color: "var(--ink)",
+              },
+            }}
+          />
+        </SmoothScroll>
       </body>
     </html>
   );

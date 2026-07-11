@@ -280,46 +280,66 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ─── Spec Table ─────────────────────────────────────────────────────── */
-.spec-table {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+/* ─── Spec keys (keyboard-key buttons) ──────────────────────────────── */
+.spec-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.keycap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.7rem 1rem;
+  background-color: var(--paper);
   border: var(--border-width) solid var(--ink);
   border-radius: var(--radius);
-  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  text-align: left;
+  transition: transform 0.06s ease, box-shadow 0.06s ease;
+  user-select: none;
+}
+
+.keycap:hover {
+  transform: translate(-1px, -1px);
   box-shadow: var(--shadow-md);
 }
 
-.spec-cell {
-  padding: 1rem 1.25rem;
-  border-right: var(--border-width) solid var(--ink);
-  border-bottom: var(--border-width) solid var(--ink);
-  background-color: var(--paper-alt);
-  transition: background-color 0.15s ease;
+.keycap:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink);
 }
 
-.spec-cell:hover {
-  background-color: var(--accent-light);
-}
-
-.spec-cell:last-child {
-  border-right: none;
-}
-
-.spec-key {
-  font-family: var(--font-mono);
+.keycap-legend {
   font-size: 0.65rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--muted);
-  margin-bottom: 0.35rem;
 }
 
-.spec-value {
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+.keycap-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.keycap .accent-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--ink);
 }
 
 /* ─── Marquee ────────────────────────────────────────────────────────── */
@@ -515,11 +535,33 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── Responsive ─────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .spec-table {
-    grid-template-columns: repeat(2, 1fr);
+  .spec-keys {
+    gap: 0.5rem;
   }
 
-  .spec-cell:nth-child(2) {
-    border-right: none;
+  .keycap {
+    padding: 0.55rem 0.85rem;
   }
+}
+
+/* ─── Lenis smooth scroll ─────────────────────────────────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }

@@ -142,7 +142,9 @@ exports.Prisma.AccountScalarFieldEnum = {
   accessTokenExpiresAt: 'accessTokenExpiresAt',
   refreshTokenExpiresAt: 'refreshTokenExpiresAt',
   scope: 'scope',
-  password: 'password'
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
@@ -152,6 +154,15 @@ exports.Prisma.SessionScalarFieldEnum = {
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
   userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VerificationScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -173,7 +184,9 @@ exports.Prisma.GithubProfileScalarFieldEnum = {
   following: 'following',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  lastSyncedAt: 'lastSyncedAt'
+  lastSyncedAt: 'lastSyncedAt',
+  shareCount: 'shareCount',
+  viewCount: 'viewCount'
 };
 
 exports.Prisma.RepositoryScalarFieldEnum = {
@@ -284,6 +297,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
   Session: 'Session',
+  Verification: 'Verification',
   GithubProfile: 'GithubProfile',
   Repository: 'Repository',
   Analysis: 'Analysis',

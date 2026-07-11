@@ -11,22 +11,30 @@ export async function generateMetadata({
   params,
 }: ProfilePageProps): Promise<Metadata> {
   const { username } = await params;
-  const profile = await prisma.githubProfile.findUnique({
+  const profile = await prisma.githubProfile.findFirst({
     where: { login: username },
-    include: {
-      analyses: {
-        where: { status: "completed" },
-        orderBy: { completedAt: "desc" },
-        take: 1,
-      },
-    },
   });
 
-  if (!profile || profile.analyses.length === 0) {
+  if (!profile) {
     return { title: `${username} — DevScope` };
   }
 
-  const analysis = profile.analyses[0];
+  const analysis = await prisma.analysis.findFirst({
+    where: { userId: profile.userId, status: "completed" },
+    orderBy: { completedAt: "desc" },
+  });
+
+  if (!analysis) {
+    return {
+      title: `${profile.displayName || profile.login} — DevScope`,
+      openGraph: {
+        title: `${profile.displayName || profile.login} — DevScope`,
+        type: "profile",
+        images: [`/api/og/${username}`],
+      },
+    };
+  }
+
   return {
     title: `${profile.displayName || profile.login} — Engineering Score: ${analysis.overallScore}/100 (${analysis.engineerLevel})`,
     description: analysis.summary || `Engineering Score: ${analysis.overallScore}/100`,
@@ -46,17 +54,9 @@ export async function generateMetadata({
 export default async function ProfilePage({ params }: ProfilePageProps) {
   const { username } = await params;
 
-  const profile = await prisma.githubProfile.findUnique({
+  const profile = await prisma.githubProfile.findFirst({
     where: { login: username },
     include: {
-      analyses: {
-        where: { status: "completed" },
-        orderBy: { completedAt: "desc" },
-        take: 1,
-        include: {
-          scores: true,
-        },
-      },
       repositories: {
         orderBy: { stargazersCount: "desc" },
         take: 10,
@@ -66,7 +66,19 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
   if (!profile) notFound();
 
-  const analysis = profile.analyses[0] || null;
+  // Track profile views (best-effort so a DB hiccup never breaks the page)
+  await prisma.githubProfile
+    .update({
+      where: { id: profile.id },
+      data: { viewCount: { increment: 1 } },
+    })
+    .catch(() => {});
+
+  const analysis = await prisma.analysis.findFirst({
+    where: { userId: profile.userId, status: "completed" },
+    orderBy: { completedAt: "desc" },
+    include: { scores: true },
+  });
 
   return (
     <div

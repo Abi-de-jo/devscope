@@ -1,27 +1,17 @@
 import { ImageResponse } from "next/og";
 import { prisma } from "@/lib/db";
 
-export const runtime = "edge";
-
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ username: string }> }
 ) {
   const { username } = await params;
 
-  const profile = await prisma.githubProfile.findUnique({
+  const profile = await prisma.githubProfile.findFirst({
     where: { login: username },
-    include: {
-      analyses: {
-        where: { status: "completed" },
-        orderBy: { completedAt: "desc" },
-        take: 1,
-        include: { scores: true },
-      },
-    },
   });
 
-  if (!profile || profile.analyses.length === 0) {
+  if (!profile) {
     return new ImageResponse(
       (
         <div
@@ -55,12 +45,60 @@ export async function GET(
     );
   }
 
-  const analysis = profile.analyses[0];
+  // Track shares — the OG image is fetched by social crawlers when the card
+  // is shared/previewed. Best-effort so a DB hiccup never breaks the image.
+  await prisma.githubProfile
+    .update({
+      where: { id: profile.id },
+      data: { shareCount: { increment: 1 } },
+    })
+    .catch(() => {});
+
+  const analysis = await prisma.analysis.findFirst({
+    where: { userId: profile.userId, status: "completed" },
+    orderBy: { completedAt: "desc" },
+    include: { scores: true },
+  });
+
+  if (!analysis) {
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            width: "1200px",
+            height: "630px",
+            backgroundColor: "#F5F4F0",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "sans-serif",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "48px",
+              fontWeight: 700,
+              color: "#0B0C0E",
+              marginBottom: "16px",
+            }}
+          >
+            DevScope
+          </div>
+          <div style={{ fontSize: "24px", color: "#6B6F76" }}>
+            @{profile.login} hasn&apos;t been scored yet
+          </div>
+        </div>
+      ),
+      { width: 1200, height: 630 }
+    );
+  }
+
   const score = analysis.overallScore ?? 0;
   const level = analysis.engineerLevel ?? "Unknown";
 
   // Get top 3 scores for mini radar
-  const topScores = analysis.scores
+  const topScores = [...analysis.scores]
     .sort((a, b) => b.score - a.score)
     .slice(0, 3);
 
