@@ -1,25 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { ShareCardLoader } from "@/components/loaders/share-card-loader";
 
 export function PrintButton() {
   const [generating, setGenerating] = useState(false);
 
   const handle = () => {
     setGenerating(true);
-    // Brief beat so the "generating card" state is visible before the
-    // print dialog takes over the thread.
     setTimeout(() => {
       window.print();
       setGenerating(false);
-    }, 800);
+    }, 600);
   };
 
   if (generating) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", padding: "1rem" }}>
-        <ShareCardLoader label="GENERATING CARD" />
+      <div
+        style={{
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          fontSize: "13px",
+          color: "#666",
+          padding: "10px 20px",
+        }}
+      >
+        Preparing PDF…
       </div>
     );
   }
@@ -28,15 +33,19 @@ export function PrintButton() {
     <button
       onClick={handle}
       style={{
-        fontFamily: "monospace",
-        padding: "0.6rem 1.2rem",
-        border: "2px solid #111",
-        background: "#111",
+        fontFamily:
+          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        fontSize: "13px",
+        fontWeight: 600,
+        padding: "10px 24px",
+        border: "1.5px solid #1a1a1a",
+        background: "#1a1a1a",
         color: "#fff",
         cursor: "pointer",
+        letterSpacing: "0.02em",
       }}
     >
-      Print / Save as PDF
+      Download PDF
     </button>
   );
 }
