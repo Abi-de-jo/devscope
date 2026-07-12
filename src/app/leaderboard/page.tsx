@@ -20,6 +20,7 @@ import type { LeaderboardEntry, LeaderboardScope } from "@/lib/leaderboard";
 import { LockedPreview } from "@/components/locked-preview";
 import { LockedLeaderboardContent } from "@/components/locked-leaderboard-content";
 import { handleApiResponse } from "@/lib/errors";
+import { LeaderboardScanLoader } from "@/components/loaders/leaderboard-scan-loader";
 
 /* ─── Constants ─────────────────────────────────────────────────────── */
 
@@ -36,94 +37,6 @@ const TROPHY_COLORS: Record<number, string> = {
   2: "#C0C0C0", // silver
   3: "#CD7F32", // bronze
 };
-
-/* ─── Skeleton Row ──────────────────────────────────────────────────── */
-
-const SKELETON_COUNT = 8;
-
-function SkeletonRow({ index }: { index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [0.35, 0.6, 0.35] }}
-      transition={{
-        duration: 1.4,
-        repeat: Infinity,
-        delay: index * 0.08,
-        ease: "easeInOut",
-      }}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "1rem",
-        padding: "0.85rem 1.75rem",
-        borderBottom: "1px solid var(--surface-2, #e0e0d8)",
-      }}
-    >
-      {/* Rank placeholder */}
-      <div
-        style={{
-          width: "40px",
-          height: "40px",
-          borderRadius: "var(--radius)",
-          backgroundColor: "var(--surface-1)",
-          border: "1.5px solid var(--surface-2, #ddd)",
-          flexShrink: 0,
-        }}
-      />
-      {/* Avatar placeholder */}
-      <div
-        style={{
-          width: "40px",
-          height: "40px",
-          borderRadius: "var(--radius)",
-          backgroundColor: "var(--surface-1)",
-          border: "1.5px solid var(--surface-2, #ddd)",
-          flexShrink: 0,
-        }}
-      />
-      {/* Name + username */}
-      <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
-        <div
-          style={{
-            width: "60%",
-            height: "14px",
-            borderRadius: "2px",
-            backgroundColor: "var(--surface-1)",
-          }}
-        />
-        <div
-          style={{
-            width: "35%",
-            height: "10px",
-            borderRadius: "2px",
-            backgroundColor: "var(--surface-1)",
-          }}
-        />
-      </div>
-      {/* Top skill */}
-      <div
-        style={{
-          width: "60px",
-          height: "28px",
-          borderRadius: "2px",
-          backgroundColor: "var(--surface-1)",
-          flexShrink: 0,
-        }}
-      />
-      {/* Score */}
-      <div
-        style={{
-          width: "36px",
-          height: "20px",
-          borderRadius: "2px",
-          backgroundColor: "var(--surface-1)",
-          flexShrink: 0,
-        }}
-      />
-    </motion.div>
-  );
-}
 
 /* ─── Page ──────────────────────────────────────────────────────────── */
 
@@ -158,6 +71,13 @@ function LeaderboardContent() {
   // Server-side pagination
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(totalEntries / PAGE_SIZE);
+
+  // Scan loader state
+  const [scanProgress, setScanProgress] = useState(0);
+  const [scanStep, setScanStep] = useState(0);
+  const [showScanLoader, setShowScanLoader] = useState(false);
+  const scanIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const scanStartRef = useRef(0);
 
   // Client-side page cache — avoids re-fetching already-loaded pages
   const pageCacheRef = useRef(new Map<number, LeaderboardEntry[]>());
@@ -216,7 +136,25 @@ function LeaderboardContent() {
         return;
       }
 
-      // Not in client cache — fetch from API
+      // Not in client cache — show scan loader and fetch from API
+      setShowScanLoader(true);
+      setScanProgress(0);
+      setScanStep(0);
+      scanStartRef.current = Date.now();
+
+      // Drive progress with exponential curve
+      if (scanIntervalRef.current) clearInterval(scanIntervalRef.current);
+      scanIntervalRef.current = setInterval(() => {
+        const elapsed = Date.now() - scanStartRef.current;
+        const raw = 92 * (1 - Math.exp(-elapsed / 2500));
+        setScanProgress(Math.min(raw, 92));
+        // Advance steps at thresholds
+        if (elapsed > 6000) setScanStep(3);
+        else if (elapsed > 3500) setScanStep(2);
+        else if (elapsed > 1200) setScanStep(1);
+        else setScanStep(0);
+      }, 80);
+
       setLoading(true);
       setError(null);
 
@@ -249,6 +187,13 @@ function LeaderboardContent() {
         setHasSearched(true);
         setPage(data.page ?? p);
         syncURL(loc.trim(), sc, data.page ?? p);
+
+        // Snap progress to 100% and advance all steps before hiding
+        if (scanIntervalRef.current) clearInterval(scanIntervalRef.current);
+        setScanStep(4);
+        setScanProgress(100);
+        await new Promise((r) => setTimeout(r, 500));
+        setShowScanLoader(false);
       } catch (err) {
         // Network error — show friendly toast
         const { showErrorToast } = await import("@/lib/errors");
@@ -256,12 +201,22 @@ function LeaderboardContent() {
         setError(
           err instanceof Error ? err.message : "Something went wrong."
         );
+        if (scanIntervalRef.current) clearInterval(scanIntervalRef.current);
+        setShowScanLoader(false);
       } finally {
         setLoading(false);
+        if (scanIntervalRef.current) clearInterval(scanIntervalRef.current);
       }
     },
     [syncURL]
   );
+
+  /* ── Cleanup scan interval on unmount ──────────────────────── */
+  useEffect(() => {
+    return () => {
+      if (scanIntervalRef.current) clearInterval(scanIntervalRef.current);
+    };
+  }, []);
 
   /* ── Search handler — clears client cache for new searches ─── */
   const handleSearch = () => {
@@ -329,6 +284,72 @@ function LeaderboardContent() {
         padding: "4rem 1.5rem 6rem",
       }}
     >
+      {/* ── Mobile responsive styles ───────────────────────────── */}
+      <style>{`
+        @media (max-width: 768px) {
+          .lb-search-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .lb-search-row .lb-search-btn {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+          .lb-scope-row {
+            flex-wrap: wrap !important;
+          }
+          .lb-rank-row {
+            padding: 0.65rem 0.85rem !important;
+            gap: 0.6rem !important;
+          }
+          .lb-rank-row .lb-rank-avatar {
+            width: 32px !important;
+            height: 32px !important;
+          }
+          .lb-rank-row .lb-rank-name {
+            font-size: 0.88rem !important;
+          }
+          .lb-rank-row .lb-rank-username {
+            font-size: 0.65rem !important;
+          }
+          .lb-rank-row .lb-name-wrap {
+            flex-wrap: wrap !important;
+            gap: 0.25rem !important;
+          }
+          .lb-rank-row .lb-rank-name {
+            white-space: normal !important;
+          }
+          .lb-rank-row .lb-score {
+            font-size: 1.1rem !important;
+            min-width: 28px !important;
+          }
+          .lb-rank-row .lb-stats {
+            display: none !important;
+          }
+          .lb-optout {
+            flex-direction: column !important;
+            text-align: center !important;
+          }
+          .lb-suggestions {
+            max-height: 180px !important;
+          }
+          .lb-meta-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.25rem !important;
+          }
+        }
+      `}</style>
+
+      {/* ── Scan overlay ──────────────────────────────────────── */}
+      {showScanLoader && (
+        <LeaderboardScanLoader
+          progress={scanProgress}
+          step={scanStep}
+          location={location}
+        />
+      )}
+
       {/* ── Header ───────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -396,6 +417,7 @@ function LeaderboardContent() {
 
         {/* Input + search button */}
         <div
+          className="lb-search-row"
           style={{
             display: "flex",
             gap: "0.75rem",
@@ -491,6 +513,7 @@ function LeaderboardContent() {
             {/* Suggestions dropdown */}
             {showSuggestions && suggestions.length > 0 && (
               <div
+                className="lb-suggestions"
                 style={{
                   position: "absolute",
                   top: "100%",
@@ -565,7 +588,7 @@ function LeaderboardContent() {
             type="button"
             onClick={handleSearch}
             disabled={loading || !location.trim()}
-            className="btn-primary"
+            className="btn-primary lb-search-btn"
             style={{
               padding: "0.8rem 1.5rem",
               fontSize: "0.85rem",
@@ -578,6 +601,7 @@ function LeaderboardContent() {
 
         {/* Scope toggles */}
         <div
+          className="lb-scope-row"
           style={{
             display: "flex",
             gap: "0.5rem",
@@ -628,6 +652,7 @@ function LeaderboardContent() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className="lb-optout"
           style={{
             display: "flex",
             alignItems: "center",
@@ -730,73 +755,7 @@ function LeaderboardContent() {
       )}
 
       {/* ── Loading skeleton ────────────────────────────────── */}
-      {hasSearched && loading && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          style={{ marginBottom: "1rem" }}
-        >
-          {/* Skeleton meta bar */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: "1rem",
-            }}
-          >
-            <motion.div
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-              style={{
-                width: "220px",
-                height: "12px",
-                borderRadius: "2px",
-                backgroundColor: "var(--surface-1)",
-              }}
-            />
-            <motion.div
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-              style={{
-                width: "100px",
-                height: "12px",
-                borderRadius: "2px",
-                backgroundColor: "var(--surface-1)",
-              }}
-            />
-          </div>
-
-          {/* Skeleton rows */}
-          <div
-            className="card"
-            style={{
-              borderRadius: 0,
-              padding: 0,
-              overflow: "hidden",
-            }}
-          >
-            {Array.from({ length: SKELETON_COUNT }, (_, i) => (
-              <SkeletonRow key={i} index={i} />
-            ))}
-          </div>
-
-          {/* Loading text */}
-          <div
-            style={{
-              marginTop: "1rem",
-              textAlign: "center",
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.8rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--muted)",
-            }}
-          >
-            Loading rankings…
-          </div>
-        </motion.div>
-      )}
+      {/* Replaced by LeaderboardScanLoader overlay above */}
 
       {/* ── Actual results ──────────────────────────────────── */}
       {entries.length > 0 && !loading && (
@@ -807,6 +766,7 @@ function LeaderboardContent() {
         >
           {/* Meta bar — Showing X–Y of Z */}
           <div
+            className="lb-meta-row"
             style={{
               display: "flex",
               alignItems: "center",
@@ -1000,6 +960,7 @@ function RankRow({
 
   return (
     <motion.div
+      className="lb-rank-row"
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay, duration: 0.3 }}
@@ -1088,6 +1049,7 @@ function RankRow({
       {entry.avatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
+          className="lb-rank-avatar"
           src={entry.avatarUrl}
           alt={entry.username}
           width={40}
@@ -1101,6 +1063,7 @@ function RankRow({
         />
       ) : (
         <div
+          className="lb-rank-avatar"
           style={{
             width: 40,
             height: 40,
@@ -1115,6 +1078,7 @@ function RankRow({
       {/* ── Name + username + score type badge ─────────────── */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
+          className="lb-name-wrap"
           style={{
             display: "flex",
             alignItems: "center",
@@ -1123,6 +1087,7 @@ function RankRow({
           }}
         >
           <a
+            className="lb-rank-name"
             href={entry.htmlUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -1163,6 +1128,7 @@ function RankRow({
           </span>
         </div>
         <div
+          className="lb-rank-username"
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: "0.72rem",
@@ -1176,6 +1142,7 @@ function RankRow({
 
       {/* ── Stats (repos / stars) ─────────────────────────── */}
       <div
+        className="lb-stats"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -1212,6 +1179,7 @@ function RankRow({
 
       {/* ── Score ──────────────────────────────────────────── */}
       <div
+        className="lb-score"
         style={{
           display: "flex",
           alignItems: "center",
