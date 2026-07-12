@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -126,7 +126,7 @@ function SkeletonRow({ index }: { index: number }) {
 
 /* ─── Page ──────────────────────────────────────────────────────────── */
 
-export default function LeaderboardPage() {
+function LeaderboardContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { data: session, isPending } = useSession();
@@ -1221,5 +1221,13 @@ function RankRow({
         </span>
       </div>
     </motion.div>
+  );
+}
+
+export default function LeaderboardPage() {
+  return (
+    <Suspense fallback={null}>
+      <LeaderboardContent />
+    </Suspense>
   );
 }

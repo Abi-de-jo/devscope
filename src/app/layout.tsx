@@ -5,6 +5,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { Toaster } from "sonner";
+import { url } from "inspector";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -39,6 +40,14 @@ export const metadata: Metadata = {
       "Connect your GitHub, get a shareable Engineering Score card in 60 seconds.",
     type: "website",
     siteName: "GitRating",
+    images:[
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "GitRating — GitHub Wrapped for Engineering Credibility",
+      }
+    ]
   },
 };
 
