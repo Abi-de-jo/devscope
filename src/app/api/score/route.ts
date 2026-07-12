@@ -163,9 +163,10 @@ export async function POST() {
       summary: result.summary,
     });
   } catch (error) {
-    console.error("Score error:", error);
+    const detail = error instanceof Error ? error.message : String(error);
+    console.error("Score POST error:", detail, error);
     return NextResponse.json(
-      { error: "Scoring failed" },
+      { error: detail || "Scoring failed" },
       { status: 500 }
     );
   }

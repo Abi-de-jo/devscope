@@ -405,6 +405,15 @@ export async function scoreDeveloper(
   });
 
   try {
+    // Early check: at least one LLM provider must be configured
+    const hasZenMux = !!LLM_KEY;
+    const hasOpenRouter = OR_KEYS.length > 0;
+    if (!hasZenMux && !hasOpenRouter) {
+      throw new Error(
+        "No AI provider configured. Set ZENMUX_API_KEY or OPENROUTER_KEY_1 in your environment."
+      );
+    }
+
     const prompt = buildAnalysisPrompt(
       {
         login: profile.login,
@@ -526,6 +535,8 @@ export async function scoreDeveloper(
       where: { id: analysis.id },
       data: { status: "failed" },
     });
-    throw err;
+    // Preserve the original error message for debugging
+    const msg = err instanceof Error ? err.message : "Scoring failed";
+    throw new Error(`Scoring failed: ${msg}`);
   }
 }

@@ -171,11 +171,18 @@ export async function handleApiResponse(
     // Body isn't JSON — use status code mapping
   }
 
-  // If server gave a specific message AND it's not a system error (≥500),
-  // show the server message directly — it's more specific.
-  if (res.status < 500 && serverMessage) {
-    toast.error(serverMessage, {
-      duration: 6000,
+  // If server gave a specific message, show it — it's more helpful than
+  // the generic mapped message. Works for all error levels including 500.
+  if (serverMessage) {
+    // For 500+ errors, append the friendly mapped title as context
+    const mapped = res.status >= 500 ? ERROR_MAP[res.status] : undefined;
+    const description = mapped
+      ? `${serverMessage} — ${mapped.message}`
+      : serverMessage;
+
+    toast.error(mapped?.title ?? `Error ${res.status}`, {
+      description,
+      duration: 8000,
       style: {
         fontFamily: "var(--font-mono)",
         border: "1.5px solid var(--ink)",
@@ -188,7 +195,7 @@ export async function handleApiResponse(
     return true;
   }
 
-  // System-level error → show mapped friendly message
+  // System-level error with no server message → show mapped friendly message
   showErrorToast(res.status);
   return true;
 }
