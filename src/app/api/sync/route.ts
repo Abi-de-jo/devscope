@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { fullSync } from "@/lib/github";
 import { rateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { logSyncEvent, logGitHubCall } from "@/lib/activity-log";
 
 export async function POST() {
   try {
@@ -43,7 +44,11 @@ export async function POST() {
     }
 
     // Run full sync
+    const syncStart = Date.now();
     const result = await fullSync(session.user.id, account.accessToken);
+
+    logGitHubCall(userId, "github.com/user/repos", 200, { login: result.profile.login, repoCount: result.repos.length });
+    logSyncEvent(userId, result.repos.length, "success", `Synced ${result.repos.length} repos for ${result.profile.login}`);
 
     return NextResponse.json({
       success: true,

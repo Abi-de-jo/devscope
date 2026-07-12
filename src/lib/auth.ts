@@ -4,6 +4,12 @@ import { prisma } from "@/lib/db";
 import { dash } from "@better-auth/infra";
 
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3001",
+  trustedOrigins: [
+    process.env.BETTER_AUTH_URL || "http://localhost:3001",
+    "http://localhost:3001",
+    "http://localhost:3000",
+  ],
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),

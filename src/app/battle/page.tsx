@@ -16,6 +16,7 @@ import type {
   CompareResponse,
   CompareResult,
 } from "@/lib/compare-engine";
+import { handleApiResponse } from "@/lib/errors";
 
 /* ─── Category metadata ─────────────────────────────────────────────── */
 
@@ -119,6 +120,7 @@ export default function BattlePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ usernames: valid }),
       });
+      if (await handleApiResponse(res)) return;
       const data: CompareResponse = await res.json();
 
       if (!data.success) {
@@ -127,6 +129,9 @@ export default function BattlePage() {
       }
       setResults(data);
     } catch (err) {
+      // Network error — show friendly toast
+      const { showErrorToast } = await import("@/lib/errors");
+      showErrorToast(err instanceof Error ? err : null);
       setError(
         err instanceof Error ? err.message : "Something went wrong."
       );

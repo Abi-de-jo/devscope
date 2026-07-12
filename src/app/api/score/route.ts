@@ -5,8 +5,15 @@ import { prisma } from "@/lib/db";
 import { scoreDeveloper } from "@/server/scoring";
 import { rateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { cacheGet, cacheSet, cacheDelete } from "@/lib/cache";
+import { logScoreRun, logCacheEvent } from "@/lib/activity-log";
 
 export async function GET() {
+  // TEMPORARY: Simulated server error for UI error-handling testing
+  return NextResponse.json(
+    { error: "Simulated Server Error: Failed to connect to the database cluster (Connection Timed Out)." },
+    { status: 400 }
+  );
+
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -31,6 +38,7 @@ export async function GET() {
     const cacheKey = `score:${userId}`;
     const cached = cacheGet(cacheKey);
     if (cached) {
+      logCacheEvent(userId, "hit", cacheKey);
       return NextResponse.json(
         { success: true, analysis: cached, cached: true },
         { headers: rateLimitHeaders(rl) }
@@ -123,6 +131,7 @@ export async function POST() {
     if (existingAnalysis) {
       // Serve the existing analysis via GET path (cache + username attach)
       cacheDelete(`score:${userId}`);
+      logScoreRun(userId, { repoCount: 0, cached: true, costCents: 0 });
       return NextResponse.json({
         success: true,
         analysisId: existingAnalysis.id,
@@ -132,6 +141,8 @@ export async function POST() {
 
     // Run scoring
     const result = await scoreDeveloper(userId, profile.id);
+
+    logScoreRun(userId, { repoCount: 0, cached: false, costCents: 0 });
 
     // Invalidate stashed data so the next read returns the fresh snapshot
     cacheDelete(`score:${userId}`);

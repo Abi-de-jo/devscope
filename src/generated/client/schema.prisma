@@ -20,11 +20,14 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  activityToken String? @unique // opaque URL token for activity log access
+
   accounts      Account[]
   sessions      Session[]
   githubProfile GithubProfile?
   analyses      Analysis[]
   conversations AiConversation[]
+  activityLogs  ActivityLog[]
 
   @@map("users")
 }
@@ -223,4 +226,22 @@ model AiConversation {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("ai_conversations")
+}
+
+// ─── Activity Log (transparency) ────────────────────────────────────────
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String // github_api | score_run | cache_hit | cache_write | auth_login | auth_refresh | sync | compare
+  detail    String? // human-readable description (pre-sanitized)
+  meta      Json? // structured metadata (sanitized — no secrets)
+  status    String   @default("success") // success | cached | error
+  costCents Int? // AI cost if applicable
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("activity_logs")
 }

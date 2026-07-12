@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { rateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { getLeaderboard } from "@/lib/leaderboard";
+import { logCompareEvent } from "@/lib/activity-log";
 import type { LeaderboardScope } from "@/lib/leaderboard";
 
 /**
@@ -67,6 +68,8 @@ export async function GET(req: NextRequest) {
       page,
       limit
     );
+
+    logCompareEvent(ip, "leaderboard", { location, scope, page, results: result.entries?.length ?? 0 });
 
     return NextResponse.json(result, {
       headers: rateLimitHeaders(rl),
