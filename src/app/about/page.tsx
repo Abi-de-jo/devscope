@@ -46,7 +46,9 @@ export default function AboutPage() {
             grid-template-columns: 1fr !important;
           }
           .about-row2 .about-photo {
-            min-height: 280px !important;
+            aspect-ratio: 4 / 5 !important;
+            min-height: unset !important;
+            height: auto !important;
           }
           .about-socials {
             grid-template-columns: 1fr !important;
