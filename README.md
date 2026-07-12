@@ -12,9 +12,6 @@ with full evidence, skill radar, and actionable gaps.
 [![PRs Welcome](https://img.shields.io/badge/PRs-WELCOME-00C2D1?style=for-the-badge&labelColor=0B0C0E)](#contributing)
 
 <br/>
-
-<img src="public/app.png" alt="GitRating Dashboard" width="800" style="border-radius:4px; border: 2px solid #0B0C0E; box-shadow: 6px 6px 0 #0B0C0E;" />
-
 </div>
 
 ---
