@@ -108,6 +108,7 @@ model GithubProfile {
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   repositories Repository[]
 
+  @@index([login])
   @@map("github_profiles")
 }
 
@@ -144,6 +145,7 @@ model Repository {
   repoScores  RepositoryScore[]
   analyses    Analysis[]
 
+  @@index([profileId])
   @@map("repositories")
 }
 
@@ -172,6 +174,7 @@ model Analysis {
   repositories Repository[]
   repoScores   RepositoryScore[]
 
+  @@index([userId])
   @@map("analyses")
 }
 

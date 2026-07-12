@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { rateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { getLeaderboard } from "@/lib/leaderboard";
-import { logCompareEvent } from "@/lib/activity-log";
 import type { LeaderboardScope } from "@/lib/leaderboard";
 
 /**
@@ -23,7 +22,7 @@ const VALID_SCOPES: LeaderboardScope[] = ["city", "state", "country"];
 export async function GET(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
-  const rl = rateLimit(`leaderboard:${ip}`, {
+  const rl = await rateLimit(`leaderboard:${ip}`, {
     windowMs: 60_000,
     max: 20,
   });
@@ -68,8 +67,6 @@ export async function GET(req: NextRequest) {
       page,
       limit
     );
-
-    logCompareEvent(ip, "leaderboard", { location, scope, page, results: result.entries?.length ?? 0 });
 
     return NextResponse.json(result, {
       headers: rateLimitHeaders(rl),

@@ -20,7 +20,7 @@ export async function POST() {
     const userId = session.user.id;
 
     // Rate limit: 5 syncs / minute per user (GitHub API + DB writes are costly)
-    const rl = rateLimit(`sync:post:${userId}`, { windowMs: 60_000, max: 5 });
+    const rl = await rateLimit(`sync:post:${userId}`, { windowMs: 60_000, max: 5 });
     if (!rl.success) {
       return NextResponse.json(
         { error: "Rate limited. Slow down." },

@@ -20,7 +20,8 @@
 // footnote: "Based on file presence and public stats, not a review of
 // your actual code."
 
-import { cacheGet, cacheSet } from "./cache";
+import { cacheGet, cacheSet, TTL } from "./cache";
+import { redis } from "./redis";
 
 /* ─── Constants ─────────────────────────────────────────────────────── */
 
@@ -28,9 +29,6 @@ const GITHUB_API = "https://api.github.com";
 
 /** Only inspect the top N repos (by stars / recency) to control API usage. */
 const REPO_CHECK_LIMIT = 8;
-
-/** Cache TTL — 24 hours per username. */
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 /** Below this many public repos the result is flagged low-confidence. */
 const MIN_REPOS_FOR_CONFIDENCE = 3;
@@ -160,6 +158,26 @@ async function ghFetch<T>(url: string): Promise<T | null> {
   }
 }
 
+/**
+ * Cached GitHub fetch for compare-engine.
+ * Checks Redis before hitting the API. Same cache keys as github.ts
+ * so both engines share cached data.
+ */
+async function cachedGhFetch<T>(
+  cacheKey: string,
+  url: string,
+  ttlSec: number
+): Promise<T | null> {
+  const hit = await cacheGet<T>(cacheKey);
+  if (hit !== undefined) return hit;
+
+  const data = await ghFetch<T>(url);
+  if (data !== null) {
+    await cacheSet(cacheKey, data, ttlSec);
+  }
+  return data;
+}
+
 interface RootItem {
   name: string;
   type: string;
@@ -196,8 +214,10 @@ async function checkRepoRoot(
       : null;
 
   try {
-    const items = await ghFetch<RootItem[]>(
-      `${GITHUB_API}/repos/${owner}/${repo}/contents`
+    const items = await cachedGhFetch<RootItem[]>(
+      `gh:contents:${owner}:${repo}`,
+      `${GITHUB_API}/repos/${owner}/${repo}/contents`,
+      TTL.GH_CONTENTS
     );
     if (!items) {
       return {
@@ -605,11 +625,11 @@ function emptyCategories(): Record<string, CategoryScore> {
 
 export async function fetchAndScore(username: string): Promise<CompareResult> {
   // 1. Check cache
-  const cached = cacheGet<CompareResult>(`compare:${username}`);
+  const cached = await cacheGet<CompareResult>(`compare:${username}`);
   if (cached) return cached;
 
-  // 2. Fetch user profile
-  const user = await ghFetch<{
+  // 2. Fetch user profile (cached)
+  const user = await cachedGhFetch<{
     login: string;
     avatar_url: string | null;
     name: string | null;
@@ -618,12 +638,16 @@ export async function fetchAndScore(username: string): Promise<CompareResult> {
     following: number;
     public_repos: number;
     created_at: string;
-  }>(`${GITHUB_API}/users/${username}`);
+  }>(
+    `gh:user:${username}`,
+    `${GITHUB_API}/users/${username}`,
+    TTL.GH_USER
+  );
 
   if (!user) return errResult(username, `User "${username}" not found`);
 
-  // 3. Fetch repos
-  const repos = await ghFetch<
+  // 3. Fetch repos (cached)
+  const repos = await cachedGhFetch<
     Array<{
       full_name: string;
       language: string | null;
@@ -632,7 +656,11 @@ export async function fetchAndScore(username: string): Promise<CompareResult> {
       pushed_at: string | null;
       private: boolean;
     }>
-  >(`${GITHUB_API}/users/${username}/repos?per_page=100&sort=updated`);
+  >(
+    `gh:repos:${username}`,
+    `${GITHUB_API}/users/${username}/repos?per_page=100&sort=updated`,
+    TTL.GH_REPOS
+  );
 
   const publicRepos = (repos ?? []).filter((r) => !r.private);
 
@@ -684,7 +712,7 @@ export async function fetchAndScore(username: string): Promise<CompareResult> {
       rating,
       ratingStars: stars,
     };
-    cacheSet(`compare:${user.login}`, result, CACHE_TTL_MS);
+    await cacheSet(`compare:${user.login}`, result, TTL.QUICK_SCORE);
     return result;
   }
 
@@ -741,7 +769,7 @@ export async function fetchAndScore(username: string): Promise<CompareResult> {
     ratingStars: stars,
   };
 
-  cacheSet(`compare:${user.login}`, result, CACHE_TTL_MS);
+  await cacheSet(`compare:${user.login}`, result, TTL.QUICK_SCORE);
   return result;
 }
 

@@ -18,7 +18,7 @@ export async function GET() {
   const userId = session.user.id;
 
   // Rate limit: 30 reads / minute per user
-  const rl = rateLimit(`analyses:get:${userId}`, { windowMs: 60_000, max: 30 });
+  const rl = await rateLimit(`analyses:get:${userId}`, { windowMs: 60_000, max: 30 });
   if (!rl.success) {
     return NextResponse.json(
       { error: "Rate limited. Slow down." },
@@ -28,7 +28,7 @@ export async function GET() {
 
   // Serve stashed list instantly until a refetch invalidates it
   const cacheKey = `analyses:${userId}`;
-  const cached = cacheGet(cacheKey);
+  const cached = await cacheGet(cacheKey);
   if (cached) {
     return NextResponse.json(
       { analyses: cached, cached: true },
@@ -51,7 +51,7 @@ export async function GET() {
   });
 
   // Stash for 30 seconds; invalidated on POST score
-  cacheSet(cacheKey, analyses, 30_000);
+  await cacheSet(cacheKey, analyses, 30);
 
   return NextResponse.json(
     { analyses, cached: false },

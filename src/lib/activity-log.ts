@@ -5,6 +5,7 @@
  * Secrets are stripped at write time, not read time.
  */
 
+import type { InputJsonValue } from "@prisma/client/runtime/library";
 import { prisma } from "@/lib/db";
 import { randomBytes } from "crypto";
 
@@ -149,10 +150,10 @@ async function writeLog(
       data: {
         userId,
         action: sanitized.action,
-        detail: sanitized.detail,
-        meta: sanitized.meta,
+        detail: sanitized.detail ?? undefined,
+        meta: sanitized.meta ? (sanitized.meta as InputJsonValue) : undefined,
         status: sanitized.status,
-        costCents: sanitized.costCents,
+        costCents: sanitized.costCents ?? undefined,
       },
     });
   } catch {

@@ -5,7 +5,7 @@
 // Filters out opted-out users. Paginated results derived from cached set.
 
 import { prisma } from "./db";
-import { cacheGet, cacheSet } from "./cache";
+import { cacheGet, cacheSet, TTL } from "./cache";
 import {
   getCityVariants,
   getStateCities,
@@ -19,9 +19,6 @@ const SERVER_TOKEN = process.env.GITHUB_TOKEN ?? undefined;
 
 /** Max users to keep after ranking. */
 const RANKED_KEEP = 100;
-
-/** Leaderboard cache TTL — 36 hours. */
-const CACHE_TTL_MS = 36 * 60 * 60 * 1000;
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
 
@@ -131,6 +128,25 @@ async function ghFetch<T>(url: string): Promise<T | null> {
 }
 
 /**
+ * Cached GitHub fetch for leaderboard — shares cache keys with
+ * compare-engine and github.ts so data is reused across features.
+ */
+async function cachedGhFetch<T>(
+  cacheKey: string,
+  url: string,
+  ttlSec: number
+): Promise<T | null> {
+  const hit = await cacheGet<T>(cacheKey);
+  if (hit !== undefined) return hit;
+
+  const data = await ghFetch<T>(url);
+  if (data !== null) {
+    await cacheSet(cacheKey, data, ttlSec);
+  }
+  return data;
+}
+
+/**
  * Search GitHub for users matching a location query string.
  * Uses GitHub's search qualifiers: location:CityName type:user
  * For multi-word locations, quotes ensure proper matching.
@@ -160,8 +176,10 @@ async function searchUsersByLocation(
 }
 
 async function fetchUserRepos(username: string): Promise<RepoInfo[]> {
-  const repos = await ghFetch<RepoInfo[]>(
-    `${GITHUB_API}/users/${username}/repos?per_page=30&sort=updated`
+  const repos = await cachedGhFetch<RepoInfo[]>(
+    `gh:repos:${username}`,
+    `${GITHUB_API}/users/${username}/repos?per_page=30&sort=updated`,
+    TTL.GH_REPOS
   );
   return repos ?? [];
 }
@@ -402,7 +420,7 @@ export async function getLeaderboard(
 ): Promise<LeaderboardResult> {
   // 1. Check cache — full ranked set stored, paginated on return
   const cacheKey = `leaderboard:${scope}:${location.trim().toLowerCase()}`;
-  const cached = cacheGet<CachedLeaderboard>(cacheKey);
+  const cached = await cacheGet<CachedLeaderboard>(cacheKey);
   if (cached) {
     const totalEntries = cached.entries.length;
     const start = (page - 1) * limit;
@@ -461,7 +479,7 @@ export async function getLeaderboard(
       entries: [],
       totalCandidates: 0,
     };
-    cacheSet(cacheKey, emptyResult, CACHE_TTL_MS);
+    await cacheSet(cacheKey, emptyResult, TTL.LEADERBOARD);
     return {
       location,
       scope,
@@ -492,8 +510,10 @@ export async function getLeaderboard(
     const results = await Promise.all(
       batch.map(async (login) => {
         try {
-          const user = await ghFetch<GhUser>(
-            `${GITHUB_API}/users/${login}`
+          const user = await cachedGhFetch<GhUser>(
+            `gh:user:${login}`,
+            `${GITHUB_API}/users/${login}`,
+            TTL.GH_USER
           );
 
           // Fallback to search data if detail fetch fails
@@ -587,7 +607,7 @@ export async function getLeaderboard(
     entries: ranked,
     totalCandidates: logins.length,
   };
-  cacheSet(cacheKey, cachedData, CACHE_TTL_MS);
+  await cacheSet(cacheKey, cachedData, TTL.LEADERBOARD);
 
   console.log(
     `[LB] Cached ${ranked.length} ranked entries for ${cacheKey}`

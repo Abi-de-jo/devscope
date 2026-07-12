@@ -19,7 +19,7 @@ export async function GET() {
 
     const userId = session.user.id;
 
-    const rl = rateLimit(`repos:get:${userId}`, { windowMs: 60_000, max: 30 });
+    const rl = await rateLimit(`repos:get:${userId}`, { windowMs: 60_000, max: 30 });
     if (!rl.success) {
       return NextResponse.json(
         { error: "Rate limited. Slow down." },
@@ -28,7 +28,7 @@ export async function GET() {
     }
 
     const cacheKey = `repos:${userId}`;
-    const cached = cacheGet(cacheKey);
+    const cached = await cacheGet(cacheKey);
     if (cached) {
       return NextResponse.json(
         { repositories: cached, cached: true },
@@ -65,7 +65,7 @@ export async function GET() {
       },
     });
 
-    cacheSet(cacheKey, repositories, 30_000);
+    await cacheSet(cacheKey, repositories, 30);
 
     return NextResponse.json(
       { repositories, cached: false },
