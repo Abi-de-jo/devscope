@@ -152,17 +152,25 @@ export async function syncGitHubProfile(userId: string, accessToken: string) {
   return profile;
 }
 
-/* ─── Sync public repos ─────────────────────────────────────────────── */
+/* ─── Sync repos (public only, or all including private + org) ──────── */
 
-export async function syncPublicRepos(profileId: string, accessToken: string) {
+export async function syncPublicRepos(
+  profileId: string,
+  accessToken: string,
+  includePrivate = false
+) {
   const repos: GitHubRepo[] = [];
   let page = 1;
   const perPage = 100;
 
+  // When consent is given, fetch ALL repos (public + private + org).
+  // When denied, fetch public only.
+  const visibility = includePrivate ? "" : "&visibility=public";
+
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const batch = await githubFetch<GitHubRepo[]>(
-      `${GITHUB_API}/user/repos?visibility=public&sort=pushed&direction=desc&per_page=${perPage}&page=${page}`,
+      `${GITHUB_API}/user/repos?${visibility ? visibility.substring(1) + "&" : ""}sort=pushed&direction=desc&per_page=${perPage}&page=${page}`,
       accessToken
     );
     repos.push(...batch);
@@ -300,12 +308,16 @@ export async function fetchRepoLanguages(
 
 /* ─── Full sync orchestrator ─────────────────────────────────────────── */
 
-export async function fullSync(userId: string, accessToken: string) {
+export async function fullSync(
+  userId: string,
+  accessToken: string,
+  includePrivate = false
+) {
   // 1. Sync profile
   const profile = await syncGitHubProfile(userId, accessToken);
 
-  // 2. Sync repos
-  const repos = await syncPublicRepos(profile.id, accessToken);
+  // 2. Sync repos (public only, or all if consented)
+  const repos = await syncPublicRepos(profile.id, accessToken, includePrivate);
 
   // 3. Check READMEs for top repos (by stars, limit 20) — parallel
   const topRepos = repos

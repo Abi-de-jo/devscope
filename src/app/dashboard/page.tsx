@@ -13,6 +13,7 @@ import { LoadingButton } from "@/components/loaders/button-loading";
 import { LanguageCapabilities, type RepoLang } from "@/components/language-capabilities";
 import { LockedPreview } from "@/components/locked-preview";
 import { LockedDashboardContent } from "@/components/locked-dashboard-content";
+import { PrivateRepoConsent } from "@/components/private-repo-consent";
 import { handleApiResponse } from "@/lib/errors";
 
 export default function DashboardPage() {
@@ -26,19 +27,29 @@ export default function DashboardPage() {
   const [repositories, setRepositories] = useState<RepoLang[]>([]);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Consent state: null = never asked, true = allowed, false = denied
+  const [consent, setConsent] = useState<boolean | null>(null);
+  // Show consent prompt when user tries to sync for the first time
+  const [showConsentPrompt, setShowConsentPrompt] = useState(false);
+
   const loadAnalysis = async () => {
     try {
       const res = await fetch("/api/score", { method: "GET" });
       if (await handleApiResponse(res)) return;
       const data = await res.json();
-      if (data.success) setAnalysis(data.analysis as AnalysisData | null);
+      if (data.success) {
+        setAnalysis(data.analysis as AnalysisData | null);
+        // Extract consent status from the analysis payload
+        if (data.analysis?.privateRepoConsent !== undefined) {
+          setConsent(data.analysis.privateRepoConsent);
+        }
+      }
       const reposRes = await fetch("/api/repositories", { method: "GET" });
       if (await handleApiResponse(reposRes)) return;
       const reposData = await reposRes.json();
       if (reposData.repositories) setRepositories(reposData.repositories as RepoLang[]);
     } catch (err) {
       console.error("Load failed:", err);
-      // Network error — show friendly toast
       const { showErrorToast } = await import("@/lib/errors");
       showErrorToast(err instanceof Error ? err : null);
     } finally {
@@ -47,7 +58,18 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    if (session) loadAnalysis();
+    if (session) {
+      loadAnalysis();
+      // Also fetch consent status independently (needed before first sync)
+      fetch("/api/profile")
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.privateRepoConsent !== undefined) {
+            setConsent(data.privateRepoConsent);
+          }
+        })
+        .catch(() => {});
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, isPending, router]);
 
@@ -95,9 +117,19 @@ export default function DashboardPage() {
     []
   );
 
-  const handleSync = () =>
+  const handleSync = () => {
+    // If consent is null (never asked), show prompt first
+    if (consent === null) {
+      setShowConsentPrompt(true);
+      return;
+    }
+    // Consent already decided — proceed with sync
+    runSyncSteps();
+  };
+
+  const runSyncSteps = (includePrivate = consent ?? false) =>
     runWithSteps([
-      // Step 0: Sync GitHub repos
+      // Step 0: Sync GitHub repos (respecting consent)
       async () => {
         const res = await fetch("/api/sync", { method: "POST" });
         if (await handleApiResponse(res)) throw new Error("Sync failed");
@@ -114,6 +146,40 @@ export default function DashboardPage() {
         await loadAnalysis();
       },
     ]);
+
+  const handleConsentAllow = async () => {
+    setShowConsentPrompt(false);
+    setConsent(true);
+    // Save consent to DB
+    try {
+      await fetch("/api/consent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ privateRepo: true }),
+      });
+    } catch (err) {
+      console.error("Consent save failed:", err);
+    }
+    // Proceed with sync (will include private repos)
+    runSyncSteps(true);
+  };
+
+  const handleConsentDeny = async () => {
+    setShowConsentPrompt(false);
+    setConsent(false);
+    // Save consent to DB
+    try {
+      await fetch("/api/consent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ privateRepo: false }),
+      });
+    } catch (err) {
+      console.error("Consent save failed:", err);
+    }
+    // Proceed with sync (public only)
+    runSyncSteps(false);
+  };
 
   const handleScore = () =>
     runWithSteps([
@@ -143,6 +209,16 @@ export default function DashboardPage() {
   // Still loading session or analysis data — skeleton
   if (isPending || loading) {
     return <SkeletonDashboard />;
+  }
+
+  // Consent prompt — show before first sync/analysis
+  if (showConsentPrompt) {
+    return (
+      <PrivateRepoConsent
+        onAllow={handleConsentAllow}
+        onDeny={handleConsentDeny}
+      />
+    );
   }
 
   // Sync / score in flight — dim the screen, centered animated stepper + progress
