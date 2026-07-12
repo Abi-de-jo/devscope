@@ -289,7 +289,7 @@ async function callZenMux(prompt: string, model: string, attempt = 0): Promise<L
         { role: "user", content: prompt },
       ],
       temperature: 0.3,
-      max_tokens: 16000,
+      max_tokens: 4096,
     }),
   });
 
@@ -336,7 +336,7 @@ async function callOpenRouter(prompt: string, model: string, attempt = 0): Promi
         { role: "user", content: prompt },
       ],
       temperature: 0.3,
-      max_tokens: 16000,
+      max_tokens: 4096,
     }),
   });
 
