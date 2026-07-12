@@ -252,6 +252,11 @@ const REPORT_CSS = `
 
   /* ── Print ── */
   @media print {
+    *, *::before, *::after {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
     body { background: white; }
     .report-page { padding: 0; max-width: none; }
     .page-break { page-break-before: always; }
