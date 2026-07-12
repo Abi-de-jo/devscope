@@ -12,6 +12,7 @@
   --muted: #6B6F76;
   --muted-light: #9CA0A6;
   --border: #0B0C0E;
+  --surface-1: #E5E5E0;
   --danger: #E74C3C;
 
   /* Typography */
@@ -37,7 +38,7 @@
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
-  --space-2xl: 3rem;
+  --space-2xl: 4rem;
   --space-3xl: 4rem;
   --space-4xl: 6rem;
 }
@@ -88,7 +89,12 @@ a {
 }
 
 /* ─── Typography ─────────────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -231,6 +237,31 @@ h1, h2, h3, h4, h5, h6 {
   transform: translate(4px, 4px);
 }
 
+/* Circular icon button (e.g. navbar profile avatar) — same press animation
+   as .btn-secondary so it feels like a real button on click. */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-width) solid var(--ink);
+  background-color: var(--paper-alt);
+  color: var(--ink);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.icon-btn:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translate(2px, 2px);
+}
+
+.icon-btn:active {
+  box-shadow: none;
+  transform: translate(4px, 4px);
+}
+
 .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -349,6 +380,8 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom: var(--border-width) solid var(--ink);
   padding: 0.875rem 0;
   background-color: var(--paper-alt);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
 
 .marquee-content {
@@ -371,6 +404,7 @@ h1, h2, h3, h4, h5, h6 {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -387,8 +421,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .accent-diamond {
@@ -408,7 +449,7 @@ h1, h2, h3, h4, h5, h6 {
 .score-number {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 4rem;
   line-height: 1;
 }
 
@@ -518,9 +559,165 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--muted);
 }
 
+/* ─── Loading States (on-brand, flat, no browser spinners) ──────────── */
+
+/* Skeleton blocks — flat gray, hard edge, opacity pulse (no shimmer) */
+@keyframes skeleton-pulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.skeleton {
+  background-color: var(--surface-1);
+  border: var(--border-width) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Cyan blinking terminal cursor */
+@keyframes blink {
+
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.blink-cursor {
+  color: var(--accent);
+  animation: blink 1s step-end infinite;
+}
+
+/* Three-dot pulse for inline button loading */
+@keyframes dot-pulse {
+
+  0%,
+  80%,
+  100% {
+    opacity: 0.2;
+  }
+
+  40% {
+    opacity: 1;
+  }
+}
+
+.dot-pulse {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: dot-pulse 1.2s ease-in-out infinite;
+}
+
+.dot-pulse:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot-pulse:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Terminal scan loader */
+.terminal-loader {
+  border: var(--border-width) solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  max-width: 540px;
+  width: 100%;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--paper-alt);
+  border-bottom: var(--border-width) solid var(--ink);
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--muted-light);
+  border: 1px solid var(--ink);
+}
+
+.terminal-title {
+  margin-left: 0.5rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.terminal-body {
+  padding: 1rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.terminal-step {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.terminal-mark {
+  color: var(--accent);
+  font-weight: 700;
+  width: 1rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.terminal-muted {
+  color: var(--muted-light);
+}
+
 /* ─── Reduced Motion ─────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .marquee-content {
+    animation: none;
+  }
+
+  .skeleton {
+    animation: none;
+    opacity: 1;
+  }
+
+  .blink-cursor {
+    animation: none;
+  }
+
+  .dot-pulse {
+    animation: none;
+    opacity: 1;
+  }
+
+  .loader-pulse {
     animation: none;
   }
 

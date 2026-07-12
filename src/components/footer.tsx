@@ -2,18 +2,18 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/brand-icons";
+import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/brand-icons";
 
 const footerLinks = {
   Product: [
     { label: "Dashboard", href: "/dashboard" },
-    { label: "How it Works", href: "/#how-it-works" },
+    { label: "How it Works", href: "/how-it-works" },
     { label: "Changelog", href: "/changelog" },
   ],
   Company: [
     { label: "About", href: "/about" },
-    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
+    { label: "Changelog", href: "/changelog" },
   ],
   Legal: [
     { label: "Privacy", href: "/privacy" },
@@ -34,7 +34,7 @@ export function Footer() {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "3rem 1.5rem 2rem",
+          padding: "4rem 1.5rem 2rem",
         }}
       >
         {/* Top Grid */}
@@ -54,28 +54,26 @@ export function Footer() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 700,
-                fontSize: "1.25rem",
+                fontSize: "1.75rem",
                 color: "var(--ink)",
                 textDecoration: "none",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "0.5rem",
+                gap: "0.2rem",
                 marginBottom: "0.75rem",
               }}
             >
-              <span
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.png"
+                alt="GitRating Logo"
                 style={{
-                  backgroundColor: "var(--ink)",
-                  color: "var(--paper)",
-                  padding: "0.2rem 0.5rem",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.7rem",
-                  fontWeight: 600,
+                  height: "32px",
+                  width: "auto",
+                  display: "block",
                 }}
-              >
-                DS
-              </span>
-              DevScope
+              />
+              GitRating
             </Link>
             <p
               style={{
@@ -95,13 +93,13 @@ export function Footer() {
               style={{
                 display: "flex",
                 gap: "0.75rem",
-                marginTop: "1.25rem",
+                marginTop: "1.75rem",
               }}
             >
               {[
-                { href: "https://github.com/Abi-de-jo/devscope", label: "GitHub", icon: GithubIcon },
-                { href: "https://twitter.com/mozen_in", label: "Twitter", icon: TwitterIcon },
-                { href: "https://linkedin.com/company/mozen-in", label: "LinkedIn", icon: LinkedinIcon },
+                { href: "https://github.com/Abi-de-jo", label: "GitHub", icon: GithubIcon },
+                { href: "https://www.linkedin.com/in/codebyabisheik", label: "LinkedIn", icon: LinkedinIcon },
+                { href: "https://www.instagram.com/codebyabi", label: "Instagram", icon: InstagramIcon },
               ].map((s) => {
                 const Icon = s.icon;
                 return (
@@ -200,7 +198,7 @@ export function Footer() {
         <div
           style={{
             borderTop: "var(--border-width) solid var(--ink)",
-            paddingTop: "1.25rem",
+            paddingTop: "1.75rem",
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "space-between",
@@ -211,12 +209,12 @@ export function Footer() {
           <p
             style={{
               fontFamily: "var(--font-mono)",
-              fontSize: "0.7rem",
+              fontSize: "0.8rem",
               color: "var(--muted)",
               letterSpacing: "0.02em",
             }}
           >
-            © 2026 DevScope by Mozen.in. All rights reserved.
+            © 2026 GitRating by Mozen.in. All rights reserved.
           </p>
 
           <div
@@ -230,7 +228,7 @@ export function Footer() {
               href="/privacy"
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 color: "var(--muted)",
                 textDecoration: "none",
                 transition: "color 0.12s",
@@ -242,7 +240,7 @@ export function Footer() {
               href="/terms"
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 color: "var(--muted)",
                 textDecoration: "none",
                 transition: "color 0.12s",
@@ -254,7 +252,7 @@ export function Footer() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 color: "var(--muted)",
                 background: "none",
                 border: "none",

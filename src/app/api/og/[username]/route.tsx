@@ -34,7 +34,7 @@ export async function GET(
               marginBottom: "16px",
             }}
           >
-            DevScope
+            GitRating
           </div>
           <div style={{ fontSize: "24px", color: "#6B6F76" }}>
             @{username} hasn&apos;t been scored yet
@@ -52,7 +52,7 @@ export async function GET(
       where: { id: profile.id },
       data: { shareCount: { increment: 1 } },
     })
-    .catch(() => {});
+    .catch(() => { });
 
   const analysis = await prisma.analysis.findFirst({
     where: { userId: profile.userId, status: "completed" },
@@ -83,7 +83,7 @@ export async function GET(
               marginBottom: "16px",
             }}
           >
-            DevScope
+            GitRating
           </div>
           <div style={{ fontSize: "24px", color: "#6B6F76" }}>
             @{profile.login} hasn&apos;t been scored yet
@@ -282,7 +282,7 @@ export async function GET(
               paddingTop: "16px",
             }}
           >
-            devscope.mozen.in
+            GitRating.mozen.in
           </div>
         </div>
       </div>

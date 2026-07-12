@@ -1,12 +1,13 @@
 {
-  "name": "devscope",
+  "name": "GitRating",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack -p 3001",
-    "build": "next build --webpack",
+    "dev": "next dev -p 3001",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:hero": "bun run scripts/seed-hero-profile.ts"
   },
   "dependencies": {
     "@better-auth/infra": "0.3.5",

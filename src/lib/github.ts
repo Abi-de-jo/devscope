@@ -78,7 +78,7 @@ function getNextKey(): string | undefined {
 async function githubFetch<T>(url: string, token?: string): Promise<T> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github.v3+json",
-    "User-Agent": "DevScope/1.0",
+    "User-Agent": "GitRating/1.0",
   };
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
@@ -151,8 +151,10 @@ export async function syncPublicRepos(profileId: string, accessToken: string) {
   }
 
   const upserted = await Promise.all(
-    repos.map((repo) =>
-      prisma.repository.upsert({
+    repos.map(async (repo) => {
+      const [owner, name] = repo.full_name.split("/");
+      const languages = await fetchRepoLanguages(owner, name, accessToken);
+      return prisma.repository.upsert({
         where: { githubId: repo.id },
         update: {
           name: repo.name,
@@ -161,6 +163,7 @@ export async function syncPublicRepos(profileId: string, accessToken: string) {
           htmlUrl: repo.html_url,
           homepage: repo.homepage,
           language: repo.language,
+          languages,
           stargazersCount: repo.stargazers_count,
           forksCount: repo.forks_count,
           openIssuesCount: repo.open_issues_count,
@@ -187,6 +190,7 @@ export async function syncPublicRepos(profileId: string, accessToken: string) {
           htmlUrl: repo.html_url,
           homepage: repo.homepage,
           language: repo.language,
+          languages,
           stargazersCount: repo.stargazers_count,
           forksCount: repo.forks_count,
           openIssuesCount: repo.open_issues_count,
@@ -203,8 +207,8 @@ export async function syncPublicRepos(profileId: string, accessToken: string) {
           createdAt: new Date(repo.created_at),
           lastPushedAt: repo.pushed_at ? new Date(repo.pushed_at) : null,
         },
-      })
-    )
+      });
+    })
   );
 
   return upserted;
@@ -251,6 +255,24 @@ export async function fetchReadme(
     return data.content;
   } catch {
     return null;
+  }
+}
+
+/* ─── Fetch language byte breakdown ───────────────────────────────────── */
+
+export async function fetchRepoLanguages(
+  owner: string,
+  repo: string,
+  token?: string
+): Promise<Record<string, number>> {
+  try {
+    const data = await githubFetch<Record<string, number>>(
+      `${GITHUB_API}/repos/${owner}/${repo}/languages`,
+      token
+    );
+    return data ?? {};
+  } catch {
+    return {};
   }
 }
 

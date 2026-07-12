@@ -6379,6 +6379,7 @@ export namespace Prisma {
     lastSyncedAt: Date | null
     shareCount: number | null
     viewCount: number | null
+    hideFromLeaderboards: boolean | null
   }
 
   export type GithubProfileMaxAggregateOutputType = {
@@ -6401,6 +6402,7 @@ export namespace Prisma {
     lastSyncedAt: Date | null
     shareCount: number | null
     viewCount: number | null
+    hideFromLeaderboards: boolean | null
   }
 
   export type GithubProfileCountAggregateOutputType = {
@@ -6423,6 +6425,7 @@ export namespace Prisma {
     lastSyncedAt: number
     shareCount: number
     viewCount: number
+    hideFromLeaderboards: number
     _all: number
   }
 
@@ -6467,6 +6470,7 @@ export namespace Prisma {
     lastSyncedAt?: true
     shareCount?: true
     viewCount?: true
+    hideFromLeaderboards?: true
   }
 
   export type GithubProfileMaxAggregateInputType = {
@@ -6489,6 +6493,7 @@ export namespace Prisma {
     lastSyncedAt?: true
     shareCount?: true
     viewCount?: true
+    hideFromLeaderboards?: true
   }
 
   export type GithubProfileCountAggregateInputType = {
@@ -6511,6 +6516,7 @@ export namespace Prisma {
     lastSyncedAt?: true
     shareCount?: true
     viewCount?: true
+    hideFromLeaderboards?: true
     _all?: true
   }
 
@@ -6620,6 +6626,7 @@ export namespace Prisma {
     lastSyncedAt: Date | null
     shareCount: number
     viewCount: number
+    hideFromLeaderboards: boolean
     _count: GithubProfileCountAggregateOutputType | null
     _avg: GithubProfileAvgAggregateOutputType | null
     _sum: GithubProfileSumAggregateOutputType | null
@@ -6661,6 +6668,7 @@ export namespace Prisma {
     lastSyncedAt?: boolean
     shareCount?: boolean
     viewCount?: boolean
+    hideFromLeaderboards?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     repositories?: boolean | GithubProfile$repositoriesArgs<ExtArgs>
     _count?: boolean | GithubProfileCountOutputTypeDefaultArgs<ExtArgs>
@@ -6686,6 +6694,7 @@ export namespace Prisma {
     lastSyncedAt?: boolean
     shareCount?: boolean
     viewCount?: boolean
+    hideFromLeaderboards?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["githubProfile"]>
 
@@ -6709,6 +6718,7 @@ export namespace Prisma {
     lastSyncedAt?: boolean
     shareCount?: boolean
     viewCount?: boolean
+    hideFromLeaderboards?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["githubProfile"]>
 
@@ -6732,9 +6742,10 @@ export namespace Prisma {
     lastSyncedAt?: boolean
     shareCount?: boolean
     viewCount?: boolean
+    hideFromLeaderboards?: boolean
   }
 
-  export type GithubProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "githubId" | "login" | "displayName" | "bio" | "avatarUrl" | "blog" | "location" | "company" | "publicRepos" | "publicGists" | "followers" | "following" | "createdAt" | "updatedAt" | "lastSyncedAt" | "shareCount" | "viewCount", ExtArgs["result"]["githubProfile"]>
+  export type GithubProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "githubId" | "login" | "displayName" | "bio" | "avatarUrl" | "blog" | "location" | "company" | "publicRepos" | "publicGists" | "followers" | "following" | "createdAt" | "updatedAt" | "lastSyncedAt" | "shareCount" | "viewCount" | "hideFromLeaderboards", ExtArgs["result"]["githubProfile"]>
   export type GithubProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     repositories?: boolean | GithubProfile$repositoriesArgs<ExtArgs>
@@ -6773,6 +6784,7 @@ export namespace Prisma {
       lastSyncedAt: Date | null
       shareCount: number
       viewCount: number
+      hideFromLeaderboards: boolean
     }, ExtArgs["result"]["githubProfile"]>
     composites: {}
   }
@@ -7217,6 +7229,7 @@ export namespace Prisma {
     readonly lastSyncedAt: FieldRef<"GithubProfile", 'DateTime'>
     readonly shareCount: FieldRef<"GithubProfile", 'Int'>
     readonly viewCount: FieldRef<"GithubProfile", 'Int'>
+    readonly hideFromLeaderboards: FieldRef<"GithubProfile", 'Boolean'>
   }
     
 
@@ -7751,6 +7764,7 @@ export namespace Prisma {
     htmlUrl: number
     homepage: number
     language: number
+    languages: number
     stargazersCount: number
     forksCount: number
     openIssuesCount: number
@@ -7856,6 +7870,7 @@ export namespace Prisma {
     htmlUrl?: true
     homepage?: true
     language?: true
+    languages?: true
     stargazersCount?: true
     forksCount?: true
     openIssuesCount?: true
@@ -7972,6 +7987,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage: string | null
     language: string | null
+    languages: JsonValue | null
     stargazersCount: number
     forksCount: number
     openIssuesCount: number
@@ -8020,6 +8036,7 @@ export namespace Prisma {
     htmlUrl?: boolean
     homepage?: boolean
     language?: boolean
+    languages?: boolean
     stargazersCount?: boolean
     forksCount?: boolean
     openIssuesCount?: boolean
@@ -8053,6 +8070,7 @@ export namespace Prisma {
     htmlUrl?: boolean
     homepage?: boolean
     language?: boolean
+    languages?: boolean
     stargazersCount?: boolean
     forksCount?: boolean
     openIssuesCount?: boolean
@@ -8083,6 +8101,7 @@ export namespace Prisma {
     htmlUrl?: boolean
     homepage?: boolean
     language?: boolean
+    languages?: boolean
     stargazersCount?: boolean
     forksCount?: boolean
     openIssuesCount?: boolean
@@ -8113,6 +8132,7 @@ export namespace Prisma {
     htmlUrl?: boolean
     homepage?: boolean
     language?: boolean
+    languages?: boolean
     stargazersCount?: boolean
     forksCount?: boolean
     openIssuesCount?: boolean
@@ -8132,7 +8152,7 @@ export namespace Prisma {
     lastPushedAt?: boolean
   }
 
-  export type RepositoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "githubId" | "profileId" | "name" | "fullName" | "description" | "htmlUrl" | "homepage" | "language" | "stargazersCount" | "forksCount" | "openIssuesCount" | "watchersCount" | "size" | "defaultBranch" | "isPrivate" | "isFork" | "topics" | "license" | "hasReadme" | "hasIssues" | "hasWiki" | "hasPages" | "createdAt" | "updatedAt" | "lastPushedAt", ExtArgs["result"]["repository"]>
+  export type RepositoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "githubId" | "profileId" | "name" | "fullName" | "description" | "htmlUrl" | "homepage" | "language" | "languages" | "stargazersCount" | "forksCount" | "openIssuesCount" | "watchersCount" | "size" | "defaultBranch" | "isPrivate" | "isFork" | "topics" | "license" | "hasReadme" | "hasIssues" | "hasWiki" | "hasPages" | "createdAt" | "updatedAt" | "lastPushedAt", ExtArgs["result"]["repository"]>
   export type RepositoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | GithubProfileDefaultArgs<ExtArgs>
     repoScores?: boolean | Repository$repoScoresArgs<ExtArgs>
@@ -8163,6 +8183,7 @@ export namespace Prisma {
       htmlUrl: string
       homepage: string | null
       language: string | null
+      languages: Prisma.JsonValue | null
       stargazersCount: number
       forksCount: number
       openIssuesCount: number
@@ -8615,6 +8636,7 @@ export namespace Prisma {
     readonly htmlUrl: FieldRef<"Repository", 'String'>
     readonly homepage: FieldRef<"Repository", 'String'>
     readonly language: FieldRef<"Repository", 'String'>
+    readonly languages: FieldRef<"Repository", 'Json'>
     readonly stargazersCount: FieldRef<"Repository", 'Int'>
     readonly forksCount: FieldRef<"Repository", 'Int'>
     readonly openIssuesCount: FieldRef<"Repository", 'Int'>
@@ -9109,12 +9131,14 @@ export namespace Prisma {
   export type AnalysisAvgAggregateOutputType = {
     overallScore: number | null
     confidenceScore: number | null
+    confidence: number | null
     costCents: number | null
   }
 
   export type AnalysisSumAggregateOutputType = {
     overallScore: number | null
     confidenceScore: number | null
+    confidence: number | null
     costCents: number | null
   }
 
@@ -9125,6 +9149,7 @@ export namespace Prisma {
     overallScore: number | null
     engineerLevel: string | null
     confidenceScore: number | null
+    confidence: number | null
     summary: string | null
     costCents: number | null
     createdAt: Date | null
@@ -9139,6 +9164,7 @@ export namespace Prisma {
     overallScore: number | null
     engineerLevel: string | null
     confidenceScore: number | null
+    confidence: number | null
     summary: string | null
     costCents: number | null
     createdAt: Date | null
@@ -9153,8 +9179,11 @@ export namespace Prisma {
     overallScore: number
     engineerLevel: number
     confidenceScore: number
+    confidence: number
     strengths: number
     gaps: number
+    weaknesses: number
+    recommendations: number
     summary: number
     costCents: number
     createdAt: number
@@ -9167,12 +9196,14 @@ export namespace Prisma {
   export type AnalysisAvgAggregateInputType = {
     overallScore?: true
     confidenceScore?: true
+    confidence?: true
     costCents?: true
   }
 
   export type AnalysisSumAggregateInputType = {
     overallScore?: true
     confidenceScore?: true
+    confidence?: true
     costCents?: true
   }
 
@@ -9183,6 +9214,7 @@ export namespace Prisma {
     overallScore?: true
     engineerLevel?: true
     confidenceScore?: true
+    confidence?: true
     summary?: true
     costCents?: true
     createdAt?: true
@@ -9197,6 +9229,7 @@ export namespace Prisma {
     overallScore?: true
     engineerLevel?: true
     confidenceScore?: true
+    confidence?: true
     summary?: true
     costCents?: true
     createdAt?: true
@@ -9211,8 +9244,11 @@ export namespace Prisma {
     overallScore?: true
     engineerLevel?: true
     confidenceScore?: true
+    confidence?: true
     strengths?: true
     gaps?: true
+    weaknesses?: true
+    recommendations?: true
     summary?: true
     costCents?: true
     createdAt?: true
@@ -9314,8 +9350,11 @@ export namespace Prisma {
     overallScore: number | null
     engineerLevel: string | null
     confidenceScore: number | null
+    confidence: number | null
     strengths: string[]
     gaps: string[]
+    weaknesses: JsonValue | null
+    recommendations: JsonValue | null
     summary: string | null
     costCents: number
     createdAt: Date
@@ -9349,8 +9388,11 @@ export namespace Prisma {
     overallScore?: boolean
     engineerLevel?: boolean
     confidenceScore?: boolean
+    confidence?: boolean
     strengths?: boolean
     gaps?: boolean
+    weaknesses?: boolean
+    recommendations?: boolean
     summary?: boolean
     costCents?: boolean
     createdAt?: boolean
@@ -9370,8 +9412,11 @@ export namespace Prisma {
     overallScore?: boolean
     engineerLevel?: boolean
     confidenceScore?: boolean
+    confidence?: boolean
     strengths?: boolean
     gaps?: boolean
+    weaknesses?: boolean
+    recommendations?: boolean
     summary?: boolean
     costCents?: boolean
     createdAt?: boolean
@@ -9387,8 +9432,11 @@ export namespace Prisma {
     overallScore?: boolean
     engineerLevel?: boolean
     confidenceScore?: boolean
+    confidence?: boolean
     strengths?: boolean
     gaps?: boolean
+    weaknesses?: boolean
+    recommendations?: boolean
     summary?: boolean
     costCents?: boolean
     createdAt?: boolean
@@ -9404,8 +9452,11 @@ export namespace Prisma {
     overallScore?: boolean
     engineerLevel?: boolean
     confidenceScore?: boolean
+    confidence?: boolean
     strengths?: boolean
     gaps?: boolean
+    weaknesses?: boolean
+    recommendations?: boolean
     summary?: boolean
     costCents?: boolean
     createdAt?: boolean
@@ -9413,7 +9464,7 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type AnalysisOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "overallScore" | "engineerLevel" | "confidenceScore" | "strengths" | "gaps" | "summary" | "costCents" | "createdAt" | "updatedAt" | "completedAt", ExtArgs["result"]["analysis"]>
+  export type AnalysisOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "overallScore" | "engineerLevel" | "confidenceScore" | "confidence" | "strengths" | "gaps" | "weaknesses" | "recommendations" | "summary" | "costCents" | "createdAt" | "updatedAt" | "completedAt", ExtArgs["result"]["analysis"]>
   export type AnalysisInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     scores?: boolean | Analysis$scoresArgs<ExtArgs>
@@ -9443,8 +9494,11 @@ export namespace Prisma {
       overallScore: number | null
       engineerLevel: string | null
       confidenceScore: number | null
+      confidence: number | null
       strengths: string[]
       gaps: string[]
+      weaknesses: Prisma.JsonValue | null
+      recommendations: Prisma.JsonValue | null
       summary: string | null
       costCents: number
       createdAt: Date
@@ -9883,8 +9937,11 @@ export namespace Prisma {
     readonly overallScore: FieldRef<"Analysis", 'Int'>
     readonly engineerLevel: FieldRef<"Analysis", 'String'>
     readonly confidenceScore: FieldRef<"Analysis", 'Float'>
+    readonly confidence: FieldRef<"Analysis", 'Int'>
     readonly strengths: FieldRef<"Analysis", 'String[]'>
     readonly gaps: FieldRef<"Analysis", 'String[]'>
+    readonly weaknesses: FieldRef<"Analysis", 'Json'>
+    readonly recommendations: FieldRef<"Analysis", 'Json'>
     readonly summary: FieldRef<"Analysis", 'String'>
     readonly costCents: FieldRef<"Analysis", 'Int'>
     readonly createdAt: FieldRef<"Analysis", 'DateTime'>
@@ -10404,8 +10461,6 @@ export namespace Prisma {
     category: string | null
     score: number | null
     confidence: number | null
-    evidence: string | null
-    suggestions: string | null
   }
 
   export type AnalysisScoreMaxAggregateOutputType = {
@@ -10414,8 +10469,6 @@ export namespace Prisma {
     category: string | null
     score: number | null
     confidence: number | null
-    evidence: string | null
-    suggestions: string | null
   }
 
   export type AnalysisScoreCountAggregateOutputType = {
@@ -10425,6 +10478,7 @@ export namespace Prisma {
     score: number
     confidence: number
     evidence: number
+    missing: number
     suggestions: number
     _all: number
   }
@@ -10446,8 +10500,6 @@ export namespace Prisma {
     category?: true
     score?: true
     confidence?: true
-    evidence?: true
-    suggestions?: true
   }
 
   export type AnalysisScoreMaxAggregateInputType = {
@@ -10456,8 +10508,6 @@ export namespace Prisma {
     category?: true
     score?: true
     confidence?: true
-    evidence?: true
-    suggestions?: true
   }
 
   export type AnalysisScoreCountAggregateInputType = {
@@ -10467,6 +10517,7 @@ export namespace Prisma {
     score?: true
     confidence?: true
     evidence?: true
+    missing?: true
     suggestions?: true
     _all?: true
   }
@@ -10563,8 +10614,9 @@ export namespace Prisma {
     category: string
     score: number
     confidence: number
-    evidence: string | null
-    suggestions: string | null
+    evidence: JsonValue | null
+    missing: JsonValue | null
+    suggestions: JsonValue | null
     _count: AnalysisScoreCountAggregateOutputType | null
     _avg: AnalysisScoreAvgAggregateOutputType | null
     _sum: AnalysisScoreSumAggregateOutputType | null
@@ -10593,6 +10645,7 @@ export namespace Prisma {
     score?: boolean
     confidence?: boolean
     evidence?: boolean
+    missing?: boolean
     suggestions?: boolean
     analysis?: boolean | AnalysisDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["analysisScore"]>
@@ -10604,6 +10657,7 @@ export namespace Prisma {
     score?: boolean
     confidence?: boolean
     evidence?: boolean
+    missing?: boolean
     suggestions?: boolean
     analysis?: boolean | AnalysisDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["analysisScore"]>
@@ -10615,6 +10669,7 @@ export namespace Prisma {
     score?: boolean
     confidence?: boolean
     evidence?: boolean
+    missing?: boolean
     suggestions?: boolean
     analysis?: boolean | AnalysisDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["analysisScore"]>
@@ -10626,10 +10681,11 @@ export namespace Prisma {
     score?: boolean
     confidence?: boolean
     evidence?: boolean
+    missing?: boolean
     suggestions?: boolean
   }
 
-  export type AnalysisScoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "analysisId" | "category" | "score" | "confidence" | "evidence" | "suggestions", ExtArgs["result"]["analysisScore"]>
+  export type AnalysisScoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "analysisId" | "category" | "score" | "confidence" | "evidence" | "missing" | "suggestions", ExtArgs["result"]["analysisScore"]>
   export type AnalysisScoreInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     analysis?: boolean | AnalysisDefaultArgs<ExtArgs>
   }
@@ -10651,8 +10707,9 @@ export namespace Prisma {
       category: string
       score: number
       confidence: number
-      evidence: string | null
-      suggestions: string | null
+      evidence: Prisma.JsonValue | null
+      missing: Prisma.JsonValue | null
+      suggestions: Prisma.JsonValue | null
     }, ExtArgs["result"]["analysisScore"]>
     composites: {}
   }
@@ -11082,8 +11139,9 @@ export namespace Prisma {
     readonly category: FieldRef<"AnalysisScore", 'String'>
     readonly score: FieldRef<"AnalysisScore", 'Int'>
     readonly confidence: FieldRef<"AnalysisScore", 'Float'>
-    readonly evidence: FieldRef<"AnalysisScore", 'String'>
-    readonly suggestions: FieldRef<"AnalysisScore", 'String'>
+    readonly evidence: FieldRef<"AnalysisScore", 'Json'>
+    readonly missing: FieldRef<"AnalysisScore", 'Json'>
+    readonly suggestions: FieldRef<"AnalysisScore", 'Json'>
   }
     
 
@@ -11511,37 +11569,42 @@ export namespace Prisma {
   }
 
   export type RepositoryScoreAvgAggregateOutputType = {
-    qualityScore: number | null
-    archScore: number | null
-    docScore: number | null
-    testScore: number | null
-    securityScore: number | null
-    maintainScore: number | null
-    deployReady: number | null
+    overall: number | null
+    architecture: number | null
+    documentation: number | null
+    testing: number | null
+    deployment: number | null
+    security: number | null
+    complexity: number | null
+    maintainability: number | null
+    confidence: number | null
   }
 
   export type RepositoryScoreSumAggregateOutputType = {
-    qualityScore: number | null
-    archScore: number | null
-    docScore: number | null
-    testScore: number | null
-    securityScore: number | null
-    maintainScore: number | null
-    deployReady: number | null
+    overall: number | null
+    architecture: number | null
+    documentation: number | null
+    testing: number | null
+    deployment: number | null
+    security: number | null
+    complexity: number | null
+    maintainability: number | null
+    confidence: number | null
   }
 
   export type RepositoryScoreMinAggregateOutputType = {
     id: string | null
     repositoryId: string | null
     analysisId: string | null
-    qualityScore: number | null
-    archScore: number | null
-    docScore: number | null
-    testScore: number | null
-    securityScore: number | null
-    maintainScore: number | null
-    deployReady: number | null
-    techDebt: string | null
+    overall: number | null
+    architecture: number | null
+    documentation: number | null
+    testing: number | null
+    deployment: number | null
+    security: number | null
+    complexity: number | null
+    maintainability: number | null
+    confidence: number | null
     createdAt: Date | null
   }
 
@@ -11549,14 +11612,15 @@ export namespace Prisma {
     id: string | null
     repositoryId: string | null
     analysisId: string | null
-    qualityScore: number | null
-    archScore: number | null
-    docScore: number | null
-    testScore: number | null
-    securityScore: number | null
-    maintainScore: number | null
-    deployReady: number | null
-    techDebt: string | null
+    overall: number | null
+    architecture: number | null
+    documentation: number | null
+    testing: number | null
+    deployment: number | null
+    security: number | null
+    complexity: number | null
+    maintainability: number | null
+    confidence: number | null
     createdAt: Date | null
   }
 
@@ -11564,51 +11628,60 @@ export namespace Prisma {
     id: number
     repositoryId: number
     analysisId: number
-    qualityScore: number
-    archScore: number
-    docScore: number
-    testScore: number
-    securityScore: number
-    maintainScore: number
-    deployReady: number
-    techDebt: number
+    overall: number
+    architecture: number
+    documentation: number
+    testing: number
+    deployment: number
+    security: number
+    complexity: number
+    maintainability: number
+    confidence: number
+    strengths: number
+    weaknesses: number
+    recommendations: number
     createdAt: number
     _all: number
   }
 
 
   export type RepositoryScoreAvgAggregateInputType = {
-    qualityScore?: true
-    archScore?: true
-    docScore?: true
-    testScore?: true
-    securityScore?: true
-    maintainScore?: true
-    deployReady?: true
+    overall?: true
+    architecture?: true
+    documentation?: true
+    testing?: true
+    deployment?: true
+    security?: true
+    complexity?: true
+    maintainability?: true
+    confidence?: true
   }
 
   export type RepositoryScoreSumAggregateInputType = {
-    qualityScore?: true
-    archScore?: true
-    docScore?: true
-    testScore?: true
-    securityScore?: true
-    maintainScore?: true
-    deployReady?: true
+    overall?: true
+    architecture?: true
+    documentation?: true
+    testing?: true
+    deployment?: true
+    security?: true
+    complexity?: true
+    maintainability?: true
+    confidence?: true
   }
 
   export type RepositoryScoreMinAggregateInputType = {
     id?: true
     repositoryId?: true
     analysisId?: true
-    qualityScore?: true
-    archScore?: true
-    docScore?: true
-    testScore?: true
-    securityScore?: true
-    maintainScore?: true
-    deployReady?: true
-    techDebt?: true
+    overall?: true
+    architecture?: true
+    documentation?: true
+    testing?: true
+    deployment?: true
+    security?: true
+    complexity?: true
+    maintainability?: true
+    confidence?: true
     createdAt?: true
   }
 
@@ -11616,14 +11689,15 @@ export namespace Prisma {
     id?: true
     repositoryId?: true
     analysisId?: true
-    qualityScore?: true
-    archScore?: true
-    docScore?: true
-    testScore?: true
-    securityScore?: true
-    maintainScore?: true
-    deployReady?: true
-    techDebt?: true
+    overall?: true
+    architecture?: true
+    documentation?: true
+    testing?: true
+    deployment?: true
+    security?: true
+    complexity?: true
+    maintainability?: true
+    confidence?: true
     createdAt?: true
   }
 
@@ -11631,14 +11705,18 @@ export namespace Prisma {
     id?: true
     repositoryId?: true
     analysisId?: true
-    qualityScore?: true
-    archScore?: true
-    docScore?: true
-    testScore?: true
-    securityScore?: true
-    maintainScore?: true
-    deployReady?: true
-    techDebt?: true
+    overall?: true
+    architecture?: true
+    documentation?: true
+    testing?: true
+    deployment?: true
+    security?: true
+    complexity?: true
+    maintainability?: true
+    confidence?: true
+    strengths?: true
+    weaknesses?: true
+    recommendations?: true
     createdAt?: true
     _all?: true
   }
@@ -11733,14 +11811,18 @@ export namespace Prisma {
     id: string
     repositoryId: string
     analysisId: string | null
-    qualityScore: number | null
-    archScore: number | null
-    docScore: number | null
-    testScore: number | null
-    securityScore: number | null
-    maintainScore: number | null
-    deployReady: number | null
-    techDebt: string | null
+    overall: number | null
+    architecture: number | null
+    documentation: number | null
+    testing: number | null
+    deployment: number | null
+    security: number | null
+    complexity: number | null
+    maintainability: number | null
+    confidence: number | null
+    strengths: JsonValue | null
+    weaknesses: JsonValue | null
+    recommendations: JsonValue | null
     createdAt: Date
     _count: RepositoryScoreCountAggregateOutputType | null
     _avg: RepositoryScoreAvgAggregateOutputType | null
@@ -11767,14 +11849,18 @@ export namespace Prisma {
     id?: boolean
     repositoryId?: boolean
     analysisId?: boolean
-    qualityScore?: boolean
-    archScore?: boolean
-    docScore?: boolean
-    testScore?: boolean
-    securityScore?: boolean
-    maintainScore?: boolean
-    deployReady?: boolean
-    techDebt?: boolean
+    overall?: boolean
+    architecture?: boolean
+    documentation?: boolean
+    testing?: boolean
+    deployment?: boolean
+    security?: boolean
+    complexity?: boolean
+    maintainability?: boolean
+    confidence?: boolean
+    strengths?: boolean
+    weaknesses?: boolean
+    recommendations?: boolean
     createdAt?: boolean
     repository?: boolean | RepositoryDefaultArgs<ExtArgs>
     analysis?: boolean | RepositoryScore$analysisArgs<ExtArgs>
@@ -11784,14 +11870,18 @@ export namespace Prisma {
     id?: boolean
     repositoryId?: boolean
     analysisId?: boolean
-    qualityScore?: boolean
-    archScore?: boolean
-    docScore?: boolean
-    testScore?: boolean
-    securityScore?: boolean
-    maintainScore?: boolean
-    deployReady?: boolean
-    techDebt?: boolean
+    overall?: boolean
+    architecture?: boolean
+    documentation?: boolean
+    testing?: boolean
+    deployment?: boolean
+    security?: boolean
+    complexity?: boolean
+    maintainability?: boolean
+    confidence?: boolean
+    strengths?: boolean
+    weaknesses?: boolean
+    recommendations?: boolean
     createdAt?: boolean
     repository?: boolean | RepositoryDefaultArgs<ExtArgs>
     analysis?: boolean | RepositoryScore$analysisArgs<ExtArgs>
@@ -11801,14 +11891,18 @@ export namespace Prisma {
     id?: boolean
     repositoryId?: boolean
     analysisId?: boolean
-    qualityScore?: boolean
-    archScore?: boolean
-    docScore?: boolean
-    testScore?: boolean
-    securityScore?: boolean
-    maintainScore?: boolean
-    deployReady?: boolean
-    techDebt?: boolean
+    overall?: boolean
+    architecture?: boolean
+    documentation?: boolean
+    testing?: boolean
+    deployment?: boolean
+    security?: boolean
+    complexity?: boolean
+    maintainability?: boolean
+    confidence?: boolean
+    strengths?: boolean
+    weaknesses?: boolean
+    recommendations?: boolean
     createdAt?: boolean
     repository?: boolean | RepositoryDefaultArgs<ExtArgs>
     analysis?: boolean | RepositoryScore$analysisArgs<ExtArgs>
@@ -11818,18 +11912,22 @@ export namespace Prisma {
     id?: boolean
     repositoryId?: boolean
     analysisId?: boolean
-    qualityScore?: boolean
-    archScore?: boolean
-    docScore?: boolean
-    testScore?: boolean
-    securityScore?: boolean
-    maintainScore?: boolean
-    deployReady?: boolean
-    techDebt?: boolean
+    overall?: boolean
+    architecture?: boolean
+    documentation?: boolean
+    testing?: boolean
+    deployment?: boolean
+    security?: boolean
+    complexity?: boolean
+    maintainability?: boolean
+    confidence?: boolean
+    strengths?: boolean
+    weaknesses?: boolean
+    recommendations?: boolean
     createdAt?: boolean
   }
 
-  export type RepositoryScoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "repositoryId" | "analysisId" | "qualityScore" | "archScore" | "docScore" | "testScore" | "securityScore" | "maintainScore" | "deployReady" | "techDebt" | "createdAt", ExtArgs["result"]["repositoryScore"]>
+  export type RepositoryScoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "repositoryId" | "analysisId" | "overall" | "architecture" | "documentation" | "testing" | "deployment" | "security" | "complexity" | "maintainability" | "confidence" | "strengths" | "weaknesses" | "recommendations" | "createdAt", ExtArgs["result"]["repositoryScore"]>
   export type RepositoryScoreInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     repository?: boolean | RepositoryDefaultArgs<ExtArgs>
     analysis?: boolean | RepositoryScore$analysisArgs<ExtArgs>
@@ -11853,14 +11951,18 @@ export namespace Prisma {
       id: string
       repositoryId: string
       analysisId: string | null
-      qualityScore: number | null
-      archScore: number | null
-      docScore: number | null
-      testScore: number | null
-      securityScore: number | null
-      maintainScore: number | null
-      deployReady: number | null
-      techDebt: string | null
+      overall: number | null
+      architecture: number | null
+      documentation: number | null
+      testing: number | null
+      deployment: number | null
+      security: number | null
+      complexity: number | null
+      maintainability: number | null
+      confidence: number | null
+      strengths: Prisma.JsonValue | null
+      weaknesses: Prisma.JsonValue | null
+      recommendations: Prisma.JsonValue | null
       createdAt: Date
     }, ExtArgs["result"]["repositoryScore"]>
     composites: {}
@@ -12290,14 +12392,18 @@ export namespace Prisma {
     readonly id: FieldRef<"RepositoryScore", 'String'>
     readonly repositoryId: FieldRef<"RepositoryScore", 'String'>
     readonly analysisId: FieldRef<"RepositoryScore", 'String'>
-    readonly qualityScore: FieldRef<"RepositoryScore", 'Int'>
-    readonly archScore: FieldRef<"RepositoryScore", 'Int'>
-    readonly docScore: FieldRef<"RepositoryScore", 'Int'>
-    readonly testScore: FieldRef<"RepositoryScore", 'Int'>
-    readonly securityScore: FieldRef<"RepositoryScore", 'Int'>
-    readonly maintainScore: FieldRef<"RepositoryScore", 'Int'>
-    readonly deployReady: FieldRef<"RepositoryScore", 'Float'>
-    readonly techDebt: FieldRef<"RepositoryScore", 'String'>
+    readonly overall: FieldRef<"RepositoryScore", 'Int'>
+    readonly architecture: FieldRef<"RepositoryScore", 'Int'>
+    readonly documentation: FieldRef<"RepositoryScore", 'Int'>
+    readonly testing: FieldRef<"RepositoryScore", 'Int'>
+    readonly deployment: FieldRef<"RepositoryScore", 'Int'>
+    readonly security: FieldRef<"RepositoryScore", 'Int'>
+    readonly complexity: FieldRef<"RepositoryScore", 'Int'>
+    readonly maintainability: FieldRef<"RepositoryScore", 'Int'>
+    readonly confidence: FieldRef<"RepositoryScore", 'Int'>
+    readonly strengths: FieldRef<"RepositoryScore", 'Json'>
+    readonly weaknesses: FieldRef<"RepositoryScore", 'Json'>
+    readonly recommendations: FieldRef<"RepositoryScore", 'Json'>
     readonly createdAt: FieldRef<"RepositoryScore", 'DateTime'>
   }
     
@@ -13877,7 +13983,8 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     lastSyncedAt: 'lastSyncedAt',
     shareCount: 'shareCount',
-    viewCount: 'viewCount'
+    viewCount: 'viewCount',
+    hideFromLeaderboards: 'hideFromLeaderboards'
   };
 
   export type GithubProfileScalarFieldEnum = (typeof GithubProfileScalarFieldEnum)[keyof typeof GithubProfileScalarFieldEnum]
@@ -13893,6 +14000,7 @@ export namespace Prisma {
     htmlUrl: 'htmlUrl',
     homepage: 'homepage',
     language: 'language',
+    languages: 'languages',
     stargazersCount: 'stargazersCount',
     forksCount: 'forksCount',
     openIssuesCount: 'openIssuesCount',
@@ -13922,8 +14030,11 @@ export namespace Prisma {
     overallScore: 'overallScore',
     engineerLevel: 'engineerLevel',
     confidenceScore: 'confidenceScore',
+    confidence: 'confidence',
     strengths: 'strengths',
     gaps: 'gaps',
+    weaknesses: 'weaknesses',
+    recommendations: 'recommendations',
     summary: 'summary',
     costCents: 'costCents',
     createdAt: 'createdAt',
@@ -13941,6 +14052,7 @@ export namespace Prisma {
     score: 'score',
     confidence: 'confidence',
     evidence: 'evidence',
+    missing: 'missing',
     suggestions: 'suggestions'
   };
 
@@ -13951,14 +14063,18 @@ export namespace Prisma {
     id: 'id',
     repositoryId: 'repositoryId',
     analysisId: 'analysisId',
-    qualityScore: 'qualityScore',
-    archScore: 'archScore',
-    docScore: 'docScore',
-    testScore: 'testScore',
-    securityScore: 'securityScore',
-    maintainScore: 'maintainScore',
-    deployReady: 'deployReady',
-    techDebt: 'techDebt',
+    overall: 'overall',
+    architecture: 'architecture',
+    documentation: 'documentation',
+    testing: 'testing',
+    deployment: 'deployment',
+    security: 'security',
+    complexity: 'complexity',
+    maintainability: 'maintainability',
+    confidence: 'confidence',
+    strengths: 'strengths',
+    weaknesses: 'weaknesses',
+    recommendations: 'recommendations',
     createdAt: 'createdAt'
   };
 
@@ -13982,6 +14098,14 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const JsonNullValueInput: {
@@ -14071,20 +14195,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -14095,6 +14205,20 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -14424,6 +14548,7 @@ export namespace Prisma {
     lastSyncedAt?: DateTimeNullableFilter<"GithubProfile"> | Date | string | null
     shareCount?: IntFilter<"GithubProfile"> | number
     viewCount?: IntFilter<"GithubProfile"> | number
+    hideFromLeaderboards?: BoolFilter<"GithubProfile"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     repositories?: RepositoryListRelationFilter
   }
@@ -14448,6 +14573,7 @@ export namespace Prisma {
     lastSyncedAt?: SortOrderInput | SortOrder
     shareCount?: SortOrder
     viewCount?: SortOrder
+    hideFromLeaderboards?: SortOrder
     user?: UserOrderByWithRelationInput
     repositories?: RepositoryOrderByRelationAggregateInput
   }
@@ -14475,6 +14601,7 @@ export namespace Prisma {
     lastSyncedAt?: DateTimeNullableFilter<"GithubProfile"> | Date | string | null
     shareCount?: IntFilter<"GithubProfile"> | number
     viewCount?: IntFilter<"GithubProfile"> | number
+    hideFromLeaderboards?: BoolFilter<"GithubProfile"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     repositories?: RepositoryListRelationFilter
   }, "id" | "userId" | "githubId">
@@ -14499,6 +14626,7 @@ export namespace Prisma {
     lastSyncedAt?: SortOrderInput | SortOrder
     shareCount?: SortOrder
     viewCount?: SortOrder
+    hideFromLeaderboards?: SortOrder
     _count?: GithubProfileCountOrderByAggregateInput
     _avg?: GithubProfileAvgOrderByAggregateInput
     _max?: GithubProfileMaxOrderByAggregateInput
@@ -14529,6 +14657,7 @@ export namespace Prisma {
     lastSyncedAt?: DateTimeNullableWithAggregatesFilter<"GithubProfile"> | Date | string | null
     shareCount?: IntWithAggregatesFilter<"GithubProfile"> | number
     viewCount?: IntWithAggregatesFilter<"GithubProfile"> | number
+    hideFromLeaderboards?: BoolWithAggregatesFilter<"GithubProfile"> | boolean
   }
 
   export type RepositoryWhereInput = {
@@ -14544,6 +14673,7 @@ export namespace Prisma {
     htmlUrl?: StringFilter<"Repository"> | string
     homepage?: StringNullableFilter<"Repository"> | string | null
     language?: StringNullableFilter<"Repository"> | string | null
+    languages?: JsonNullableFilter<"Repository">
     stargazersCount?: IntFilter<"Repository"> | number
     forksCount?: IntFilter<"Repository"> | number
     openIssuesCount?: IntFilter<"Repository"> | number
@@ -14576,6 +14706,7 @@ export namespace Prisma {
     htmlUrl?: SortOrder
     homepage?: SortOrderInput | SortOrder
     language?: SortOrderInput | SortOrder
+    languages?: SortOrderInput | SortOrder
     stargazersCount?: SortOrder
     forksCount?: SortOrder
     openIssuesCount?: SortOrder
@@ -14611,6 +14742,7 @@ export namespace Prisma {
     htmlUrl?: StringFilter<"Repository"> | string
     homepage?: StringNullableFilter<"Repository"> | string | null
     language?: StringNullableFilter<"Repository"> | string | null
+    languages?: JsonNullableFilter<"Repository">
     stargazersCount?: IntFilter<"Repository"> | number
     forksCount?: IntFilter<"Repository"> | number
     openIssuesCount?: IntFilter<"Repository"> | number
@@ -14643,6 +14775,7 @@ export namespace Prisma {
     htmlUrl?: SortOrder
     homepage?: SortOrderInput | SortOrder
     language?: SortOrderInput | SortOrder
+    languages?: SortOrderInput | SortOrder
     stargazersCount?: SortOrder
     forksCount?: SortOrder
     openIssuesCount?: SortOrder
@@ -14680,6 +14813,7 @@ export namespace Prisma {
     htmlUrl?: StringWithAggregatesFilter<"Repository"> | string
     homepage?: StringNullableWithAggregatesFilter<"Repository"> | string | null
     language?: StringNullableWithAggregatesFilter<"Repository"> | string | null
+    languages?: JsonNullableWithAggregatesFilter<"Repository">
     stargazersCount?: IntWithAggregatesFilter<"Repository"> | number
     forksCount?: IntWithAggregatesFilter<"Repository"> | number
     openIssuesCount?: IntWithAggregatesFilter<"Repository"> | number
@@ -14709,8 +14843,11 @@ export namespace Prisma {
     overallScore?: IntNullableFilter<"Analysis"> | number | null
     engineerLevel?: StringNullableFilter<"Analysis"> | string | null
     confidenceScore?: FloatNullableFilter<"Analysis"> | number | null
+    confidence?: IntNullableFilter<"Analysis"> | number | null
     strengths?: StringNullableListFilter<"Analysis">
     gaps?: StringNullableListFilter<"Analysis">
+    weaknesses?: JsonNullableFilter<"Analysis">
+    recommendations?: JsonNullableFilter<"Analysis">
     summary?: StringNullableFilter<"Analysis"> | string | null
     costCents?: IntFilter<"Analysis"> | number
     createdAt?: DateTimeFilter<"Analysis"> | Date | string
@@ -14729,8 +14866,11 @@ export namespace Prisma {
     overallScore?: SortOrderInput | SortOrder
     engineerLevel?: SortOrderInput | SortOrder
     confidenceScore?: SortOrderInput | SortOrder
+    confidence?: SortOrderInput | SortOrder
     strengths?: SortOrder
     gaps?: SortOrder
+    weaknesses?: SortOrderInput | SortOrder
+    recommendations?: SortOrderInput | SortOrder
     summary?: SortOrderInput | SortOrder
     costCents?: SortOrder
     createdAt?: SortOrder
@@ -14752,8 +14892,11 @@ export namespace Prisma {
     overallScore?: IntNullableFilter<"Analysis"> | number | null
     engineerLevel?: StringNullableFilter<"Analysis"> | string | null
     confidenceScore?: FloatNullableFilter<"Analysis"> | number | null
+    confidence?: IntNullableFilter<"Analysis"> | number | null
     strengths?: StringNullableListFilter<"Analysis">
     gaps?: StringNullableListFilter<"Analysis">
+    weaknesses?: JsonNullableFilter<"Analysis">
+    recommendations?: JsonNullableFilter<"Analysis">
     summary?: StringNullableFilter<"Analysis"> | string | null
     costCents?: IntFilter<"Analysis"> | number
     createdAt?: DateTimeFilter<"Analysis"> | Date | string
@@ -14772,8 +14915,11 @@ export namespace Prisma {
     overallScore?: SortOrderInput | SortOrder
     engineerLevel?: SortOrderInput | SortOrder
     confidenceScore?: SortOrderInput | SortOrder
+    confidence?: SortOrderInput | SortOrder
     strengths?: SortOrder
     gaps?: SortOrder
+    weaknesses?: SortOrderInput | SortOrder
+    recommendations?: SortOrderInput | SortOrder
     summary?: SortOrderInput | SortOrder
     costCents?: SortOrder
     createdAt?: SortOrder
@@ -14796,8 +14942,11 @@ export namespace Prisma {
     overallScore?: IntNullableWithAggregatesFilter<"Analysis"> | number | null
     engineerLevel?: StringNullableWithAggregatesFilter<"Analysis"> | string | null
     confidenceScore?: FloatNullableWithAggregatesFilter<"Analysis"> | number | null
+    confidence?: IntNullableWithAggregatesFilter<"Analysis"> | number | null
     strengths?: StringNullableListFilter<"Analysis">
     gaps?: StringNullableListFilter<"Analysis">
+    weaknesses?: JsonNullableWithAggregatesFilter<"Analysis">
+    recommendations?: JsonNullableWithAggregatesFilter<"Analysis">
     summary?: StringNullableWithAggregatesFilter<"Analysis"> | string | null
     costCents?: IntWithAggregatesFilter<"Analysis"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Analysis"> | Date | string
@@ -14814,8 +14963,9 @@ export namespace Prisma {
     category?: StringFilter<"AnalysisScore"> | string
     score?: IntFilter<"AnalysisScore"> | number
     confidence?: FloatFilter<"AnalysisScore"> | number
-    evidence?: StringNullableFilter<"AnalysisScore"> | string | null
-    suggestions?: StringNullableFilter<"AnalysisScore"> | string | null
+    evidence?: JsonNullableFilter<"AnalysisScore">
+    missing?: JsonNullableFilter<"AnalysisScore">
+    suggestions?: JsonNullableFilter<"AnalysisScore">
     analysis?: XOR<AnalysisScalarRelationFilter, AnalysisWhereInput>
   }
 
@@ -14826,6 +14976,7 @@ export namespace Prisma {
     score?: SortOrder
     confidence?: SortOrder
     evidence?: SortOrderInput | SortOrder
+    missing?: SortOrderInput | SortOrder
     suggestions?: SortOrderInput | SortOrder
     analysis?: AnalysisOrderByWithRelationInput
   }
@@ -14840,8 +14991,9 @@ export namespace Prisma {
     category?: StringFilter<"AnalysisScore"> | string
     score?: IntFilter<"AnalysisScore"> | number
     confidence?: FloatFilter<"AnalysisScore"> | number
-    evidence?: StringNullableFilter<"AnalysisScore"> | string | null
-    suggestions?: StringNullableFilter<"AnalysisScore"> | string | null
+    evidence?: JsonNullableFilter<"AnalysisScore">
+    missing?: JsonNullableFilter<"AnalysisScore">
+    suggestions?: JsonNullableFilter<"AnalysisScore">
     analysis?: XOR<AnalysisScalarRelationFilter, AnalysisWhereInput>
   }, "id" | "analysisId_category">
 
@@ -14852,6 +15004,7 @@ export namespace Prisma {
     score?: SortOrder
     confidence?: SortOrder
     evidence?: SortOrderInput | SortOrder
+    missing?: SortOrderInput | SortOrder
     suggestions?: SortOrderInput | SortOrder
     _count?: AnalysisScoreCountOrderByAggregateInput
     _avg?: AnalysisScoreAvgOrderByAggregateInput
@@ -14869,8 +15022,9 @@ export namespace Prisma {
     category?: StringWithAggregatesFilter<"AnalysisScore"> | string
     score?: IntWithAggregatesFilter<"AnalysisScore"> | number
     confidence?: FloatWithAggregatesFilter<"AnalysisScore"> | number
-    evidence?: StringNullableWithAggregatesFilter<"AnalysisScore"> | string | null
-    suggestions?: StringNullableWithAggregatesFilter<"AnalysisScore"> | string | null
+    evidence?: JsonNullableWithAggregatesFilter<"AnalysisScore">
+    missing?: JsonNullableWithAggregatesFilter<"AnalysisScore">
+    suggestions?: JsonNullableWithAggregatesFilter<"AnalysisScore">
   }
 
   export type RepositoryScoreWhereInput = {
@@ -14880,14 +15034,18 @@ export namespace Prisma {
     id?: StringFilter<"RepositoryScore"> | string
     repositoryId?: StringFilter<"RepositoryScore"> | string
     analysisId?: StringNullableFilter<"RepositoryScore"> | string | null
-    qualityScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    archScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    docScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    testScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    securityScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    maintainScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    deployReady?: FloatNullableFilter<"RepositoryScore"> | number | null
-    techDebt?: StringNullableFilter<"RepositoryScore"> | string | null
+    overall?: IntNullableFilter<"RepositoryScore"> | number | null
+    architecture?: IntNullableFilter<"RepositoryScore"> | number | null
+    documentation?: IntNullableFilter<"RepositoryScore"> | number | null
+    testing?: IntNullableFilter<"RepositoryScore"> | number | null
+    deployment?: IntNullableFilter<"RepositoryScore"> | number | null
+    security?: IntNullableFilter<"RepositoryScore"> | number | null
+    complexity?: IntNullableFilter<"RepositoryScore"> | number | null
+    maintainability?: IntNullableFilter<"RepositoryScore"> | number | null
+    confidence?: IntNullableFilter<"RepositoryScore"> | number | null
+    strengths?: JsonNullableFilter<"RepositoryScore">
+    weaknesses?: JsonNullableFilter<"RepositoryScore">
+    recommendations?: JsonNullableFilter<"RepositoryScore">
     createdAt?: DateTimeFilter<"RepositoryScore"> | Date | string
     repository?: XOR<RepositoryScalarRelationFilter, RepositoryWhereInput>
     analysis?: XOR<AnalysisNullableScalarRelationFilter, AnalysisWhereInput> | null
@@ -14897,14 +15055,18 @@ export namespace Prisma {
     id?: SortOrder
     repositoryId?: SortOrder
     analysisId?: SortOrderInput | SortOrder
-    qualityScore?: SortOrderInput | SortOrder
-    archScore?: SortOrderInput | SortOrder
-    docScore?: SortOrderInput | SortOrder
-    testScore?: SortOrderInput | SortOrder
-    securityScore?: SortOrderInput | SortOrder
-    maintainScore?: SortOrderInput | SortOrder
-    deployReady?: SortOrderInput | SortOrder
-    techDebt?: SortOrderInput | SortOrder
+    overall?: SortOrderInput | SortOrder
+    architecture?: SortOrderInput | SortOrder
+    documentation?: SortOrderInput | SortOrder
+    testing?: SortOrderInput | SortOrder
+    deployment?: SortOrderInput | SortOrder
+    security?: SortOrderInput | SortOrder
+    complexity?: SortOrderInput | SortOrder
+    maintainability?: SortOrderInput | SortOrder
+    confidence?: SortOrderInput | SortOrder
+    strengths?: SortOrderInput | SortOrder
+    weaknesses?: SortOrderInput | SortOrder
+    recommendations?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     repository?: RepositoryOrderByWithRelationInput
     analysis?: AnalysisOrderByWithRelationInput
@@ -14917,14 +15079,18 @@ export namespace Prisma {
     NOT?: RepositoryScoreWhereInput | RepositoryScoreWhereInput[]
     repositoryId?: StringFilter<"RepositoryScore"> | string
     analysisId?: StringNullableFilter<"RepositoryScore"> | string | null
-    qualityScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    archScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    docScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    testScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    securityScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    maintainScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    deployReady?: FloatNullableFilter<"RepositoryScore"> | number | null
-    techDebt?: StringNullableFilter<"RepositoryScore"> | string | null
+    overall?: IntNullableFilter<"RepositoryScore"> | number | null
+    architecture?: IntNullableFilter<"RepositoryScore"> | number | null
+    documentation?: IntNullableFilter<"RepositoryScore"> | number | null
+    testing?: IntNullableFilter<"RepositoryScore"> | number | null
+    deployment?: IntNullableFilter<"RepositoryScore"> | number | null
+    security?: IntNullableFilter<"RepositoryScore"> | number | null
+    complexity?: IntNullableFilter<"RepositoryScore"> | number | null
+    maintainability?: IntNullableFilter<"RepositoryScore"> | number | null
+    confidence?: IntNullableFilter<"RepositoryScore"> | number | null
+    strengths?: JsonNullableFilter<"RepositoryScore">
+    weaknesses?: JsonNullableFilter<"RepositoryScore">
+    recommendations?: JsonNullableFilter<"RepositoryScore">
     createdAt?: DateTimeFilter<"RepositoryScore"> | Date | string
     repository?: XOR<RepositoryScalarRelationFilter, RepositoryWhereInput>
     analysis?: XOR<AnalysisNullableScalarRelationFilter, AnalysisWhereInput> | null
@@ -14934,14 +15100,18 @@ export namespace Prisma {
     id?: SortOrder
     repositoryId?: SortOrder
     analysisId?: SortOrderInput | SortOrder
-    qualityScore?: SortOrderInput | SortOrder
-    archScore?: SortOrderInput | SortOrder
-    docScore?: SortOrderInput | SortOrder
-    testScore?: SortOrderInput | SortOrder
-    securityScore?: SortOrderInput | SortOrder
-    maintainScore?: SortOrderInput | SortOrder
-    deployReady?: SortOrderInput | SortOrder
-    techDebt?: SortOrderInput | SortOrder
+    overall?: SortOrderInput | SortOrder
+    architecture?: SortOrderInput | SortOrder
+    documentation?: SortOrderInput | SortOrder
+    testing?: SortOrderInput | SortOrder
+    deployment?: SortOrderInput | SortOrder
+    security?: SortOrderInput | SortOrder
+    complexity?: SortOrderInput | SortOrder
+    maintainability?: SortOrderInput | SortOrder
+    confidence?: SortOrderInput | SortOrder
+    strengths?: SortOrderInput | SortOrder
+    weaknesses?: SortOrderInput | SortOrder
+    recommendations?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: RepositoryScoreCountOrderByAggregateInput
     _avg?: RepositoryScoreAvgOrderByAggregateInput
@@ -14957,14 +15127,18 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"RepositoryScore"> | string
     repositoryId?: StringWithAggregatesFilter<"RepositoryScore"> | string
     analysisId?: StringNullableWithAggregatesFilter<"RepositoryScore"> | string | null
-    qualityScore?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
-    archScore?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
-    docScore?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
-    testScore?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
-    securityScore?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
-    maintainScore?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
-    deployReady?: FloatNullableWithAggregatesFilter<"RepositoryScore"> | number | null
-    techDebt?: StringNullableWithAggregatesFilter<"RepositoryScore"> | string | null
+    overall?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    architecture?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    documentation?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    testing?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    deployment?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    security?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    complexity?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    maintainability?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    confidence?: IntNullableWithAggregatesFilter<"RepositoryScore"> | number | null
+    strengths?: JsonNullableWithAggregatesFilter<"RepositoryScore">
+    weaknesses?: JsonNullableWithAggregatesFilter<"RepositoryScore">
+    recommendations?: JsonNullableWithAggregatesFilter<"RepositoryScore">
     createdAt?: DateTimeWithAggregatesFilter<"RepositoryScore"> | Date | string
   }
 
@@ -15382,6 +15556,7 @@ export namespace Prisma {
     lastSyncedAt?: Date | string | null
     shareCount?: number
     viewCount?: number
+    hideFromLeaderboards?: boolean
     user: UserCreateNestedOneWithoutGithubProfileInput
     repositories?: RepositoryCreateNestedManyWithoutProfileInput
   }
@@ -15406,6 +15581,7 @@ export namespace Prisma {
     lastSyncedAt?: Date | string | null
     shareCount?: number
     viewCount?: number
+    hideFromLeaderboards?: boolean
     repositories?: RepositoryUncheckedCreateNestedManyWithoutProfileInput
   }
 
@@ -15428,6 +15604,7 @@ export namespace Prisma {
     lastSyncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
+    hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutGithubProfileNestedInput
     repositories?: RepositoryUpdateManyWithoutProfileNestedInput
   }
@@ -15452,6 +15629,7 @@ export namespace Prisma {
     lastSyncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
+    hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
     repositories?: RepositoryUncheckedUpdateManyWithoutProfileNestedInput
   }
 
@@ -15475,6 +15653,7 @@ export namespace Prisma {
     lastSyncedAt?: Date | string | null
     shareCount?: number
     viewCount?: number
+    hideFromLeaderboards?: boolean
   }
 
   export type GithubProfileUpdateManyMutationInput = {
@@ -15496,6 +15675,7 @@ export namespace Prisma {
     lastSyncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
+    hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type GithubProfileUncheckedUpdateManyInput = {
@@ -15518,6 +15698,7 @@ export namespace Prisma {
     lastSyncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
+    hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RepositoryCreateInput = {
@@ -15529,6 +15710,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -15561,6 +15743,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -15591,6 +15774,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -15623,6 +15807,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -15654,6 +15839,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -15682,6 +15868,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -15711,6 +15898,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -15736,8 +15924,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -15756,8 +15947,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -15774,8 +15968,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15794,8 +15991,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15813,8 +16013,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -15828,8 +16031,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15844,8 +16050,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15858,8 +16067,9 @@ export namespace Prisma {
     category: string
     score: number
     confidence: number
-    evidence?: string | null
-    suggestions?: string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
     analysis: AnalysisCreateNestedOneWithoutScoresInput
   }
 
@@ -15869,8 +16079,9 @@ export namespace Prisma {
     category: string
     score: number
     confidence: number
-    evidence?: string | null
-    suggestions?: string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AnalysisScoreUpdateInput = {
@@ -15878,8 +16089,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     confidence?: FloatFieldUpdateOperationsInput | number
-    evidence?: NullableStringFieldUpdateOperationsInput | string | null
-    suggestions?: NullableStringFieldUpdateOperationsInput | string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
     analysis?: AnalysisUpdateOneRequiredWithoutScoresNestedInput
   }
 
@@ -15889,8 +16101,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     confidence?: FloatFieldUpdateOperationsInput | number
-    evidence?: NullableStringFieldUpdateOperationsInput | string | null
-    suggestions?: NullableStringFieldUpdateOperationsInput | string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AnalysisScoreCreateManyInput = {
@@ -15899,8 +16112,9 @@ export namespace Prisma {
     category: string
     score: number
     confidence: number
-    evidence?: string | null
-    suggestions?: string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AnalysisScoreUpdateManyMutationInput = {
@@ -15908,8 +16122,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     confidence?: FloatFieldUpdateOperationsInput | number
-    evidence?: NullableStringFieldUpdateOperationsInput | string | null
-    suggestions?: NullableStringFieldUpdateOperationsInput | string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AnalysisScoreUncheckedUpdateManyInput = {
@@ -15918,20 +16133,25 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     confidence?: FloatFieldUpdateOperationsInput | number
-    evidence?: NullableStringFieldUpdateOperationsInput | string | null
-    suggestions?: NullableStringFieldUpdateOperationsInput | string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type RepositoryScoreCreateInput = {
     id?: string
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     repository: RepositoryCreateNestedOneWithoutRepoScoresInput
     analysis?: AnalysisCreateNestedOneWithoutRepoScoresInput
@@ -15941,27 +16161,35 @@ export namespace Prisma {
     id?: string
     repositoryId: string
     analysisId?: string | null
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
   export type RepositoryScoreUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     repository?: RepositoryUpdateOneRequiredWithoutRepoScoresNestedInput
     analysis?: AnalysisUpdateOneWithoutRepoScoresNestedInput
@@ -15971,14 +16199,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     repositoryId?: StringFieldUpdateOperationsInput | string
     analysisId?: NullableStringFieldUpdateOperationsInput | string | null
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15986,27 +16218,35 @@ export namespace Prisma {
     id?: string
     repositoryId: string
     analysisId?: string | null
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
   export type RepositoryScoreUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16014,14 +16254,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     repositoryId?: StringFieldUpdateOperationsInput | string
     analysisId?: NullableStringFieldUpdateOperationsInput | string | null
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16448,6 +16692,7 @@ export namespace Prisma {
     lastSyncedAt?: SortOrder
     shareCount?: SortOrder
     viewCount?: SortOrder
+    hideFromLeaderboards?: SortOrder
   }
 
   export type GithubProfileAvgOrderByAggregateInput = {
@@ -16480,6 +16725,7 @@ export namespace Prisma {
     lastSyncedAt?: SortOrder
     shareCount?: SortOrder
     viewCount?: SortOrder
+    hideFromLeaderboards?: SortOrder
   }
 
   export type GithubProfileMinOrderByAggregateInput = {
@@ -16502,6 +16748,7 @@ export namespace Prisma {
     lastSyncedAt?: SortOrder
     shareCount?: SortOrder
     viewCount?: SortOrder
+    hideFromLeaderboards?: SortOrder
   }
 
   export type GithubProfileSumOrderByAggregateInput = {
@@ -16528,6 +16775,29 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -16563,6 +16833,7 @@ export namespace Prisma {
     htmlUrl?: SortOrder
     homepage?: SortOrder
     language?: SortOrder
+    languages?: SortOrder
     stargazersCount?: SortOrder
     forksCount?: SortOrder
     openIssuesCount?: SortOrder
@@ -16655,6 +16926,32 @@ export namespace Prisma {
     watchersCount?: SortOrder
     size?: SortOrder
   }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
 
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
@@ -16695,8 +16992,11 @@ export namespace Prisma {
     overallScore?: SortOrder
     engineerLevel?: SortOrder
     confidenceScore?: SortOrder
+    confidence?: SortOrder
     strengths?: SortOrder
     gaps?: SortOrder
+    weaknesses?: SortOrder
+    recommendations?: SortOrder
     summary?: SortOrder
     costCents?: SortOrder
     createdAt?: SortOrder
@@ -16707,6 +17007,7 @@ export namespace Prisma {
   export type AnalysisAvgOrderByAggregateInput = {
     overallScore?: SortOrder
     confidenceScore?: SortOrder
+    confidence?: SortOrder
     costCents?: SortOrder
   }
 
@@ -16717,6 +17018,7 @@ export namespace Prisma {
     overallScore?: SortOrder
     engineerLevel?: SortOrder
     confidenceScore?: SortOrder
+    confidence?: SortOrder
     summary?: SortOrder
     costCents?: SortOrder
     createdAt?: SortOrder
@@ -16731,6 +17033,7 @@ export namespace Prisma {
     overallScore?: SortOrder
     engineerLevel?: SortOrder
     confidenceScore?: SortOrder
+    confidence?: SortOrder
     summary?: SortOrder
     costCents?: SortOrder
     createdAt?: SortOrder
@@ -16741,6 +17044,7 @@ export namespace Prisma {
   export type AnalysisSumOrderByAggregateInput = {
     overallScore?: SortOrder
     confidenceScore?: SortOrder
+    confidence?: SortOrder
     costCents?: SortOrder
   }
 
@@ -16804,6 +17108,7 @@ export namespace Prisma {
     score?: SortOrder
     confidence?: SortOrder
     evidence?: SortOrder
+    missing?: SortOrder
     suggestions?: SortOrder
   }
 
@@ -16818,8 +17123,6 @@ export namespace Prisma {
     category?: SortOrder
     score?: SortOrder
     confidence?: SortOrder
-    evidence?: SortOrder
-    suggestions?: SortOrder
   }
 
   export type AnalysisScoreMinOrderByAggregateInput = {
@@ -16828,8 +17131,6 @@ export namespace Prisma {
     category?: SortOrder
     score?: SortOrder
     confidence?: SortOrder
-    evidence?: SortOrder
-    suggestions?: SortOrder
   }
 
   export type AnalysisScoreSumOrderByAggregateInput = {
@@ -16867,39 +17168,46 @@ export namespace Prisma {
     id?: SortOrder
     repositoryId?: SortOrder
     analysisId?: SortOrder
-    qualityScore?: SortOrder
-    archScore?: SortOrder
-    docScore?: SortOrder
-    testScore?: SortOrder
-    securityScore?: SortOrder
-    maintainScore?: SortOrder
-    deployReady?: SortOrder
-    techDebt?: SortOrder
+    overall?: SortOrder
+    architecture?: SortOrder
+    documentation?: SortOrder
+    testing?: SortOrder
+    deployment?: SortOrder
+    security?: SortOrder
+    complexity?: SortOrder
+    maintainability?: SortOrder
+    confidence?: SortOrder
+    strengths?: SortOrder
+    weaknesses?: SortOrder
+    recommendations?: SortOrder
     createdAt?: SortOrder
   }
 
   export type RepositoryScoreAvgOrderByAggregateInput = {
-    qualityScore?: SortOrder
-    archScore?: SortOrder
-    docScore?: SortOrder
-    testScore?: SortOrder
-    securityScore?: SortOrder
-    maintainScore?: SortOrder
-    deployReady?: SortOrder
+    overall?: SortOrder
+    architecture?: SortOrder
+    documentation?: SortOrder
+    testing?: SortOrder
+    deployment?: SortOrder
+    security?: SortOrder
+    complexity?: SortOrder
+    maintainability?: SortOrder
+    confidence?: SortOrder
   }
 
   export type RepositoryScoreMaxOrderByAggregateInput = {
     id?: SortOrder
     repositoryId?: SortOrder
     analysisId?: SortOrder
-    qualityScore?: SortOrder
-    archScore?: SortOrder
-    docScore?: SortOrder
-    testScore?: SortOrder
-    securityScore?: SortOrder
-    maintainScore?: SortOrder
-    deployReady?: SortOrder
-    techDebt?: SortOrder
+    overall?: SortOrder
+    architecture?: SortOrder
+    documentation?: SortOrder
+    testing?: SortOrder
+    deployment?: SortOrder
+    security?: SortOrder
+    complexity?: SortOrder
+    maintainability?: SortOrder
+    confidence?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16907,25 +17215,28 @@ export namespace Prisma {
     id?: SortOrder
     repositoryId?: SortOrder
     analysisId?: SortOrder
-    qualityScore?: SortOrder
-    archScore?: SortOrder
-    docScore?: SortOrder
-    testScore?: SortOrder
-    securityScore?: SortOrder
-    maintainScore?: SortOrder
-    deployReady?: SortOrder
-    techDebt?: SortOrder
+    overall?: SortOrder
+    architecture?: SortOrder
+    documentation?: SortOrder
+    testing?: SortOrder
+    deployment?: SortOrder
+    security?: SortOrder
+    complexity?: SortOrder
+    maintainability?: SortOrder
+    confidence?: SortOrder
     createdAt?: SortOrder
   }
 
   export type RepositoryScoreSumOrderByAggregateInput = {
-    qualityScore?: SortOrder
-    archScore?: SortOrder
-    docScore?: SortOrder
-    testScore?: SortOrder
-    securityScore?: SortOrder
-    maintainScore?: SortOrder
-    deployReady?: SortOrder
+    overall?: SortOrder
+    architecture?: SortOrder
+    documentation?: SortOrder
+    testing?: SortOrder
+    deployment?: SortOrder
+    security?: SortOrder
+    complexity?: SortOrder
+    maintainability?: SortOrder
+    confidence?: SortOrder
   }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -17823,6 +18134,29 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
@@ -17995,6 +18329,7 @@ export namespace Prisma {
     lastSyncedAt?: Date | string | null
     shareCount?: number
     viewCount?: number
+    hideFromLeaderboards?: boolean
     repositories?: RepositoryCreateNestedManyWithoutProfileInput
   }
 
@@ -18017,6 +18352,7 @@ export namespace Prisma {
     lastSyncedAt?: Date | string | null
     shareCount?: number
     viewCount?: number
+    hideFromLeaderboards?: boolean
     repositories?: RepositoryUncheckedCreateNestedManyWithoutProfileInput
   }
 
@@ -18031,8 +18367,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -18049,8 +18388,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -18190,6 +18532,7 @@ export namespace Prisma {
     lastSyncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
+    hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
     repositories?: RepositoryUpdateManyWithoutProfileNestedInput
   }
 
@@ -18212,6 +18555,7 @@ export namespace Prisma {
     lastSyncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
+    hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
     repositories?: RepositoryUncheckedUpdateManyWithoutProfileNestedInput
   }
 
@@ -18241,8 +18585,11 @@ export namespace Prisma {
     overallScore?: IntNullableFilter<"Analysis"> | number | null
     engineerLevel?: StringNullableFilter<"Analysis"> | string | null
     confidenceScore?: FloatNullableFilter<"Analysis"> | number | null
+    confidence?: IntNullableFilter<"Analysis"> | number | null
     strengths?: StringNullableListFilter<"Analysis">
     gaps?: StringNullableListFilter<"Analysis">
+    weaknesses?: JsonNullableFilter<"Analysis">
+    recommendations?: JsonNullableFilter<"Analysis">
     summary?: StringNullableFilter<"Analysis"> | string | null
     costCents?: IntFilter<"Analysis"> | number
     createdAt?: DateTimeFilter<"Analysis"> | Date | string
@@ -18463,6 +18810,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -18493,6 +18841,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -18592,6 +18941,7 @@ export namespace Prisma {
     htmlUrl?: StringFilter<"Repository"> | string
     homepage?: StringNullableFilter<"Repository"> | string | null
     language?: StringNullableFilter<"Repository"> | string | null
+    languages?: JsonNullableFilter<"Repository">
     stargazersCount?: IntFilter<"Repository"> | number
     forksCount?: IntFilter<"Repository"> | number
     openIssuesCount?: IntFilter<"Repository"> | number
@@ -18630,6 +18980,7 @@ export namespace Prisma {
     lastSyncedAt?: Date | string | null
     shareCount?: number
     viewCount?: number
+    hideFromLeaderboards?: boolean
     user: UserCreateNestedOneWithoutGithubProfileInput
   }
 
@@ -18653,6 +19004,7 @@ export namespace Prisma {
     lastSyncedAt?: Date | string | null
     shareCount?: number
     viewCount?: number
+    hideFromLeaderboards?: boolean
   }
 
   export type GithubProfileCreateOrConnectWithoutRepositoriesInput = {
@@ -18662,14 +19014,18 @@ export namespace Prisma {
 
   export type RepositoryScoreCreateWithoutRepositoryInput = {
     id?: string
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     analysis?: AnalysisCreateNestedOneWithoutRepoScoresInput
   }
@@ -18677,14 +19033,18 @@ export namespace Prisma {
   export type RepositoryScoreUncheckedCreateWithoutRepositoryInput = {
     id?: string
     analysisId?: string | null
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -18704,8 +19064,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -18723,8 +19086,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -18769,6 +19135,7 @@ export namespace Prisma {
     lastSyncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
+    hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutGithubProfileNestedInput
   }
 
@@ -18792,6 +19159,7 @@ export namespace Prisma {
     lastSyncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
+    hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RepositoryScoreUpsertWithWhereUniqueWithoutRepositoryInput = {
@@ -18817,14 +19185,18 @@ export namespace Prisma {
     id?: StringFilter<"RepositoryScore"> | string
     repositoryId?: StringFilter<"RepositoryScore"> | string
     analysisId?: StringNullableFilter<"RepositoryScore"> | string | null
-    qualityScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    archScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    docScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    testScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    securityScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    maintainScore?: IntNullableFilter<"RepositoryScore"> | number | null
-    deployReady?: FloatNullableFilter<"RepositoryScore"> | number | null
-    techDebt?: StringNullableFilter<"RepositoryScore"> | string | null
+    overall?: IntNullableFilter<"RepositoryScore"> | number | null
+    architecture?: IntNullableFilter<"RepositoryScore"> | number | null
+    documentation?: IntNullableFilter<"RepositoryScore"> | number | null
+    testing?: IntNullableFilter<"RepositoryScore"> | number | null
+    deployment?: IntNullableFilter<"RepositoryScore"> | number | null
+    security?: IntNullableFilter<"RepositoryScore"> | number | null
+    complexity?: IntNullableFilter<"RepositoryScore"> | number | null
+    maintainability?: IntNullableFilter<"RepositoryScore"> | number | null
+    confidence?: IntNullableFilter<"RepositoryScore"> | number | null
+    strengths?: JsonNullableFilter<"RepositoryScore">
+    weaknesses?: JsonNullableFilter<"RepositoryScore">
+    recommendations?: JsonNullableFilter<"RepositoryScore">
     createdAt?: DateTimeFilter<"RepositoryScore"> | Date | string
   }
 
@@ -18882,8 +19254,9 @@ export namespace Prisma {
     category: string
     score: number
     confidence: number
-    evidence?: string | null
-    suggestions?: string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AnalysisScoreUncheckedCreateWithoutAnalysisInput = {
@@ -18891,8 +19264,9 @@ export namespace Prisma {
     category: string
     score: number
     confidence: number
-    evidence?: string | null
-    suggestions?: string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AnalysisScoreCreateOrConnectWithoutAnalysisInput = {
@@ -18914,6 +19288,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -18945,6 +19320,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -18972,14 +19348,18 @@ export namespace Prisma {
 
   export type RepositoryScoreCreateWithoutAnalysisInput = {
     id?: string
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     repository: RepositoryCreateNestedOneWithoutRepoScoresInput
   }
@@ -18987,14 +19367,18 @@ export namespace Prisma {
   export type RepositoryScoreUncheckedCreateWithoutAnalysisInput = {
     id?: string
     repositoryId: string
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -19072,8 +19456,9 @@ export namespace Prisma {
     category?: StringFilter<"AnalysisScore"> | string
     score?: IntFilter<"AnalysisScore"> | number
     confidence?: FloatFilter<"AnalysisScore"> | number
-    evidence?: StringNullableFilter<"AnalysisScore"> | string | null
-    suggestions?: StringNullableFilter<"AnalysisScore"> | string | null
+    evidence?: JsonNullableFilter<"AnalysisScore">
+    missing?: JsonNullableFilter<"AnalysisScore">
+    suggestions?: JsonNullableFilter<"AnalysisScore">
   }
 
   export type RepositoryUpsertWithWhereUniqueWithoutAnalysesInput = {
@@ -19114,8 +19499,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -19133,8 +19521,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -19166,8 +19557,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19185,8 +19579,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19205,6 +19602,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -19236,6 +19634,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -19267,8 +19666,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -19286,8 +19688,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -19322,6 +19727,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -19353,6 +19759,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -19390,8 +19797,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19409,8 +19819,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19523,8 +19936,11 @@ export namespace Prisma {
     overallScore?: number | null
     engineerLevel?: string | null
     confidenceScore?: number | null
+    confidence?: number | null
     strengths?: AnalysisCreatestrengthsInput | string[]
     gaps?: AnalysisCreategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: string | null
     costCents?: number
     createdAt?: Date | string
@@ -19620,8 +20036,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19638,8 +20057,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19656,8 +20078,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19695,6 +20120,7 @@ export namespace Prisma {
     htmlUrl: string
     homepage?: string | null
     language?: string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: number
     forksCount?: number
     openIssuesCount?: number
@@ -19723,6 +20149,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -19753,6 +20180,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -19783,6 +20211,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -19805,27 +20234,35 @@ export namespace Prisma {
   export type RepositoryScoreCreateManyRepositoryInput = {
     id?: string
     analysisId?: string | null
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
   export type RepositoryScoreUpdateWithoutRepositoryInput = {
     id?: StringFieldUpdateOperationsInput | string
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analysis?: AnalysisUpdateOneWithoutRepoScoresNestedInput
   }
@@ -19833,28 +20270,36 @@ export namespace Prisma {
   export type RepositoryScoreUncheckedUpdateWithoutRepositoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     analysisId?: NullableStringFieldUpdateOperationsInput | string | null
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RepositoryScoreUncheckedUpdateManyWithoutRepositoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     analysisId?: NullableStringFieldUpdateOperationsInput | string | null
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -19864,8 +20309,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19883,8 +20331,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19901,8 +20352,11 @@ export namespace Prisma {
     overallScore?: NullableIntFieldUpdateOperationsInput | number | null
     engineerLevel?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
     strengths?: AnalysisUpdatestrengthsInput | string[]
     gaps?: AnalysisUpdategapsInput | string[]
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     summary?: NullableStringFieldUpdateOperationsInput | string | null
     costCents?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19915,21 +20369,26 @@ export namespace Prisma {
     category: string
     score: number
     confidence: number
-    evidence?: string | null
-    suggestions?: string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type RepositoryScoreCreateManyAnalysisInput = {
     id?: string
     repositoryId: string
-    qualityScore?: number | null
-    archScore?: number | null
-    docScore?: number | null
-    testScore?: number | null
-    securityScore?: number | null
-    maintainScore?: number | null
-    deployReady?: number | null
-    techDebt?: string | null
+    overall?: number | null
+    architecture?: number | null
+    documentation?: number | null
+    testing?: number | null
+    deployment?: number | null
+    security?: number | null
+    complexity?: number | null
+    maintainability?: number | null
+    confidence?: number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -19938,8 +20397,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     confidence?: FloatFieldUpdateOperationsInput | number
-    evidence?: NullableStringFieldUpdateOperationsInput | string | null
-    suggestions?: NullableStringFieldUpdateOperationsInput | string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AnalysisScoreUncheckedUpdateWithoutAnalysisInput = {
@@ -19947,8 +20407,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     confidence?: FloatFieldUpdateOperationsInput | number
-    evidence?: NullableStringFieldUpdateOperationsInput | string | null
-    suggestions?: NullableStringFieldUpdateOperationsInput | string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AnalysisScoreUncheckedUpdateManyWithoutAnalysisInput = {
@@ -19956,8 +20417,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     confidence?: FloatFieldUpdateOperationsInput | number
-    evidence?: NullableStringFieldUpdateOperationsInput | string | null
-    suggestions?: NullableStringFieldUpdateOperationsInput | string | null
+    evidence?: NullableJsonNullValueInput | InputJsonValue
+    missing?: NullableJsonNullValueInput | InputJsonValue
+    suggestions?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type RepositoryUpdateWithoutAnalysesInput = {
@@ -19969,6 +20431,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -20000,6 +20463,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -20030,6 +20494,7 @@ export namespace Prisma {
     htmlUrl?: StringFieldUpdateOperationsInput | string
     homepage?: NullableStringFieldUpdateOperationsInput | string | null
     language?: NullableStringFieldUpdateOperationsInput | string | null
+    languages?: NullableJsonNullValueInput | InputJsonValue
     stargazersCount?: IntFieldUpdateOperationsInput | number
     forksCount?: IntFieldUpdateOperationsInput | number
     openIssuesCount?: IntFieldUpdateOperationsInput | number
@@ -20051,14 +20516,18 @@ export namespace Prisma {
 
   export type RepositoryScoreUpdateWithoutAnalysisInput = {
     id?: StringFieldUpdateOperationsInput | string
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     repository?: RepositoryUpdateOneRequiredWithoutRepoScoresNestedInput
   }
@@ -20066,28 +20535,36 @@ export namespace Prisma {
   export type RepositoryScoreUncheckedUpdateWithoutAnalysisInput = {
     id?: StringFieldUpdateOperationsInput | string
     repositoryId?: StringFieldUpdateOperationsInput | string
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RepositoryScoreUncheckedUpdateManyWithoutAnalysisInput = {
     id?: StringFieldUpdateOperationsInput | string
     repositoryId?: StringFieldUpdateOperationsInput | string
-    qualityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    archScore?: NullableIntFieldUpdateOperationsInput | number | null
-    docScore?: NullableIntFieldUpdateOperationsInput | number | null
-    testScore?: NullableIntFieldUpdateOperationsInput | number | null
-    securityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    maintainScore?: NullableIntFieldUpdateOperationsInput | number | null
-    deployReady?: NullableFloatFieldUpdateOperationsInput | number | null
-    techDebt?: NullableStringFieldUpdateOperationsInput | string | null
+    overall?: NullableIntFieldUpdateOperationsInput | number | null
+    architecture?: NullableIntFieldUpdateOperationsInput | number | null
+    documentation?: NullableIntFieldUpdateOperationsInput | number | null
+    testing?: NullableIntFieldUpdateOperationsInput | number | null
+    deployment?: NullableIntFieldUpdateOperationsInput | number | null
+    security?: NullableIntFieldUpdateOperationsInput | number | null
+    complexity?: NullableIntFieldUpdateOperationsInput | number | null
+    maintainability?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: NullableIntFieldUpdateOperationsInput | number | null
+    strengths?: NullableJsonNullValueInput | InputJsonValue
+    weaknesses?: NullableJsonNullValueInput | InputJsonValue
+    recommendations?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

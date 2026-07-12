@@ -186,7 +186,8 @@ exports.Prisma.GithubProfileScalarFieldEnum = {
   updatedAt: 'updatedAt',
   lastSyncedAt: 'lastSyncedAt',
   shareCount: 'shareCount',
-  viewCount: 'viewCount'
+  viewCount: 'viewCount',
+  hideFromLeaderboards: 'hideFromLeaderboards'
 };
 
 exports.Prisma.RepositoryScalarFieldEnum = {
@@ -199,6 +200,7 @@ exports.Prisma.RepositoryScalarFieldEnum = {
   htmlUrl: 'htmlUrl',
   homepage: 'homepage',
   language: 'language',
+  languages: 'languages',
   stargazersCount: 'stargazersCount',
   forksCount: 'forksCount',
   openIssuesCount: 'openIssuesCount',
@@ -225,8 +227,11 @@ exports.Prisma.AnalysisScalarFieldEnum = {
   overallScore: 'overallScore',
   engineerLevel: 'engineerLevel',
   confidenceScore: 'confidenceScore',
+  confidence: 'confidence',
   strengths: 'strengths',
   gaps: 'gaps',
+  weaknesses: 'weaknesses',
+  recommendations: 'recommendations',
   summary: 'summary',
   costCents: 'costCents',
   createdAt: 'createdAt',
@@ -241,6 +246,7 @@ exports.Prisma.AnalysisScoreScalarFieldEnum = {
   score: 'score',
   confidence: 'confidence',
   evidence: 'evidence',
+  missing: 'missing',
   suggestions: 'suggestions'
 };
 
@@ -248,14 +254,18 @@ exports.Prisma.RepositoryScoreScalarFieldEnum = {
   id: 'id',
   repositoryId: 'repositoryId',
   analysisId: 'analysisId',
-  qualityScore: 'qualityScore',
-  archScore: 'archScore',
-  docScore: 'docScore',
-  testScore: 'testScore',
-  securityScore: 'securityScore',
-  maintainScore: 'maintainScore',
-  deployReady: 'deployReady',
-  techDebt: 'techDebt',
+  overall: 'overall',
+  architecture: 'architecture',
+  documentation: 'documentation',
+  testing: 'testing',
+  deployment: 'deployment',
+  security: 'security',
+  complexity: 'complexity',
+  maintainability: 'maintainability',
+  confidence: 'confidence',
+  strengths: 'strengths',
+  weaknesses: 'weaknesses',
+  recommendations: 'recommendations',
   createdAt: 'createdAt'
 };
 
@@ -270,6 +280,11 @@ exports.Prisma.AiConversationScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.JsonNullValueInput = {

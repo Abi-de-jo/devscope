@@ -25,15 +25,72 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevScope — GitHub Wrapped for Engineering Credibility",
+  metadataBase: new URL("https://gitrating.mozen.in"),
+  title: {
+    default: "GitRating — GitHub Wrapped, GitScore & Engineering Rankings",
+    template: "%s | GitRating",
+  },
   description:
-    "Connect your GitHub, get a shareable Engineering Score card in 60 seconds, see exactly what's holding you back.",
+    "Connect your GitHub, analyze your repos, and get your GitScore. GitRating is a 10-axis GitHub wrapped developer rating and engineering scorecard.",
+  keywords: [
+    "GitHub Wrapped",
+    "GitScore",
+    "Git Ranking",
+    "GitHub Score",
+    "Developer Ranking",
+    "GitRating",
+    "Engineering Credibility",
+    "git",
+    "github",
+    "developer scorecard",
+    "code audit",
+    "programmer rating",
+    "devscope",
+  ],
+  authors: [{ name: "Mozen Studio", url: "https://mozen.in" }],
+  creator: "Mozen Studio",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
-    title: "DevScope — GitHub Wrapped for Engineering Credibility",
+    title: "GitRating — GitHub Wrapped, GitScore & Developer Ranking",
     description:
-      "Connect your GitHub, get a shareable Engineering Score card in 60 seconds.",
+      "Connect your GitHub to calculate your GitScore and engineering credibility card in 60 seconds.",
+    url: "https://gitrating.mozen.in",
+    siteName: "GitRating",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "GitRating — GitHub Wrapped for Engineering Credibility",
+      },
+    ],
+    locale: "en_US",
     type: "website",
-    siteName: "DevScope",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GitRating — GitHub Wrapped, GitScore & Developer Ranking",
+    description:
+      "Connect your GitHub to calculate your GitScore and engineering credibility card in 60 seconds.",
+    images: ["/og.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
   },
 };
 

@@ -3,14 +3,27 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, Lock } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
 import { signInWithGithub, useSession, signOut } from "@/lib/auth-client";
+import { LoadingButton } from "@/components/loaders/button-loading";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [connecting, setConnecting] = useState(false);
   const { data: session, isPending } = useSession();
+
+  const handleConnect = () => {
+    setConnecting(true);
+    try {
+      localStorage.setItem("devscope:returnTo", window.location.pathname);
+    } catch { /* noop */ }
+    signInWithGithub(window.location.pathname);
+  };
+
+  /* Locked pages — show lock icon when user is logged out */
+  const LOCKED_PAGES = new Set(["/leaderboard", "/dashboard"]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -47,28 +60,17 @@ export function Navigation() {
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700,
-            fontSize: "1.25rem",
+            fontSize: "1.75rem",
             color: "var(--ink)",
             textDecoration: "none",
             display: "flex",
             alignItems: "center",
-            gap: "0.5rem",
+            gap: "0",
           }}
         >
-          <span
-            style={{
-              backgroundColor: "var(--ink)",
-              color: "var(--paper)",
-              padding: "0.2rem 0.5rem",
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.7rem",
-              fontWeight: 600,
-              letterSpacing: "0.04em",
-            }}
-          >
-            DS
-          </span>
-          DevScope
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+ 
+          GitRating
         </Link>
 
         {/* Desktop Nav */}
@@ -81,67 +83,80 @@ export function Navigation() {
           className="hidden md:flex"
         >
           {[
+            { href: "/battle", label: "Battle" },
+            { href: "/leaderboard", label: "Leaderboard" },
             { href: "/dashboard", label: "Dashboard" },
+            { href: "/methodology", label: "Methodology" },
             { href: "/about", label: "About" },
-          ].map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.8125rem",
-                fontWeight: 500,
-                textTransform: "uppercase",
-                letterSpacing: "0.06em",
-                color: "var(--ink)",
-                textDecoration: "none",
-                position: "relative",
-                padding: "0.25rem 0",
-              }}
-              onMouseEnter={(e) => {
-                const target = e.currentTarget;
-                target.style.color = "var(--accent)";
-              }}
-              onMouseLeave={(e) => {
-                const target = e.currentTarget;
-                target.style.color = "var(--ink)";
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
+          ].map((link) => {
+            const isLocked = !session && LOCKED_PAGES.has(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.8125rem",
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
+                  color: isLocked ? "var(--muted)" : "var(--ink)",
+                  textDecoration: "none",
+                  position: "relative",
+                  padding: "0.25rem 0",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                }}
+                onMouseEnter={(e) => {
+                  const target = e.currentTarget;
+                  target.style.color = "var(--accent)";
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.currentTarget;
+                  target.style.color = isLocked ? "var(--muted)" : "var(--ink)";
+                }}
+              >
+                {link.label}
+                {isLocked && (
+                  <Lock size={11} strokeWidth={2.5} style={{ opacity: 0.55, flexShrink: 0 }} />
+                )}
+              </Link>
+            );
+          })}
           {isPending ? (
             <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--muted)" }}>
               Loading...
             </div>
           ) : session ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              {session.user.image && (
+            <Link
+              href="/profile"
+              aria-label="Profile"
+              className="icon-btn"
+              style={{
+                width: "38px",
+                height: "38px",
+                borderRadius: "50%",
+                overflow: "hidden",
+              }}
+            >
+              {session.user.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={session.user.image}
-                  alt={session.user.name || "User avatar"}
-                  style={{ width: "24px", height: "24px", borderRadius: "50%", border: "var(--border-width) solid var(--ink)" }}
+                  alt={session.user.name || "User"}
+                  style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover", display: "block" }}
                 />
+              ) : (
+                <User size={18} />
               )}
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, color: "var(--ink)" }}>
-                {session.user.name || session.user.email}
-              </span>
-              <button
-                type="button"
-                onClick={() => signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } })}
-                className="btn-secondary"
-                style={{ padding: "0.5rem 1rem", fontSize: "0.75rem" }}
-              >
-                Sign Out
-              </button>
-            </div>
+            </Link>
           ) : (
             <button
               type="button"
               onClick={() => signInWithGithub()}
               className="btn-primary"
-              style={{ padding: "0.625rem 1.25rem", fontSize: "0.75rem" }}
+              style={{ padding: "0.625rem 1.75rem", fontSize: "0.75rem" }}
             >
               <GithubIcon size={15} />
               Connect GitHub
@@ -191,47 +206,53 @@ export function Navigation() {
               }}
             >
               {[
+                { href: "/battle", label: "Battle" },
+                { href: "/leaderboard", label: "Leaderboard" },
                 { href: "/dashboard", label: "Dashboard" },
+                { href: "/methodology", label: "Methodology" },
                 { href: "/about", label: "About" },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.8125rem",
-                    fontWeight: 500,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
-                    color: "var(--ink)",
-                    textDecoration: "none",
-                    padding: "0.5rem 0",
-                    borderBottom: "var(--border-width) solid var(--ink)",
-                  }}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              ].map((link) => {
+                const isLocked = !session && LOCKED_PAGES.has(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.8125rem",
+                      fontWeight: 500,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                      color: isLocked ? "var(--muted)" : "var(--ink)",
+                      textDecoration: "none",
+                      padding: "0.5rem 0",
+                      borderBottom: "var(--border-width) solid var(--ink)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.4rem",
+                    }}
+                  >
+                    {link.label}
+                    {isLocked && (
+                      <Lock size={11} strokeWidth={2.5} style={{ opacity: 0.55, flexShrink: 0 }} />
+                    )}
+                  </Link>
+                );
+              })}
               {isPending ? (
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--muted)", textAlign: "center", padding: "0.5rem 0" }}>
                   Loading...
                 </div>
               ) : session ? (
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "0.5rem" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.5rem 0" }}>
-                    {session.user.image && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={session.user.image}
-                        alt={session.user.name || "User avatar"}
-                        style={{ width: "28px", height: "28px", borderRadius: "50%", border: "var(--border-width) solid var(--ink)" }}
-                      />
-                    )}
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--ink)" }}>
-                      {session.user.name || session.user.email}
-                    </span>
-                  </div>
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsOpen(false)}
+                    style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.5rem 0", borderBottom: "var(--border-width) solid var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.8125rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ink)", textDecoration: "none" }}
+                  >
+                    <User size={18} /> Profile
+                  </Link>
                   <button
                     type="button"
                     onClick={() => {
