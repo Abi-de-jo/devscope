@@ -64,15 +64,7 @@ export function Footer() {
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logo.png"
-                alt="GitRating Logo"
-                style={{
-                  height: "32px",
-                  width: "auto",
-                  display: "block",
-                }}
-              />
+  
               GitRating
             </Link>
             <p
