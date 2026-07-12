@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, User, Lock } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
 import { signInWithGithub, useSession, signOut } from "@/lib/auth-client";
-import { LoadingButton } from "@/components/loaders/button-loading";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +21,6 @@ export function Navigation() {
     signInWithGithub(window.location.pathname);
   };
 
-  /* Locked pages — show lock icon when user is logged out */
   const LOCKED_PAGES = new Set(["/leaderboard", "/dashboard"]);
 
   useEffect(() => {
@@ -31,163 +29,189 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close modal on escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        backgroundColor: scrolled ? "rgba(245, 244, 240, 0.85)" : "var(--paper)",
-        backdropFilter: scrolled ? "blur(12px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
-        borderBottom: "var(--border-width) solid var(--ink)",
-        transition: "background-color 0.2s, backdrop-filter 0.2s",
-      }}
-    >
-      <nav
+    <>
+      <style>{`
+        .nav-desktop { display: flex; }
+        .nav-hamburger { display: none; }
+        @media (max-width: 768px) {
+          .nav-desktop { display: none !important; }
+          .nav-hamburger { display: flex !important; }
+        }
+      `}</style>
+
+      <header
         style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "0.875rem 1.5rem",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+          backgroundColor: scrolled ? "rgba(245, 244, 240, 0.85)" : "var(--paper)",
+          backdropFilter: scrolled ? "blur(12px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+          borderBottom: "var(--border-width) solid var(--ink)",
+          transition: "background-color 0.2s, backdrop-filter 0.2s",
         }}
       >
-        {/* Logo */}
-        <Link
-          href="/"
+        <nav
           style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 700,
-            fontSize: "1.75rem",
-            color: "var(--ink)",
-            textDecoration: "none",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            padding: "0.875rem 1.5rem",
             display: "flex",
             alignItems: "center",
-            gap: "0",
+            justifyContent: "space-between",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
- 
-          GitRating
-        </Link>
+          {/* Logo */}
+          <Link
+            href="/"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+              fontSize: "1.75rem",
+              color: "var(--ink)",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            GitRating
+          </Link>
 
-        {/* Desktop Nav */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "2rem",
-          }}
-          className="hidden md:flex"
-        >
-          {[
-            { href: "/battle", label: "Battle" },
-            { href: "/leaderboard", label: "Leaderboard" },
-            { href: "/dashboard", label: "Dashboard" },
-            { href: "/methodology", label: "Methodology" },
-            { href: "/about", label: "About" },
-          ].map((link) => {
-            const isLocked = !session && LOCKED_PAGES.has(link.href);
-            return (
+          {/* Desktop Nav */}
+          <div
+            className="nav-desktop"
+            style={{
+              alignItems: "center",
+              gap: "2rem",
+            }}
+          >
+            {[
+              { href: "/battle", label: "Battle" },
+              { href: "/leaderboard", label: "Leaderboard" },
+              { href: "/dashboard", label: "Dashboard" },
+              { href: "/methodology", label: "Methodology" },
+              { href: "/about", label: "About" },
+            ].map((link) => {
+              const isLocked = !session && LOCKED_PAGES.has(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.8125rem",
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.06em",
+                    color: isLocked ? "var(--muted)" : "var(--ink)",
+                    textDecoration: "none",
+                    padding: "0.25rem 0",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = isLocked ? "var(--muted)" : "var(--ink)";
+                  }}
+                >
+                  {link.label}
+                  {isLocked && (
+                    <Lock size={11} strokeWidth={2.5} style={{ opacity: 0.55, flexShrink: 0 }} />
+                  )}
+                </Link>
+              );
+            })}
+            {isPending ? (
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--muted)" }}>
+                Loading…
+              </div>
+            ) : session ? (
               <Link
-                key={link.href}
-                href={link.href}
+                href="/profile"
+                aria-label="Profile"
+                className="icon-btn"
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.8125rem",
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  color: isLocked ? "var(--muted)" : "var(--ink)",
-                  textDecoration: "none",
-                  position: "relative",
-                  padding: "0.25rem 0",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.4rem",
-                }}
-                onMouseEnter={(e) => {
-                  const target = e.currentTarget;
-                  target.style.color = "var(--accent)";
-                }}
-                onMouseLeave={(e) => {
-                  const target = e.currentTarget;
-                  target.style.color = isLocked ? "var(--muted)" : "var(--ink)";
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "50%",
+                  overflow: "hidden",
                 }}
               >
-                {link.label}
-                {isLocked && (
-                  <Lock size={11} strokeWidth={2.5} style={{ opacity: 0.55, flexShrink: 0 }} />
+                {session.user.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={session.user.image}
+                    alt={session.user.name || "User"}
+                    style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover", display: "block" }}
+                  />
+                ) : (
+                  <User size={18} />
                 )}
               </Link>
-            );
-          })}
-          {isPending ? (
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--muted)" }}>
-              Loading...
-            </div>
-          ) : session ? (
-            <Link
-              href="/profile"
-              aria-label="Profile"
-              className="icon-btn"
-              style={{
-                width: "38px",
-                height: "38px",
-                borderRadius: "50%",
-                overflow: "hidden",
-              }}
-            >
-              {session.user.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={session.user.image}
-                  alt={session.user.name || "User"}
-                  style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover", display: "block" }}
-                />
-              ) : (
-                <User size={18} />
-              )}
-            </Link>
-          ) : (
-            <button
-              type="button"
-              onClick={handleConnect}
-              disabled={connecting}
-              className="btn-primary"
-              style={{
-                padding: "0.625rem 1.75rem",
-                fontSize: "0.75rem",
-                opacity: connecting ? 0.7 : 1,
-                pointerEvents: connecting ? "none" : "auto",
-              }}
-            >
-              <GithubIcon size={15} />
-              {connecting ? "CONNECTING…" : "Connect GitHub"}
-            </button>
-          )}
-        </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleConnect}
+                disabled={connecting}
+                className="btn-primary"
+                style={{
+                  padding: "0.625rem 1.75rem",
+                  fontSize: "0.75rem",
+                  opacity: connecting ? 0.7 : 1,
+                  pointerEvents: connecting ? "none" : "auto",
+                }}
+              >
+                <GithubIcon size={15} />
+                {connecting ? "CONNECTING…" : "Connect GitHub"}
+              </button>
+            )}
+          </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          style={{
-            background: "none",
-            border: "var(--border-width) solid var(--ink)",
-            borderRadius: "var(--radius)",
-            cursor: "pointer",
-            padding: "0.5rem",
-            boxShadow: "var(--shadow-xs)",
-            backgroundColor: "var(--paper-alt)",
-          }}
-          className="md:hidden"
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </nav>
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="nav-hamburger"
+            style={{
+              background: "none",
+              border: "var(--border-width) solid var(--ink)",
+              borderRadius: "var(--radius)",
+              cursor: "pointer",
+              padding: "0.5rem",
+              boxShadow: "var(--shadow-xs)",
+              backgroundColor: "var(--paper-alt)",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            aria-label="Open menu"
+          >
+            <Menu size={20} />
+          </button>
+        </nav>
+      </header>
 
       {/* Mobile Nav — full-screen modal */}
       <AnimatePresence>
@@ -197,11 +221,10 @@ export function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="md:hidden"
             style={{
               position: "fixed",
               inset: 0,
-              zIndex: 100,
+              zIndex: 200,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -314,11 +337,7 @@ export function Navigation() {
                   >
                     {link.label}
                     {isLocked && (
-                      <Lock
-                        size={11}
-                        strokeWidth={2.5}
-                        style={{ opacity: 0.55, flexShrink: 0 }}
-                      />
+                      <Lock size={11} strokeWidth={2.5} style={{ opacity: 0.55, flexShrink: 0 }} />
                     )}
                   </Link>
                 );
@@ -417,6 +436,6 @@ export function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
