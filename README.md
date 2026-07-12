@@ -1,16 +1,16 @@
-# DevScope
+# GitRating
 
 **GitHub Wrapped for Engineering Credibility.**
 
 Connect your GitHub, get a shareable Engineering Score card in 60 seconds, see exactly what's holding you back.
 
-→ [Live Demo](https://devscope.mozen.in) (coming soon)
+→ [Live Demo](https://GitRating.mozen.in) (coming soon)
 
 ---
 
-## What is DevScope?
+## What is GitRating?
 
-DevScope analyzes your public GitHub repositories and produces a credible, defensible Engineering Score — not vanity metrics like commits and stars, but real signal about your frontend, backend, DevOps, testing, documentation, and architecture skills.
+GitRating analyzes your public GitHub repositories and produces a credible, defensible Engineering Score — not vanity metrics like commits and stars, but real signal about your frontend, backend, DevOps, testing, documentation, and architecture skills.
 
 **Free tier:**
 - Connect GitHub (one OAuth click)
@@ -50,8 +50,8 @@ DevScope analyzes your public GitHub repositories and produces a credible, defen
 
 ```bash
 # Clone
-git clone https://github.com/Abi-de-jo/devscope.git
-cd devscope
+git clone https://github.com/Abi-de-jo/GitRating.git
+cd GitRating
 
 # Install
 bun install
@@ -107,7 +107,7 @@ prisma/
 ## How It Works
 
 1. **Connect** — One GitHub OAuth click (public repos only)
-2. **Sync** — DevScope fetches your public repos, languages, README, topics
+2. **Sync** — GitRating fetches your public repos, languages, README, topics
 3. **Score** — AI analyzes code quality, architecture, docs, testing across 6 axes
 4. **Share** — Get a shareable score card (auto-generated OG image)
 5. **Improve** — See exactly what's holding you back, with cited evidence
@@ -126,7 +126,7 @@ Neobrutalist print-editorial aesthetic:
 
 ## Brand
 
-**DevScope** by [Mozen.in](https://mozen.in)
+**GitRating** by [Mozen.in](https://mozen.in)
 
 ---
 

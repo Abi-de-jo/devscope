@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { fullSync } from "@/lib/github";
+import { rateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 export async function POST() {
   try {
@@ -13,6 +14,17 @@ export async function POST() {
 
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const userId = session.user.id;
+
+    // Rate limit: 5 syncs / minute per user (GitHub API + DB writes are costly)
+    const rl = rateLimit(`sync:post:${userId}`, { windowMs: 60_000, max: 5 });
+    if (!rl.success) {
+      return NextResponse.json(
+        { error: "Rate limited. Slow down." },
+        { status: 429, headers: rateLimitHeaders(rl) }
+      );
     }
 
     // Get GitHub account with access token

@@ -25,15 +25,15 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevScope — GitHub Wrapped for Engineering Credibility",
+  title: "GitRating — GitHub Wrapped for Engineering Credibility",
   description:
     "Connect your GitHub, get a shareable Engineering Score card in 60 seconds, see exactly what's holding you back.",
   openGraph: {
-    title: "DevScope — GitHub Wrapped for Engineering Credibility",
+    title: "GitRating — GitHub Wrapped for Engineering Credibility",
     description:
       "Connect your GitHub, get a shareable Engineering Score card in 60 seconds.",
     type: "website",
-    siteName: "DevScope",
+    siteName: "GitRating",
   },
 };
 

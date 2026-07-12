@@ -96,6 +96,9 @@ model GithubProfile {
   updatedAt    DateTime  @updatedAt
   lastSyncedAt DateTime?
 
+  shareCount Int @default(0) // incremented when the OG/share card is fetched
+  viewCount  Int @default(0) // incremented on public profile view
+
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   repositories Repository[]
 
@@ -112,6 +115,7 @@ model Repository {
   htmlUrl         String
   homepage        String?
   language        String?
+  languages       Json? // { "TypeScript": 12345, ... } byte counts from GitHub languages API
   stargazersCount Int       @default(0)
   forksCount      Int       @default(0)
   openIssuesCount Int       @default(0)
@@ -146,8 +150,11 @@ model Analysis {
   overallScore    Int? // 0-100
   engineerLevel   String? // Beginner | Junior | Mid-Level | Senior | Lead | Principal
   confidenceScore Float?
+  confidence      Int? // overall confidence 0-100 (transparency)
   strengths       String[] // top 3 strengths
   gaps            String[] // top 3 gaps
+  weaknesses      Json? // overall missing/weakness signals (string[])
+  recommendations Json? // Array<{ title: string; impact: string; reason: string }>
   summary         String? // AI-generated summary
   costCents       Int       @default(0) // track AI cost per analysis
   createdAt       DateTime  @default(now())
@@ -163,13 +170,14 @@ model Analysis {
 }
 
 model AnalysisScore {
-  id          String  @id @default(cuid())
+  id          String @id @default(cuid())
   analysisId  String
   category    String // Frontend | Backend | DevOps | Testing | Docs | Architecture
   score       Int // 0-100
   confidence  Float // 0-1
-  evidence    String? // JSON array of evidence items
-  suggestions String? // JSON array of suggestions
+  evidence    Json? // string[] of evidence items
+  missing     Json? // string[] of signals NOT detected for this axis
+  suggestions Json? // Array<{ title; impact; reason }>
 
   analysis Analysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
 
@@ -178,18 +186,22 @@ model AnalysisScore {
 }
 
 model RepositoryScore {
-  id            String   @id @default(cuid())
-  repositoryId  String
-  analysisId    String?
-  qualityScore  Int?
-  archScore     Int?
-  docScore      Int?
-  testScore     Int?
-  securityScore Int?
-  maintainScore Int?
-  deployReady   Float?
-  techDebt      String? // JSON indicators
-  createdAt     DateTime @default(now())
+  id              String   @id @default(cuid())
+  repositoryId    String
+  analysisId      String?
+  overall         Int? // 0-100 estimated repository score
+  architecture    Int?
+  documentation   Int?
+  testing         Int?
+  deployment      Int?
+  security        Int?
+  complexity      Int?
+  maintainability Int?
+  confidence      Int? // 0-100
+  strengths       Json? // string[]
+  weaknesses      Json? // string[]
+  recommendations Json? // Array<{ title; impact; reason }>
+  createdAt       DateTime @default(now())
 
   repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
   analysis   Analysis?  @relation(fields: [analysisId], references: [id], onDelete: SetNull)

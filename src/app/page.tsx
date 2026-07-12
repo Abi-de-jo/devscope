@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   ArrowDown,
@@ -14,8 +14,9 @@ import {
   Sparkles,
 } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
-import { signInWithGithub } from "@/lib/auth-client";
+import { signInWithGithub, useSession } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { LoadingButton } from "@/components/loaders/button-loading";
 
 /* ─── Kinetic Hero ─────────────────────────────────────────────────── */
 
@@ -67,6 +68,8 @@ function KineticHero() {
     </h1>
   );
 }
+
+/* ─── Score Ring (SVG arc) ────────────────────────────────────────── */
 
 /* ─── Animated Score Preview (fake mock) ──────────────────────────── */
 
@@ -317,9 +320,9 @@ const metrics = [
   },
   {
     icon: Shield,
-    stat: "6-axis",
+    stat: "10-axis",
     title: "Skill Radar",
-    desc: "Frontend · Backend · DevOps · Testing · Docs · Architecture.",
+    desc: "Architecture · Backend · Frontend · Code Quality · Testing · Security · DevOps · Docs · Maintainability · Judgment.",
     tags: ["Radar Chart", "Visual"],
   },
   {
@@ -340,7 +343,7 @@ const metrics = [
     icon: Globe,
     stat: "∞",
     title: "Public Profile",
-    desc: "Your devscope.mozen.in/u/username — SEO-optimized, backlink engine.",
+    desc: "Your GitRating.mozen.in/u/username — SEO-optimized, backlink engine.",
     tags: ["SEO", "Portfolio"],
   },
 ];
@@ -389,7 +392,7 @@ function MetricsGrid() {
               >
                 {m.stat}
               </div>
-              <Icon 
+              <Icon
                 size={20}
                 strokeWidth={1.5}
                 style={{ color: "var(--muted)" }}
@@ -454,7 +457,7 @@ const steps = [
   {
     num: "02",
     title: "Get Scored",
-    desc: "AI analyzes your repos across 6 axes. Real evidence, not vibes.",
+    desc: "AI analyzes your repos across 10 axes. Real evidence, not vibes.",
     icon: BarChart3,
   },
   {
@@ -564,7 +567,7 @@ function WhatIDo() {
       }}
     >
       <div className="uppercase-label" style={{ marginBottom: "1.5rem", justifyContent: "center" }}>
-        What DevScope actually does
+        What GitRating actually does
       </div>
       <h2
         style={{
@@ -591,7 +594,7 @@ function WhatIDo() {
         }}
       >
         The portfolio nobody looks at. The missing tests. The README that
-        doesn&apos;t exist. DevScope takes the expensive problem everyone
+        doesn&apos;t exist. GitRating takes the expensive problem everyone
         learned to live with — and turns it into a number you can fix.
       </p>
     </motion.div>
@@ -625,7 +628,7 @@ function Testimonial() {
           letterSpacing: "-0.01em",
         }}
       >
-        &ldquo;I had no idea my Backend score was that low until DevScope showed
+        &ldquo;I had no idea my Backend score was that low until GitRating showed
         me the exact repo that dragged it down. Fixed it in a weekend.&rdquo;
       </div>
       <div
@@ -650,7 +653,7 @@ function Testimonial() {
             display: "inline-block",
           }}
         />
-        DevScope Beta User
+        GitRating Beta User
         <span
           style={{
             width: "2rem",
@@ -667,6 +670,13 @@ function Testimonial() {
 /* ─── Final CTA ────────────────────────────────────────────────────── */
 
 function CTASection() {
+  const { data: session } = useSession();
+  const [connecting, setConnecting] = useState(false);
+  const handleConnect = () => {
+    setConnecting(true);
+    signInWithGithub();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -688,7 +698,7 @@ function CTASection() {
           justifyContent: "center",
         }}
       >
-        Ready?
+        {session ? "Welcome back" : "Ready?"}
       </div>
       <h2
         style={{
@@ -700,7 +710,7 @@ function CTASection() {
           marginBottom: "1rem",
         }}
       >
-        Know your engineering score.
+        {session ? "Your score is live. Check your dashboard or share your card." : "Know your engineering score."}
       </h2>
       <p
         style={{
@@ -712,8 +722,9 @@ function CTASection() {
           lineHeight: 1.6,
         }}
       >
-        Connect your GitHub. Get a shareable score card in 60 seconds. No
-        credit card. No commitment.
+        {session
+          ? "Your dashboard, radar, and shareable card are ready."
+          : "Connect your GitHub. Get a shareable score card in 60 seconds. No credit card. No commitment."}
       </p>
       <div
         style={{
@@ -723,15 +734,101 @@ function CTASection() {
           flexWrap: "wrap",
         }}
       >
-        <button type="button" onClick={() => signInWithGithub()} className="btn-accent">
-          <GithubIcon size={18} />
-          Connect GitHub
-          <ArrowRight size={16} />
-        </button>
-        <Link href="/dashboard" className="btn-secondary">
-          See Demo
-        </Link>
+        {session ? (
+          <>
+            <Link href="/dashboard" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem", fontSize: "0.85rem" }}>
+              <BarChart3 size={16} />
+              View Dashboard
+              <ArrowRight size={16} />
+            </Link>
+            <Link href="/dashboard" className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+              <Share2 size={14} />
+              Share Score
+            </Link>
+          </>
+        ) : (
+          <>
+            <LoadingButton
+              variant="accent"
+              loading={connecting}
+              loadingText="CONNECTING…"
+              onClick={handleConnect}
+            >
+              <GithubIcon size={18} />
+              Connect GitHub
+              <ArrowRight size={16} />
+            </LoadingButton>
+            <Link href="/dashboard" className="btn-secondary">
+              See Demo
+            </Link>
+          </>
+        )}
       </div>
+    </motion.div>
+  );
+}
+
+/* ─── Hero CTA (auth-aware) ───────────────────────────────────────── */
+
+function HeroCtaLoggedOut() {
+  const [connecting, setConnecting] = useState(false);
+  const handleConnect = () => {
+    setConnecting(true);
+    signInWithGithub();
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.1 }}
+      style={{
+        display: "flex",
+        gap: "1.75rem",
+        marginBottom: "0",
+        flexWrap: "wrap",
+      }}
+    >
+      <LoadingButton
+        variant="primary"
+        loading={connecting}
+        loadingText="CONNECTING…"
+        onClick={handleConnect}
+      >
+        <GithubIcon size={18} />
+        Connect GitHub
+        <ArrowRight size={16} />
+      </LoadingButton>
+      <a href="#proof" className="btn-ghost">
+        See the proof
+        <ArrowDown size={14} />
+      </a>
+    </motion.div>
+  );
+}
+
+function HeroCtaLoggedIn() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.1 }}
+      style={{
+        display: "flex",
+        gap: "1.75rem",
+        marginBottom: "0",
+        flexWrap: "wrap",
+      }}
+    >
+      <Link href="/dashboard" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem", fontSize: "0.85rem" }}>
+        <BarChart3 size={16} />
+        View My Dashboard
+        <ArrowRight size={16} />
+      </Link>
+      <Link href="/dashboard" className="btn-ghost" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+        <Share2 size={14} />
+        Share My Score
+      </Link>
     </motion.div>
   );
 }
@@ -739,6 +836,8 @@ function CTASection() {
 /* ─── Page ─────────────────────────────────────────────────────────── */
 
 export default function Home() {
+  const { data: session } = useSession();
+
   return (
     <>
       {/* Hero */}
@@ -747,6 +846,8 @@ export default function Home() {
           padding: "clamp(2.5rem, 4vw, 5rem) 1.5rem 4rem",
           maxWidth: "1200px",
           margin: "0 auto",
+          backgroundColor: "#f3f3ee",
+          borderRadius: "var(--radius)",
         }}
       >
         <motion.div
@@ -788,31 +889,12 @@ export default function Home() {
                 marginBottom: "1.5rem",
               }}
             >
-              Connect your GitHub and get a credible Engineering Score across 6
-              skill axes — real signal from your code, not vanity stars.
+              {session
+                ? "Your Engineering Score is ready — 10 axes of real signal from your code, not vanity stars."
+                : "Connect your GitHub and get a credible Engineering Score across 10 skill axes — real signal from your code, not vanity stars."}
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1 }}
-              style={{
-                display: "flex",
-                gap: "1.75rem",
-                marginBottom: "0",
-                flexWrap: "wrap",
-              }}
-            >
-              <button type="button" onClick={() => signInWithGithub()} className="btn-primary">
-                <GithubIcon size={18} />
-                Connect GitHub
-                <ArrowRight size={16} />
-              </button>
-              <a href="#proof" className="btn-ghost">
-                See the proof
-                <ArrowDown size={14} />
-              </a>
-            </motion.div>
+            {session ? <HeroCtaLoggedIn /> : <HeroCtaLoggedOut />}
           </div>
 
           {/* Right — Score Preview */}

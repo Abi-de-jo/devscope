@@ -2,18 +2,18 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { GithubIcon, TwitterIcon, LinkedinIcon } from "@/components/brand-icons";
+import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/brand-icons";
 
 const footerLinks = {
   Product: [
     { label: "Dashboard", href: "/dashboard" },
-    { label: "How it Works", href: "/#how-it-works" },
+    { label: "How it Works", href: "/how-it-works" },
     { label: "Changelog", href: "/changelog" },
   ],
   Company: [
     { label: "About", href: "/about" },
-    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
+    { label: "Changelog", href: "/changelog" },
   ],
   Legal: [
     { label: "Privacy", href: "/privacy" },
@@ -75,7 +75,7 @@ export function Footer() {
               >
                 DS
               </span>
-              DevScope
+              GitRating
             </Link>
             <p
               style={{
@@ -99,9 +99,9 @@ export function Footer() {
               }}
             >
               {[
-                { href: "https://github.com/Abi-de-jo/devscope", label: "GitHub", icon: GithubIcon },
-                { href: "https://twitter.com/mozen_in", label: "Twitter", icon: TwitterIcon },
-                { href: "https://linkedin.com/company/mozen-in", label: "LinkedIn", icon: LinkedinIcon },
+                { href: "https://github.com/Abi-de-jo", label: "GitHub", icon: GithubIcon },
+                { href: "https://www.linkedin.com/in/codebyabisheik", label: "LinkedIn", icon: LinkedinIcon },
+                { href: "https://www.instagram.com/codebyabi", label: "Instagram", icon: InstagramIcon },
               ].map((s) => {
                 const Icon = s.icon;
                 return (
@@ -216,7 +216,7 @@ export function Footer() {
               letterSpacing: "0.02em",
             }}
           >
-            © 2026 DevScope by Mozen.in. All rights reserved.
+            © 2026 GitRating by Mozen.in. All rights reserved.
           </p>
 
           <div
