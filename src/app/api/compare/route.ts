@@ -17,7 +17,7 @@ import { compareProfiles } from "@/lib/compare-engine";
 export async function POST(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
-  const rl = rateLimit(`compare:${ip}`, {
+  const rl = await rateLimit(`compare:${ip}`, {
     windowMs: 60_000,
     max: 10,
   });

@@ -22,7 +22,7 @@ const VALID_SCOPES: LeaderboardScope[] = ["city", "state", "country"];
 export async function GET(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
-  const rl = rateLimit(`leaderboard:${ip}`, {
+  const rl = await rateLimit(`leaderboard:${ip}`, {
     windowMs: 60_000,
     max: 20,
   });

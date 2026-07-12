@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/client"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/client"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -19,11 +20,14 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  activityToken String?   @unique // opaque URL token for activity log access
+
   accounts      Account[]
   sessions      Session[]
   githubProfile GithubProfile?
   analyses      Analysis[]
   conversations AiConversation[]
+  activityLogs  ActivityLog[]
 
   @@map("users")
 }
@@ -104,6 +108,7 @@ model GithubProfile {
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   repositories Repository[]
 
+  @@index([login])
   @@map("github_profiles")
 }
 
@@ -140,6 +145,7 @@ model Repository {
   repoScores  RepositoryScore[]
   analyses    Analysis[]
 
+  @@index([profileId])
   @@map("repositories")
 }
 
@@ -168,6 +174,7 @@ model Analysis {
   repositories Repository[]
   repoScores   RepositoryScore[]
 
+  @@index([userId])
   @@map("analyses")
 }
 
@@ -223,4 +230,22 @@ model AiConversation {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("ai_conversations")
+}
+
+// ─── Activity Log (transparency) ────────────────────────────────────────
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String   // github_api | score_run | cache_hit | cache_write | auth_login | auth_refresh | sync | compare
+  detail    String?  // human-readable description (pre-sanitized)
+  meta      Json?    // structured metadata (sanitized — no secrets)
+  status    String   @default("success") // success | cached | error
+  costCents Int?     // AI cost if applicable
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("activity_logs")
 }

@@ -39,6 +39,31 @@ const SOCIALS = [
 
 export default function AboutPage() {
   return (
+    <>
+      <style>{`
+        @media (max-width: 768px) {
+          .about-row2 {
+            grid-template-columns: 1fr !important;
+          }
+          .about-row2 .about-photo {
+            aspect-ratio: 4 / 5 !important;
+            min-height: unset !important;
+            height: auto !important;
+          }
+          .about-socials {
+            grid-template-columns: 1fr !important;
+          }
+          .about-socials a {
+            border-bottom: var(--border-width) solid var(--ink) !important;
+          }
+          .about-socials a:last-child {
+            border-bottom: none !important;
+          }
+          .about-projects {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     <main style={{ maxWidth: "1100px", margin: "0 auto", padding: "clamp(2rem, 6vw, 5rem) 1.5rem" }}>
       {/* Row 1: name + summary */}
       <section style={{ marginBottom: "2.5rem" }}>
@@ -54,9 +79,9 @@ export default function AboutPage() {
       </section>
 
       {/* Row 2: photo (left) + What I do vertically (right) */}
-      <section style={{ display: "grid", gridTemplateColumns: "minmax(0, 440px) 1fr", gap: "2.5rem", alignItems: "stretch", marginBottom: "4rem" }}>
+      <section className="about-row2" style={{ display: "grid", gridTemplateColumns: "minmax(0, 440px) 1fr", gap: "2.5rem", alignItems: "stretch", marginBottom: "4rem" }}>
         {/* Left column: photo, stretched to match right column height */}
-        <div style={{ position: "relative", minHeight: "420px", border: "var(--border-width) solid var(--ink)", borderRadius: "2px", boxShadow: "var(--shadow-md)", overflow: "hidden", background: "var(--paper-alt)" }}>
+        <div className="about-photo" style={{ position: "relative", minHeight: "420px", border: "var(--border-width) solid var(--ink)", borderRadius: "2px", boxShadow: "var(--shadow-md)", overflow: "hidden", background: "var(--paper-alt)" }}>
           <Image src="/about.jpg" alt="Abisheik" fill style={{ objectFit: "cover", display: "block" }} priority sizes="(max-width: 768px) 100vw, 400px" />
         </div>
 
@@ -77,7 +102,7 @@ export default function AboutPage() {
       {/* Things I've built */}
       <section style={{ marginBottom: "4rem" }}>
         <div className="uppercase-label" style={{ marginBottom: "1.5rem" }}>Things I&apos;ve built</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
+        <div className="about-projects" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
           {PROJECTS.map((p) => (
             <a key={p.name} href={p.href} target="_blank" rel="noopener noreferrer" className="card card-hover" style={{ borderRadius: 0, padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1rem", textDecoration: "none", color: "var(--ink)" }}>
               <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.4rem", fontWeight: 700 }}>{p.name}</h3>
@@ -91,11 +116,11 @@ export default function AboutPage() {
       {/* Where to find me */}
       <section style={{ marginBottom: "4rem" }}>
         <div className="uppercase-label" style={{ marginBottom: "1.5rem" }}>Where to find me</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 0, border: "var(--border-width) solid var(--ink)", borderRadius: "2px", overflow: "hidden" }}>
+        <div className="about-socials" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 0, border: "var(--border-width) solid var(--ink)", borderRadius: "2px", overflow: "hidden" }}>
           {SOCIALS.map((s, i) => {
             const Icon = s.icon;
             return (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="card" style={{ borderRadius: 0, borderBottom: i < SOCIALS.length - 1 ? "var(--border-width) solid var(--ink)" : "none", padding: "1.5rem", display: "flex", gap: "1rem", alignItems: "center", textDecoration: "none", color: "var(--ink)" }}>
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="card" style={{ borderRadius: 0, padding: "1.5rem", display: "flex", gap: "1rem", alignItems: "center", textDecoration: "none", color: "var(--ink)" }}>
                 <div style={{ width: "2.5rem", height: "2.5rem", border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: "var(--paper-alt)" }}>
                   <Icon size={18} />
                 </div>
@@ -118,5 +143,6 @@ export default function AboutPage() {
         </Link>
       </section>
     </main>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import { prisma } from "./db";
+import { cacheGet, cacheSet, TTL } from "./cache";
 
 /* ─── GitHub REST API helpers ────────────────────────────────────────── */
 
@@ -88,6 +89,25 @@ async function githubFetch<T>(url: string, token?: string): Promise<T> {
     throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
   }
   return res.json() as Promise<T>;
+}
+
+/**
+ * Cached wrapper around githubFetch.
+ * Checks Redis before hitting the GitHub API. On miss, fetches + caches.
+ * Cache keys use a deterministic prefix so they can be invalidated on sync.
+ */
+async function cachedGithubFetch<T>(
+  cacheKey: string,
+  url: string,
+  ttlSec: number,
+  token?: string
+): Promise<T> {
+  const hit = await cacheGet<T>(cacheKey);
+  if (hit !== undefined) return hit;
+
+  const data = await githubFetch<T>(url, token);
+  await cacheSet(cacheKey, data, ttlSec);
+  return data;
 }
 
 /* ─── Sync user profile ─────────────────────────────────────────────── */
@@ -265,12 +285,14 @@ export async function fetchRepoLanguages(
   repo: string,
   token?: string
 ): Promise<Record<string, number>> {
+  const cacheKey = `gh:langs:${owner}:${repo}`;
   try {
-    const data = await githubFetch<Record<string, number>>(
+    return await cachedGithubFetch<Record<string, number>>(
+      cacheKey,
       `${GITHUB_API}/repos/${owner}/${repo}/languages`,
+      TTL.GH_LANGUAGES,
       token
     );
-    return data ?? {};
   } catch {
     return {};
   }
@@ -285,20 +307,27 @@ export async function fullSync(userId: string, accessToken: string) {
   // 2. Sync repos
   const repos = await syncPublicRepos(profile.id, accessToken);
 
-  // 3. Check READMEs for top repos (by stars, limit 20)
+  // 3. Check READMEs for top repos (by stars, limit 20) — parallel
   const topRepos = repos
     .sort((a, b) => b.stargazersCount - a.stargazersCount)
     .slice(0, 20);
 
-  for (const repo of topRepos) {
-    const [owner, name] = repo.fullName.split("/");
-    const readme = await fetchReadme(owner, name, accessToken);
-    if (readme && readme.length > 0) {
-      await prisma.repository.update({
-        where: { id: repo.id },
-        data: { hasReadme: true },
-      });
-    }
+  const readmeResults = await Promise.allSettled(
+    topRepos.map(async (repo) => {
+      const [owner, name] = repo.fullName.split("/");
+      const readme = await fetchReadme(owner, name, accessToken);
+      if (readme && readme.length > 0) {
+        await prisma.repository.update({
+          where: { id: repo.id },
+          data: { hasReadme: true },
+        });
+      }
+    })
+  );
+  // Log failures but don't break sync
+  const readmeFailures = readmeResults.filter((r) => r.status === "rejected");
+  if (readmeFailures.length > 0) {
+    console.warn(`[SYNC] ${readmeFailures.length}/${topRepos.length} README checks failed`);
   }
 
   return { profile, repos };

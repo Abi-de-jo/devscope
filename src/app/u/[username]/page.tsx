@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/db";
+import { cacheGet, cacheSet, TTL } from "@/lib/cache";
 import { notFound } from "next/navigation";
 import { SkillRadar } from "@/components/skill-radar";
-import { LanguageCapabilities } from "@/components/language-capabilities";
+import { LanguageCapabilities, type RepoLang } from "@/components/language-capabilities";
 import { CheckCircle, AlertTriangle, Sparkles, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -97,10 +98,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProfilePage({ params }: ProfilePageProps) {
-  const { username } = await params;
+/* ─── DB helpers (extracted for caching) ──────────────────────────── */
 
-  const profile = await prisma.githubProfile.findFirst({
+async function loadProfile(username: string) {
+  return prisma.githubProfile.findFirst({
     where: { login: username },
     include: {
       repositories: {
@@ -109,6 +110,49 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       },
     },
   });
+}
+
+async function loadAnalysis(username: string) {
+  const profile = await prisma.githubProfile.findFirst({
+    where: { login: username },
+    select: { userId: true },
+  });
+  if (!profile) return null;
+  return prisma.analysis.findFirst({
+    where: { userId: profile.userId, status: "completed" },
+    orderBy: { completedAt: "desc" },
+    include: {
+      scores: true,
+      repoScores: { include: { repository: true } },
+    },
+  });
+}
+
+export default async function ProfilePage({ params }: ProfilePageProps) {
+  const { username } = await params;
+
+  // Check Redis cache first — avoids DB round-trip on repeat views
+  const cacheKey = `profile:${username}`;
+  const cached = await cacheGet<{
+    profile: Awaited<ReturnType<typeof loadProfile>>;
+    analysis: Awaited<ReturnType<typeof loadAnalysis>>;
+  }>(cacheKey);
+
+  let profile: Awaited<ReturnType<typeof loadProfile>>;
+  let analysis: Awaited<ReturnType<typeof loadAnalysis>>;
+
+  if (cached) {
+    profile = cached.profile;
+    analysis = cached.analysis;
+  } else {
+    [profile, analysis] = await Promise.all([
+      loadProfile(username),
+      loadAnalysis(username),
+    ]);
+    if (profile) {
+      await cacheSet(cacheKey, { profile, analysis }, TTL.ANALYSIS);
+    }
+  }
 
   if (!profile) notFound();
 
@@ -119,15 +163,6 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       data: { viewCount: { increment: 1 } },
     })
     .catch(() => { });
-
-  const analysis = await prisma.analysis.findFirst({
-    where: { userId: profile.userId, status: "completed" },
-    orderBy: { completedAt: "desc" },
-    include: {
-      scores: true,
-      repoScores: { include: { repository: true } },
-    },
-  });
 
   const overallConf = analysis?.confidence ?? (analysis ? Math.round((analysis.confidenceScore ?? 0) * 100) : 0);
   const weaknesses = analysis ? asStr(analysis.weaknesses).length > 0 ? asStr(analysis.weaknesses) : asStr(analysis.gaps) : [];
@@ -190,7 +225,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           {/* Language Capabilities */}
           {profile.repositories.length > 0 && (
             <div style={{ marginBottom: "4rem" }}>
-              <LanguageCapabilities repositories={profile.repositories} />
+              <LanguageCapabilities repositories={profile.repositories as RepoLang[]} />
             </div>
           )}
 

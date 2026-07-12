@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, LogOut, Github, ArrowRight, RefreshCw, TrendingUp } from "lucide-react";
+import { User, LogOut, Github, ArrowRight, RefreshCw, TrendingUp, Shield } from "lucide-react";
 import { HistorySection } from "@/components/history-section";
 
 interface ProfileAnalysis {
@@ -25,6 +25,7 @@ export default function ProfilePage() {
   const [tab, setTab] = useState<Tab>("profile");
   const [analysis, setAnalysis] = useState<ProfileAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activityToken, setActivityToken] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isPending && !session) {
@@ -33,12 +34,31 @@ export default function ProfilePage() {
     }
     if (session) {
       fetch("/api/score")
-        .then((r) => r.json())
-        .then((d) => {
+        .then(async (r) => {
+          if (!r.ok) {
+            const { handleApiResponse } = await import("@/lib/errors");
+            await handleApiResponse(r);
+            setLoading(false);
+            return;
+          }
+          const d = await r.json();
           if (d.success) setAnalysis(d.analysis as ProfileAnalysis | null);
           setLoading(false);
         })
-        .catch(() => setLoading(false));
+        .catch(async () => {
+          const { showErrorToast } = await import("@/lib/errors");
+          showErrorToast(null);
+          setLoading(false);
+        });
+      // Fetch activity log token
+      fetch("/api/activity-log?limit=1")
+        .then(async (r) => {
+          if (r.ok) {
+            const d = await r.json();
+            setActivityToken(d.token);
+          }
+        })
+        .catch(() => {});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, isPending, router]);
@@ -84,9 +104,20 @@ export default function ProfilePage() {
             </a>
           )}
         </div>
-        <button type="button" onClick={handleSignOut} className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
-          <LogOut size={15} /> Sign Out
-        </button>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          {activityToken && (
+            <a
+              href={`/account/activity/${activityToken}`}
+              className="btn-secondary"
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontSize: "0.8rem" }}
+            >
+              <Shield size={15} /> Activity Log
+            </a>
+          )}
+          <button type="button" onClick={handleSignOut} className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+            <LogOut size={15} /> Sign Out
+          </button>
+        </div>
       </motion.div>
 
       {/* Tabs */}

@@ -13,6 +13,7 @@ import { LoadingButton } from "@/components/loaders/button-loading";
 import { LanguageCapabilities, type RepoLang } from "@/components/language-capabilities";
 import { LockedPreview } from "@/components/locked-preview";
 import { LockedDashboardContent } from "@/components/locked-dashboard-content";
+import { handleApiResponse } from "@/lib/errors";
 
 export default function DashboardPage() {
   const { data: session, isPending } = useSession();
@@ -28,13 +29,18 @@ export default function DashboardPage() {
   const loadAnalysis = async () => {
     try {
       const res = await fetch("/api/score", { method: "GET" });
+      if (await handleApiResponse(res)) return;
       const data = await res.json();
       if (data.success) setAnalysis(data.analysis as AnalysisData | null);
       const reposRes = await fetch("/api/repositories", { method: "GET" });
+      if (await handleApiResponse(reposRes)) return;
       const reposData = await reposRes.json();
       if (reposData.repositories) setRepositories(reposData.repositories as RepoLang[]);
     } catch (err) {
       console.error("Load failed:", err);
+      // Network error — show friendly toast
+      const { showErrorToast } = await import("@/lib/errors");
+      showErrorToast(err instanceof Error ? err : null);
     } finally {
       setLoading(false);
     }
@@ -94,11 +100,13 @@ export default function DashboardPage() {
       // Step 0: Sync GitHub repos
       async () => {
         const res = await fetch("/api/sync", { method: "POST" });
+        if (await handleApiResponse(res)) throw new Error("Sync failed");
         await res.json();
       },
       // Step 1: Score (AI)
       async () => {
         const res = await fetch("/api/score", { method: "POST" });
+        if (await handleApiResponse(res)) throw new Error("Score failed");
         await res.json();
       },
       // Step 2: Load results + repos
@@ -113,6 +121,7 @@ export default function DashboardPage() {
       async () => {
         setStep(1);
         const res = await fetch("/api/score", { method: "POST" });
+        if (await handleApiResponse(res)) throw new Error("Score failed");
         await res.json();
       },
       // Step 2: Load results

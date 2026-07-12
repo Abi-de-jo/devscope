@@ -128,7 +128,8 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  activityToken: 'activityToken'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -277,6 +278,17 @@ exports.Prisma.AiConversationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ActivityLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  action: 'action',
+  detail: 'detail',
+  meta: 'meta',
+  status: 'status',
+  costCents: 'costCents',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -318,7 +330,8 @@ exports.Prisma.ModelName = {
   Analysis: 'Analysis',
   AnalysisScore: 'AnalysisScore',
   RepositoryScore: 'RepositoryScore',
-  AiConversation: 'AiConversation'
+  AiConversation: 'AiConversation',
+  ActivityLog: 'ActivityLog'
 };
 
 /**

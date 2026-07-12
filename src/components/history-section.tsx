@@ -22,8 +22,14 @@ export function HistorySection() {
 
   useEffect(() => {
     fetch("/api/analyses")
-      .then((r) => r.json())
-      .then((d) => {
+      .then(async (r) => {
+        if (!r.ok) {
+          const { handleApiResponse } = await import("@/lib/errors");
+          await handleApiResponse(r);
+          setLoading(false);
+          return;
+        }
+        const d = await r.json();
         const arr: AnalysisListItem[] = d.analyses ?? [];
         setItems(arr);
         if (arr.length >= 2) {
@@ -32,7 +38,11 @@ export function HistorySection() {
         }
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(async () => {
+        const { showErrorToast } = await import("@/lib/errors");
+        showErrorToast(null);
+        setLoading(false);
+      });
   }, []);
 
   const a = items.find((x) => x.id === aId);

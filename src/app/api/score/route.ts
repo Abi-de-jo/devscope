@@ -4,7 +4,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { scoreDeveloper } from "@/server/scoring";
 import { rateLimit, rateLimitHeaders } from "@/lib/rate-limit";
-import { cacheGet, cacheSet, cacheDelete } from "@/lib/cache";
+import { cacheGet, cacheSet, cacheDelete, TTL } from "@/lib/cache";
+import { logScoreRun, logCacheEvent } from "@/lib/activity-log";
 
 export async function GET() {
   try {
@@ -19,7 +20,7 @@ export async function GET() {
     const userId = session.user.id;
 
     // Rate limit: 30 reads / minute per user
-    const rl = rateLimit(`score:get:${userId}`, { windowMs: 60_000, max: 30 });
+    const rl = await rateLimit(`score:get:${userId}`, { windowMs: 60_000, max: 30 });
     if (!rl.success) {
       return NextResponse.json(
         { error: "Rate limited. Slow down." },
@@ -29,8 +30,9 @@ export async function GET() {
 
     // Serve stashed data instantly until a refetch invalidates it
     const cacheKey = `score:${userId}`;
-    const cached = cacheGet(cacheKey);
+    const cached = await cacheGet(cacheKey);
     if (cached) {
+      logCacheEvent(userId, "hit", cacheKey);
       return NextResponse.json(
         { success: true, analysis: cached, cached: true },
         { headers: rateLimitHeaders(rl) }
@@ -47,7 +49,9 @@ export async function GET() {
     });
 
     if (!analysis) {
-      cacheSet(cacheKey, null, 10 * 60_000);
+      // Don't cache null — DB query for "no analysis" is fast (indexed).
+      // Caching null wastes Redis space since callers check `if (cached)`
+      // which is falsy for null, so it never actually short-circuits.
       return NextResponse.json(
         { success: true, analysis: null, cached: false },
         { headers: rateLimitHeaders(rl) }
@@ -61,7 +65,7 @@ export async function GET() {
 
     const payload = { ...analysis, username: profile?.login ?? null };
     // Stash for 10 minutes; invalidated on POST score
-    cacheSet(cacheKey, payload, 10 * 60_000);
+    await cacheSet(cacheKey, payload, TTL.SCORE_READ);
 
     return NextResponse.json(
       { success: true, analysis: payload, cached: false },
@@ -90,7 +94,7 @@ export async function POST() {
     const userId = session.user.id;
 
     // Rate limit: 10 scoring requests / minute per user (LLM cost guard)
-    const rl = rateLimit(`score:post:${userId}`, { windowMs: 60_000, max: 10 });
+    const rl = await rateLimit(`score:post:${userId}`, { windowMs: 60_000, max: 10 });
     if (!rl.success) {
       return NextResponse.json(
         { error: "Rate limited. Slow down." },
@@ -122,7 +126,8 @@ export async function POST() {
 
     if (existingAnalysis) {
       // Serve the existing analysis via GET path (cache + username attach)
-      cacheDelete(`score:${userId}`);
+      await cacheDelete(`score:${userId}`);
+      logScoreRun(userId, { repoCount: 0, cached: true, costCents: 0 });
       return NextResponse.json({
         success: true,
         analysisId: existingAnalysis.id,
@@ -133,9 +138,11 @@ export async function POST() {
     // Run scoring
     const result = await scoreDeveloper(userId, profile.id);
 
+    logScoreRun(userId, { repoCount: 0, cached: false, costCents: 0 });
+
     // Invalidate stashed data so the next read returns the fresh snapshot
-    cacheDelete(`score:${userId}`);
-    cacheDelete(`analyses:${userId}`);
+    await cacheDelete(`score:${userId}`);
+    await cacheDelete(`analyses:${userId}`);
 
     return NextResponse.json({
       success: true,

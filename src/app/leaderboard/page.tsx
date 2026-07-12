@@ -19,6 +19,7 @@ import type { LocationSuggestion } from "@/lib/location-data";
 import type { LeaderboardEntry, LeaderboardScope } from "@/lib/leaderboard";
 import { LockedPreview } from "@/components/locked-preview";
 import { LockedLeaderboardContent } from "@/components/locked-leaderboard-content";
+import { handleApiResponse } from "@/lib/errors";
 
 /* ─── Constants ─────────────────────────────────────────────────────── */
 
@@ -227,6 +228,7 @@ function LeaderboardContent() {
           limit: String(PAGE_SIZE),
         });
         const res = await fetch(`/api/leaderboard?${params}`);
+        if (await handleApiResponse(res)) return;
         const data = await res.json();
 
         if (!res.ok) {
@@ -248,6 +250,9 @@ function LeaderboardContent() {
         setPage(data.page ?? p);
         syncURL(loc.trim(), sc, data.page ?? p);
       } catch (err) {
+        // Network error — show friendly toast
+        const { showErrorToast } = await import("@/lib/errors");
+        showErrorToast(err instanceof Error ? err : null);
         setError(
           err instanceof Error ? err.message : "Something went wrong."
         );
@@ -289,11 +294,18 @@ function LeaderboardContent() {
   const toggleOptOut = async () => {
     const next = !hideFromLeaderboards;
     setHideFromLeaderboards(next);
-    await fetch("/api/leaderboard", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ hideFromLeaderboards: next }),
-    });
+    try {
+      const res = await fetch("/api/leaderboard", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hideFromLeaderboards: next }),
+      });
+      if (await handleApiResponse(res)) {
+        setHideFromLeaderboards(!next); // Revert on error
+      }
+    } catch {
+      setHideFromLeaderboards(!next); // Revert on error
+    }
   };
 
   /* ── Render ─────────────────────────────────────────────────── */
