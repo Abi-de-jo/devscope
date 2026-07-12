@@ -1,0 +1,30 @@
+{
+  "login": "Abi-de-jo",
+  "name": "R.Abisheik",
+  "avatarUrl": "https://avatars.githubusercontent.com/u/137792859?v=4",
+  "htmlUrl": "https://github.com/Abi-de-jo",
+  "score": 49,
+  "level": "Needs Work",
+  "ratingStars": 1,
+  "followers": 169,
+  "following": 11,
+  "publicRepos": 70,
+  "totalStars": 8,
+  "skills": {
+    "activity": 33,
+    "quality": 38,
+    "stack": 44,
+    "practices": 9,
+    "collaboration": 100,
+    "maturity": 70
+  },
+  "languages": {
+    "TypeScript": 70,
+    "MDX": 25,
+    "CSS": 3,
+    "HTML": 1,
+    "JavaScript": 0,
+    "Astro": 0
+  },
+  "fetchedAt": "2026-07-12T00:07:06.961Z"
+}

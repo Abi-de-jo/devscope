@@ -603,7 +603,7 @@ function emptyCategories(): Record<string, CategoryScore> {
 
 /* ─── Per-user fetch + scoring ──────────────────────────────────────── */
 
-async function fetchAndScore(username: string): Promise<CompareResult> {
+export async function fetchAndScore(username: string): Promise<CompareResult> {
   // 1. Check cache
   const cached = cacheGet<CompareResult>(`compare:${username}`);
   if (cached) return cached;

@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import {
   ArrowRight,
   ArrowDown,
@@ -12,11 +12,16 @@ import {
   Share2,
   Globe,
   Sparkles,
+  FileText,
+  Bug,
+  GitBranch,
+  Layers,
 } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
 import { signInWithGithub, useSession } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/loaders/button-loading";
+import { HeroScoreCard } from "@/components/hero-score-card";
 
 /* ─── Kinetic Hero ─────────────────────────────────────────────────── */
 
@@ -70,163 +75,6 @@ function KineticHero() {
 }
 
 /* ─── Score Ring (SVG arc) ────────────────────────────────────────── */
-
-/* ─── Animated Score Preview (fake mock) ──────────────────────────── */
-
-function ScorePreview() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        border: "var(--border-width) solid var(--ink)",
-        borderRadius: "var(--radius)",
-        boxShadow: "var(--shadow-xl)",
-        overflow: "hidden",
-        maxWidth: "680px",
-        backgroundColor: "var(--paper-alt)",
-      }}
-    >
-      {/* Left — Score */}
-      <div
-        style={{
-          padding: "2.5rem 2rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRight: "var(--border-width) solid var(--ink)",
-        }}
-      >
-        <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.6rem",
-            textTransform: "uppercase",
-            letterSpacing: "0.12em",
-            color: "var(--accent)",
-            marginBottom: "0.75rem",
-          }}
-        >
-          Engineering Score
-        </div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ delay: 0.3, duration: 0.5, ease: "backOut" }}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "5rem",
-            fontWeight: 700,
-            lineHeight: 1,
-            color: "var(--accent)",
-          }}
-        >
-          78
-        </motion.div>
-        <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.65rem",
-            color: "var(--muted)",
-            marginTop: "0.35rem",
-          }}
-        >
-          out of 100
-        </div>
-        <div
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1rem",
-            fontWeight: 700,
-            marginTop: "0.75rem",
-          }}
-        >
-          Senior Engineer
-        </div>
-      </div>
-
-      {/* Right — Mini radar bars */}
-      <div style={{ padding: "2rem 1.5rem" }}>
-        <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.6rem",
-            textTransform: "uppercase",
-            letterSpacing: "0.1em",
-            color: "var(--muted)",
-            marginBottom: "1.25rem",
-          }}
-        >
-          Skill Breakdown
-        </div>
-        {[
-          { label: "Frontend", score: 92 },
-          { label: "Backend", score: 74 },
-          { label: "DevOps", score: 61 },
-          { label: "Testing", score: 85 },
-          { label: "Docs", score: 45 },
-          { label: "Architecture", score: 88 },
-        ].map((s, i) => (
-          <div key={i} style={{ marginBottom: "0.75rem" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "0.3rem",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.65rem",
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                {s.label}
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  color: s.score >= 70 ? "var(--accent)" : "var(--ink)",
-                }}
-              >
-                {s.score}
-              </span>
-            </div>
-            <div className="score-bar">
-              <motion.div
-                className="score-bar-fill"
-                initial={{ width: 0 }}
-                animate={isInView ? { width: `${s.score}%` } : {}}
-                transition={{
-                  delay: 0.5 + i * 0.1,
-                  duration: 0.8,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
-                style={{
-                  backgroundColor:
-                    s.score >= 70 ? "var(--accent)" : "var(--ink)",
-                }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
 
 /* ─── Spec Table ───────────────────────────────────────────────────── */
 
@@ -491,7 +339,7 @@ function HowItWorks() {
             <div
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "3rem",
+                fontSize: "4rem",
                 fontWeight: 700,
                 color: "var(--accent)",
                 opacity: 0.3,
@@ -553,51 +401,269 @@ function HowItWorks() {
 
 /* ─── What I Actually Do ───────────────────────────────────────────── */
 
+const proofPoints = [
+  {
+    icon: FileText,
+    problem: "Your README is 14 months stale.",
+    detail: "Nobody reads docs that don't exist. We count them.",
+    axis: "Docs",
+    weight: "5%",
+    score: 23,
+    color: "#E74C3C",
+  },
+  {
+    icon: Bug,
+    problem: "70 repos. 3 have tests.",
+    detail: "Zero coverage means zero confidence. We measure the gap.",
+    axis: "Testing",
+    weight: "12%",
+    score: 12,
+    color: "#E74C3C",
+  },
+  {
+    icon: GitBranch,
+    problem: "One PR. 2,400 lines. No reviews.",
+    detail: "Merge-and-pray is not a workflow. We track the pattern.",
+    axis: "Judgment",
+    weight: "3%",
+    score: 8,
+    color: "#E74C3C",
+  },
+  {
+    icon: Layers,
+    problem: "Monolith with no module boundaries.",
+    detail: "Spaghetti architecture costs you hires and velocity.",
+    axis: "Architecture",
+    weight: "17%",
+    score: 31,
+    color: "#E74C3C",
+  },
+];
+
 function WhatIDo() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+    <section
       style={{
-        maxWidth: "800px",
+        maxWidth: "1200px",
         margin: "0 auto",
         padding: "5rem 1.5rem",
-        textAlign: "center",
       }}
     >
-      <div className="uppercase-label" style={{ marginBottom: "1.5rem", justifyContent: "center" }}>
-        What GitRating actually does
+      <div
+        style={{
+          textAlign: "center",
+          marginBottom: "3.5rem",
+        }}
+      >
+        <div
+          className="uppercase-label"
+          style={{ marginBottom: "1rem", justifyContent: "center" }}
+        >
+          What GitRating actually does
+        </div>
+        <h2
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(1.75rem, 4vw, 3rem)",
+            fontWeight: 700,
+            lineHeight: 1.15,
+            letterSpacing: "-0.03em",
+            marginBottom: "1rem",
+            textWrap: "balance",
+          }}
+        >
+          We find what&apos;s costing you —{" "}
+          <span style={{ color: "var(--accent)" }}>and we quantify it.</span>
+        </h2>
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "1.05rem",
+            color: "var(--muted)",
+            lineHeight: 1.6,
+            maxWidth: "560px",
+            margin: "0 auto",
+          }}
+        >
+          Real problems. Real numbers. Every score is backed by evidence from
+          your actual GitHub repos.
+        </p>
       </div>
-      <h2
+
+      {/* Proof-point cards */}
+      <div
         style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(1.75rem, 4vw, 3rem)",
-          fontWeight: 700,
-          lineHeight: 1.15,
-          letterSpacing: "-0.03em",
-          marginBottom: "1.5rem",
-          textWrap: "balance",
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "1.25rem",
         }}
+        className="proof-grid"
       >
-        We find what&apos;s costing you —{" "}
-        <span style={{ color: "var(--accent)" }}>and we quantify it.</span>
-      </h2>
-      <p
-        style={{
-          fontFamily: "var(--font-body)",
-          fontSize: "1.1rem",
-          color: "var(--muted)",
-          lineHeight: 1.7,
-          maxWidth: "600px",
-          margin: "0 auto",
-        }}
-      >
-        The portfolio nobody looks at. The missing tests. The README that
-        doesn&apos;t exist. GitRating takes the expensive problem everyone
-        learned to live with — and turns it into a number you can fix.
-      </p>
-    </motion.div>
+          {proofPoints.map((p, i) => {
+            const Icon = p.icon;
+            return (
+              <motion.button
+                key={i}
+                type="button"
+                className="card card-hover"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{
+                  delay: i * 0.1,
+                  duration: 0.5,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+                onClick={() => {
+                  document
+                    .getElementById("proof")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+                style={{
+                  borderRadius: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                  textAlign: "left",
+                  cursor: "pointer",
+                  width: "100%",
+                  border: "var(--border-width) solid var(--ink)",
+                  backgroundColor: "var(--paper-alt)",
+                  padding: "1.75rem",
+                  fontFamily: "inherit",
+                }}
+              >
+              {/* Icon + Axis label row */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div
+                  style={{
+                    width: "2.25rem",
+                    height: "2.25rem",
+                    border: "var(--border-width) solid var(--ink)",
+                    borderRadius: "var(--radius)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "var(--shadow-sm)",
+                    backgroundColor: "var(--paper)",
+                  }}
+                >
+                  <Icon size={15} strokeWidth={2} />
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.55rem",
+                    fontWeight: 600,
+                    textTransform: "uppercase" as const,
+                    letterSpacing: "0.08em",
+                    color: "var(--muted)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                  }}
+                >
+                  {p.axis}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.5rem",
+                      color: "var(--muted-light)",
+                    }}
+                  >
+                    {p.weight}
+                  </span>
+                </div>
+              </div>
+
+              {/* Problem headline */}
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "1.05rem",
+                  fontWeight: 700,
+                  lineHeight: 1.3,
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                {p.problem}
+              </div>
+
+              {/* Detail line */}
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.82rem",
+                  color: "var(--muted)",
+                  lineHeight: 1.5,
+                  margin: 0,
+                  flex: 1,
+                }}
+              >
+                {p.detail}
+              </p>
+
+              {/* Score + bar */}
+              <div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    gap: "0.4rem",
+                    marginBottom: "0.4rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1.75rem",
+                      fontWeight: 700,
+                      lineHeight: 1,
+                      color: p.color,
+                    }}
+                  >
+                    {p.score}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.55rem",
+                      color: "var(--muted-light)",
+                      textTransform: "uppercase" as const,
+                    }}
+                  >
+                    / 100
+                  </span>
+                </div>
+                <div className="score-bar">
+                  <div
+                    className="score-bar-fill"
+                    style={{
+                      width: `${p.score}%`,
+                      backgroundColor: p.color,
+                    }}
+                  />
+                </div>
+              </div>
+              </motion.button>
+            );
+          })}
+      </div>
+
+      <style>{`
+        @media (max-width: 700px) {
+          .proof-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
+    </section>
   );
 }
 
@@ -899,7 +965,7 @@ export default function Home() {
 
           {/* Right — Score Preview */}
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <ScorePreview />
+            <HeroScoreCard />
           </div>
         </motion.div>
 
