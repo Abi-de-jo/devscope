@@ -16,6 +16,7 @@ import {
   Bug,
   GitBranch,
   Layers,
+  Quote,
 } from "lucide-react";
 import { GithubIcon } from "@/components/brand-icons";
 import { signInWithGithub, useSession } from "@/lib/auth-client";
@@ -700,7 +701,7 @@ function Testimonial() {
   return (
     <section
       style={{
-        maxWidth: "720px",
+        maxWidth: "1200px",
         margin: "0 auto",
         padding: "4rem 1.5rem",
         textAlign: "center",
@@ -710,97 +711,143 @@ function Testimonial() {
         What people are saying
       </div>
 
-      {testimonials.map((t, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ delay: i * 0.12, duration: 0.5 }}
-          className="card"
-          style={{
-            borderRadius: 0,
-            padding: "2rem 2.25rem",
-            marginBottom: i < testimonials.length - 1 ? "1rem" : 0,
-            textAlign: "left",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1.25rem",
-          }}
-        >
-          {/* Quote */}
-          <div
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(1rem, 2.2vw, 1.2rem)",
-              fontWeight: 600,
-              lineHeight: 1.45,
-              color: "var(--ink)",
-              letterSpacing: "-0.01em",
-              fontStyle: "italic",
-            }}
-          >
-            &ldquo;{t.quote}&rdquo;
-          </div>
-
-          {/* Author row */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
-              paddingTop: "0.25rem",
-              borderTop: "1px solid var(--border)",
-            }}
-          >
-            {/* Avatar circle with initials */}
-            <div
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "1.25rem",
+        }}
+        className="testimonial-grid"
+      >
+        {testimonials.map((t, i) => {
+          const Icon = Quote;
+          return (
+            <motion.button
+              key={i}
+              type="button"
+              className="card card-hover"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{
+                delay: i * 0.12,
+                duration: 0.5,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
               style={{
-                width: "2.25rem",
-                height: "2.25rem",
-                borderRadius: "var(--radius)",
-                border: "var(--border-width) solid var(--ink)",
-                backgroundColor: t.avatarBg,
+                borderRadius: 0,
+                padding: "1.75rem",
+                textAlign: "left",
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.65rem",
-                fontWeight: 700,
-                letterSpacing: "0.04em",
-                color: "var(--ink)",
-                flexShrink: 0,
+                flexDirection: "column",
+                gap: "1rem",
+                cursor: "pointer",
+                width: "100%",
+                border: "var(--border-width) solid var(--ink)",
+                backgroundColor: "var(--paper-alt)",
+                fontFamily: "inherit",
               }}
             >
-              {t.initials}
-            </div>
+              {/* Quote icon */}
+              <div
+                style={{
+                  width: "2rem",
+                  height: "2rem",
+                  border: "var(--border-width) solid var(--ink)",
+                  borderRadius: "var(--radius)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "var(--shadow-sm)",
+                  backgroundColor: "var(--paper)",
+                }}
+              >
+                <Icon size={13} strokeWidth={2} />
+              </div>
 
-            <div>
+              {/* Quote */}
               <div
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.7rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase" as const,
-                  letterSpacing: "0.06em",
+                  fontFamily: "var(--font-display)",
+                  fontSize: "0.95rem",
+                  fontWeight: 600,
+                  lineHeight: 1.45,
+                  color: "var(--ink)",
+                  letterSpacing: "-0.01em",
+                  fontStyle: "italic",
+                  flex: 1,
                 }}
               >
-                {t.name}
+                &ldquo;{t.quote}&rdquo;
               </div>
+
+              {/* Author row */}
               <div
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.6rem",
-                  color: "var(--muted)",
-                  letterSpacing: "0.03em",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.6rem",
+                  paddingTop: "0.75rem",
+                  borderTop: "1px solid var(--border)",
                 }}
               >
-                {t.role}
+                <div
+                  style={{
+                    width: "2rem",
+                    height: "2rem",
+                    borderRadius: "var(--radius)",
+                    border: "var(--border-width) solid var(--ink)",
+                    backgroundColor: t.avatarBg,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.6rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.04em",
+                    color: "var(--ink)",
+                    flexShrink: 0,
+                  }}
+                >
+                  {t.initials}
+                </div>
+
+                <div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.65rem",
+                      fontWeight: 700,
+                      textTransform: "uppercase" as const,
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    {t.name}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.55rem",
+                      color: "var(--muted)",
+                      letterSpacing: "0.03em",
+                    }}
+                  >
+                    {t.role}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </motion.div>
-      ))}
+            </motion.button>
+          );
+        })}
+      </div>
+
+      <style>{`
+        @media (max-width: 820px) {
+          .testimonial-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
