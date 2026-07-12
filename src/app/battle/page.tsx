@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Swords,
@@ -17,6 +17,7 @@ import type {
   CompareResult,
 } from "@/lib/compare-engine";
 import { handleApiResponse } from "@/lib/errors";
+import { BattleCompareLoader } from "@/components/loaders/battle-compare-loader";
 
 /* ─── Category metadata ─────────────────────────────────────────────── */
 
@@ -84,6 +85,22 @@ export default function BattlePage() {
   const [results, setResults] = useState<CompareResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Battle compare loader state
+  const [showLoader, setShowLoader] = useState(false);
+  const [loaderProgress, setLoaderProgress] = useState(0);
+  const [loaderStep, setLoaderStep] = useState(0);
+  const [loaderUsernames, setLoaderUsernames] = useState<string[]>([]);
+  const [loaderAvatars, setLoaderAvatars] = useState<Record<string, string>>({});
+  const loaderIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const loaderStartRef = useRef(0);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (loaderIntervalRef.current) clearInterval(loaderIntervalRef.current);
+    };
+  }, []);
+
   /* ── Username field management ──────────────────────────────────── */
 
   const addField = () => {
@@ -110,6 +127,27 @@ export default function BattlePage() {
       return;
     }
 
+    // Start loader
+    setLoaderUsernames(valid);
+    setLoaderAvatars({});
+    setShowLoader(true);
+    setLoaderProgress(0);
+    setLoaderStep(0);
+    loaderStartRef.current = Date.now();
+
+    // Drive progress with exponential curve + step advancement
+    if (loaderIntervalRef.current) clearInterval(loaderIntervalRef.current);
+    loaderIntervalRef.current = setInterval(() => {
+      const elapsed = Date.now() - loaderStartRef.current;
+      const raw = 92 * (1 - Math.exp(-elapsed / 3000));
+      setLoaderProgress(Math.min(raw, 92));
+      // Advance steps
+      if (elapsed > 7000) setLoaderStep(3);
+      else if (elapsed > 4500) setLoaderStep(2);
+      else if (elapsed > 1800) setLoaderStep(1);
+      else setLoaderStep(0);
+    }, 80);
+
     setLoading(true);
     setError(null);
     setResults(null);
@@ -125,8 +163,27 @@ export default function BattlePage() {
 
       if (!data.success) {
         setError(data.error ?? "Comparison failed.");
+        if (loaderIntervalRef.current) clearInterval(loaderIntervalRef.current);
+        setShowLoader(false);
         return;
       }
+
+      // Extract avatar URLs from the response profiles
+      const avatarMap: Record<string, string> = {};
+      for (const p of data.profiles) {
+        if (p.avatarUrl) avatarMap[p.username] = p.avatarUrl;
+      }
+
+      // Snap progress to 100%, advance all steps, inject avatars
+      if (loaderIntervalRef.current) clearInterval(loaderIntervalRef.current);
+      setLoaderAvatars(avatarMap);
+      setLoaderStep(4);
+      setLoaderProgress(100);
+
+      // Pause to let avatars pop in and register visually
+      await new Promise((r) => setTimeout(r, 1200));
+      setShowLoader(false);
+
       setResults(data);
     } catch (err) {
       // Network error — show friendly toast
@@ -135,8 +192,11 @@ export default function BattlePage() {
       setError(
         err instanceof Error ? err.message : "Something went wrong."
       );
+      if (loaderIntervalRef.current) clearInterval(loaderIntervalRef.current);
+      setShowLoader(false);
     } finally {
       setLoading(false);
+      if (loaderIntervalRef.current) clearInterval(loaderIntervalRef.current);
     }
   };
 
@@ -157,6 +217,96 @@ export default function BattlePage() {
         padding: "4rem 1.5rem 6rem",
       }}
     >
+      {/* ── Mobile responsive styles ───────────────────────────── */}
+      <style>{`
+        @media (max-width: 768px) {
+          .battle-input-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .battle-input-row .battle-input-field {
+            width: 100% !important;
+          }
+          .battle-cards-wrap {
+            display: flex !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
+            padding-top: 1.5rem !important;
+            padding-bottom: 0.5rem !important;
+            gap: 1rem !important;
+          }
+          .battle-cards-wrap .battle-user-card {
+            min-width: 82vw !important;
+            flex-shrink: 0 !important;
+            scroll-snap-align: start !important;
+          }
+          .battle-category-card {
+            padding: 1rem !important;
+          }
+          .battle-cat-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.3rem !important;
+          }
+          .battle-cat-label {
+            width: auto !important;
+            font-size: 0.75rem !important;
+          }
+          .battle-cat-score {
+            width: auto !important;
+            text-align: left !important;
+            font-size: 0.75rem !important;
+          }
+          .battle-cat-reason {
+            margin-left: 0 !important;
+            font-size: 0.72rem !important;
+          }
+          .battle-cat-tags {
+            margin-left: 0 !important;
+          }
+          .battle-user-card .battle-avatar {
+            width: 56px !important;
+            height: 56px !important;
+          }
+          .battle-user-card .battle-name {
+            font-size: 1.1rem !important;
+          }
+          .battle-user-card .battle-score-num {
+            font-size: 2.5rem !important;
+            min-width: 50px !important;
+          }
+          .battle-user-card .battle-score-block {
+            padding: 0.75rem 1rem !important;
+          }
+          .battle-user-card .battle-stats {
+            grid-template-columns: 1fr !important;
+            gap: 0.3rem !important;
+            font-size: 0.75rem !important;
+          }
+          .battle-cta-btns {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .battle-cta-btns a,
+          .battle-cta-btns .btn-primary {
+            width: 100% !important;
+            justify-content: center !important;
+            text-align: center !important;
+          }
+        }
+      `}</style>
+
+      {/* ── Battle compare loader ─────────────────────────────── */}
+      {showLoader && (
+        <BattleCompareLoader
+          progress={loaderProgress}
+          step={loaderStep}
+          usernames={loaderUsernames}
+          avatars={loaderAvatars}
+        />
+      )}
+
       {/* ── Header ───────────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -218,6 +368,7 @@ export default function BattlePage() {
         </div>
 
         <div
+          className="battle-input-row"
           style={{
             display: "flex",
             flexWrap: "wrap",
@@ -242,6 +393,7 @@ export default function BattlePage() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleCompare();
                 }}
+                className="battle-input-field"
                 style={{
                   width: "220px",
                   padding: "0.8rem 1.1rem",
@@ -444,11 +596,13 @@ export default function BattlePage() {
 
             {/* User cards — bigger */}
             <div
+              className="battle-cards-wrap"
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${validProfiles.length}, 1fr)`,
                 gap: "1.75rem",
                 marginBottom: "2.5rem",
+                paddingTop: "1rem",
               }}
             >
               {validProfiles.map((p, i) => (
@@ -487,7 +641,7 @@ export default function BattlePage() {
 
             {/* ── Per-category breakdown ──────────────────────────── */}
             <div
-              className="card"
+              className="card battle-category-card"
               style={{
                 borderRadius: 0,
                 padding: "1.75rem 2rem",
@@ -586,6 +740,7 @@ export default function BattlePage() {
                         >
                           {/* Username + score + bar */}
                           <div
+                            className="battle-cat-row"
                             style={{
                               display: "flex",
                               alignItems: "center",
@@ -594,6 +749,7 @@ export default function BattlePage() {
                             }}
                           >
                             <span
+                              className="battle-cat-label"
                               style={{
                                 width: "110px",
                                 fontFamily: "var(--font-mono)",
@@ -659,6 +815,7 @@ export default function BattlePage() {
                           {/* Reason (only for winner) */}
                           {isCatWinner && cat?.reason && (
                             <div
+                              className="battle-cat-reason"
                               style={{
                                 marginLeft: "108px",
                                 fontFamily: "var(--font-body)",
@@ -675,6 +832,7 @@ export default function BattlePage() {
                           {/* Strengths/weaknesses (winner only) */}
                           {isCatWinner && cat && (
                             <div
+                              className="battle-cat-tags"
                               style={{
                                 marginLeft: "108px",
                                 display: "flex",
@@ -767,6 +925,7 @@ export default function BattlePage() {
               </p>
 
               <div
+                className="battle-cta-btns"
                 style={{
                   display: "flex",
                   gap: "1rem",
@@ -900,7 +1059,7 @@ function UserCard({
 }) {
   return (
     <motion.div
-      className="card"
+      className="card battle-user-card"
       initial={{ opacity: 0, y: 15 }}
       animate={
         isWinner
@@ -958,6 +1117,7 @@ function UserCard({
         {profile.avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
+            className="battle-avatar"
             src={profile.avatarUrl}
             alt={profile.username}
             width={80}
@@ -971,6 +1131,7 @@ function UserCard({
           />
         ) : (
           <div
+            className="battle-avatar"
             style={{
               width: 80,
               height: 80,
@@ -982,6 +1143,7 @@ function UserCard({
         )}
         <div>
           <div
+            className="battle-name"
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 700,
@@ -1004,6 +1166,7 @@ function UserCard({
 
       {/* Score block — big number + stars + rating label */}
       <div
+        className="battle-score-block"
         style={{
           display: "flex",
           alignItems: "center",
@@ -1018,6 +1181,7 @@ function UserCard({
       >
         {/* Animated score number */}
         <motion.span
+          className="battle-score-num"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 12, delay: 0.2 + colorIndex * 0.1 }}
@@ -1077,6 +1241,7 @@ function UserCard({
 
       {/* Stats grid */}
       <div
+        className="battle-stats"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",

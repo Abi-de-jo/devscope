@@ -265,13 +265,16 @@ function LeaderboardContent() {
 
   /* ── Render ─────────────────────────────────────────────────── */
   // Locked preview: show blurred dummy content when not logged in
-  if (!isPending) {
+  // FOR NOW: always enable the leaderboard view
+  /*
+  if (!session && !isPending) {
     return (
       <LockedPreview page="leaderboard" statNumber="127" statDetail="developers ranked">
         <LockedLeaderboardContent />
       </LockedPreview>
     );
   }
+  */
 
   // Still loading session — render nothing
   if (isPending) return null;
@@ -284,6 +287,63 @@ function LeaderboardContent() {
         padding: "4rem 1.5rem 6rem",
       }}
     >
+      {/* ── Mobile responsive styles ───────────────────────────── */}
+      <style>{`
+        @media (max-width: 768px) {
+          .lb-search-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .lb-search-row .lb-search-btn {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+          .lb-scope-row {
+            flex-wrap: wrap !important;
+          }
+          .lb-rank-row {
+            padding: 0.65rem 0.85rem !important;
+            gap: 0.6rem !important;
+          }
+          .lb-rank-row .lb-rank-avatar {
+            width: 32px !important;
+            height: 32px !important;
+          }
+          .lb-rank-row .lb-rank-name {
+            font-size: 0.88rem !important;
+          }
+          .lb-rank-row .lb-rank-username {
+            font-size: 0.65rem !important;
+          }
+          .lb-rank-row .lb-name-wrap {
+            flex-wrap: wrap !important;
+            gap: 0.25rem !important;
+          }
+          .lb-rank-row .lb-rank-name {
+            white-space: normal !important;
+          }
+          .lb-rank-row .lb-score {
+            font-size: 1.1rem !important;
+            min-width: 28px !important;
+          }
+          .lb-rank-row .lb-stats {
+            display: none !important;
+          }
+          .lb-optout {
+            flex-direction: column !important;
+            text-align: center !important;
+          }
+          .lb-suggestions {
+            max-height: 180px !important;
+          }
+          .lb-meta-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.25rem !important;
+          }
+        }
+      `}</style>
+
       {/* ── Scan overlay ──────────────────────────────────────── */}
       {showScanLoader && (
         <LeaderboardScanLoader
@@ -360,6 +420,7 @@ function LeaderboardContent() {
 
         {/* Input + search button */}
         <div
+          className="lb-search-row"
           style={{
             display: "flex",
             gap: "0.75rem",
@@ -455,6 +516,7 @@ function LeaderboardContent() {
             {/* Suggestions dropdown */}
             {showSuggestions && suggestions.length > 0 && (
               <div
+                className="lb-suggestions"
                 style={{
                   position: "absolute",
                   top: "100%",
@@ -529,7 +591,7 @@ function LeaderboardContent() {
             type="button"
             onClick={handleSearch}
             disabled={loading || !location.trim()}
-            className="btn-primary"
+            className="btn-primary lb-search-btn"
             style={{
               padding: "0.8rem 1.5rem",
               fontSize: "0.85rem",
@@ -542,6 +604,7 @@ function LeaderboardContent() {
 
         {/* Scope toggles */}
         <div
+          className="lb-scope-row"
           style={{
             display: "flex",
             gap: "0.5rem",
@@ -592,6 +655,7 @@ function LeaderboardContent() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className="lb-optout"
           style={{
             display: "flex",
             alignItems: "center",
@@ -705,6 +769,7 @@ function LeaderboardContent() {
         >
           {/* Meta bar — Showing X–Y of Z */}
           <div
+            className="lb-meta-row"
             style={{
               display: "flex",
               alignItems: "center",
@@ -898,6 +963,7 @@ function RankRow({
 
   return (
     <motion.div
+      className="lb-rank-row"
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay, duration: 0.3 }}
@@ -986,6 +1052,7 @@ function RankRow({
       {entry.avatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
+          className="lb-rank-avatar"
           src={entry.avatarUrl}
           alt={entry.username}
           width={40}
@@ -999,6 +1066,7 @@ function RankRow({
         />
       ) : (
         <div
+          className="lb-rank-avatar"
           style={{
             width: 40,
             height: 40,
@@ -1013,6 +1081,7 @@ function RankRow({
       {/* ── Name + username + score type badge ─────────────── */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
+          className="lb-name-wrap"
           style={{
             display: "flex",
             alignItems: "center",
@@ -1021,6 +1090,7 @@ function RankRow({
           }}
         >
           <a
+            className="lb-rank-name"
             href={entry.htmlUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -1061,6 +1131,7 @@ function RankRow({
           </span>
         </div>
         <div
+          className="lb-rank-username"
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: "0.72rem",
@@ -1074,6 +1145,7 @@ function RankRow({
 
       {/* ── Stats (repos / stars) ─────────────────────────── */}
       <div
+        className="lb-stats"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -1110,6 +1182,7 @@ function RankRow({
 
       {/* ── Score ──────────────────────────────────────────── */}
       <div
+        className="lb-score"
         style={{
           display: "flex",
           alignItems: "center",

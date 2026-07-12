@@ -15,6 +15,26 @@ const TROPHY_COLORS: Record<number, string> = {
 export function LockedLeaderboardContent() {
   return (
     <div style={{ maxWidth: "900px", margin: "0 auto", padding: "4rem 1.5rem 6rem" }}>
+      {/* Mobile responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .locked-lb-search-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .locked-lb-table-header,
+          .locked-lb-table-row {
+            grid-template-columns: 32px 1fr 50px !important;
+          }
+          .locked-lb-table-header .locked-lb-skill-col,
+          .locked-lb-table-row .locked-lb-skill-col,
+          .locked-lb-table-header .locked-lb-avatar-col,
+          .locked-lb-table-row .locked-lb-avatar-col {
+            display: none !important;
+          }
+        }
+      `}</style>
+
       {/* Header */}
       <div style={{ marginBottom: "2.5rem" }}>
         <div
@@ -47,7 +67,7 @@ export function LockedLeaderboardContent() {
         <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--muted)", marginBottom: "1rem" }}>
           Your GitHub location: {FAKE_LOCATION}
         </div>
-        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+        <div className="locked-lb-search-row" style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
           <div style={{ flex: 1, padding: "0.8rem 1rem", fontFamily: "var(--font-mono)", fontSize: "1rem", border: "1.5px solid var(--ink)", borderRadius: "var(--radius)", backgroundColor: "var(--paper-alt)", boxShadow: "var(--shadow-xs)", color: "var(--muted)" }}>
             {FAKE_LOCATION}, Tamil Nadu, India
           </div>
@@ -73,11 +93,11 @@ export function LockedLeaderboardContent() {
       {/* Table */}
       <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", overflow: "hidden", boxShadow: "var(--shadow-md)" }}>
         {/* Header row */}
-        <div style={{ display: "grid", gridTemplateColumns: "40px 44px 1fr 90px 55px", gap: "0.75rem", alignItems: "center", padding: "0.65rem 1.75rem", backgroundColor: "var(--surface-1)", borderBottom: "var(--border-width) solid var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.6rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--muted)" }}>
+        <div className="locked-lb-table-header" style={{ display: "grid", gridTemplateColumns: "40px 44px 1fr 90px 55px", gap: "0.75rem", alignItems: "center", padding: "0.65rem 1.75rem", backgroundColor: "var(--surface-1)", borderBottom: "var(--border-width) solid var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.6rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--muted)" }}>
           <span>#</span>
-          <span />
+          <span className="locked-lb-avatar-col" />
           <span>Developer</span>
-          <span>Top Skill</span>
+          <span className="locked-lb-skill-col">Top Skill</span>
           <span style={{ textAlign: "right" }}>Score</span>
         </div>
 
@@ -90,6 +110,7 @@ export function LockedLeaderboardContent() {
           return (
             <div
               key={row.rank}
+              className="locked-lb-table-row"
               style={{
                 display: "grid",
                 gridTemplateColumns: "40px 44px 1fr 90px 55px",
