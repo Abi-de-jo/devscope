@@ -154,12 +154,18 @@ export function Navigation() {
           ) : (
             <button
               type="button"
-              onClick={() => signInWithGithub()}
+              onClick={handleConnect}
+              disabled={connecting}
               className="btn-primary"
-              style={{ padding: "0.625rem 1.75rem", fontSize: "0.75rem" }}
+              style={{
+                padding: "0.625rem 1.75rem",
+                fontSize: "0.75rem",
+                opacity: connecting ? 0.7 : 1,
+                pointerEvents: connecting ? "none" : "auto",
+              }}
             >
               <GithubIcon size={15} />
-              Connect GitHub
+              {connecting ? "CONNECTING…" : "Connect GitHub"}
             </button>
           )}
         </div>
@@ -270,13 +276,19 @@ export function Navigation() {
                   type="button"
                   onClick={() => {
                     setIsOpen(false);
-                    signInWithGithub();
+                    handleConnect();
                   }}
+                  disabled={connecting}
                   className="btn-primary"
-                  style={{ marginTop: "0.5rem", justifyContent: "center" }}
+                  style={{
+                    marginTop: "0.5rem",
+                    justifyContent: "center",
+                    opacity: connecting ? 0.7 : 1,
+                    pointerEvents: connecting ? "none" : "auto",
+                  }}
                 >
                   <GithubIcon size={16} />
-                  Connect GitHub
+                  {connecting ? "CONNECTING…" : "Connect GitHub"}
                 </button>
               )}
             </div>
