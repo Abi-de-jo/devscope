@@ -174,7 +174,6 @@ export function Navigation() {
         <button
           onClick={() => setIsOpen(!isOpen)}
           style={{
-            display: "none",
             background: "none",
             border: "var(--border-width) solid var(--ink)",
             borderRadius: "var(--radius)",
