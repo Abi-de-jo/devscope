@@ -1,51 +1,15 @@
 import { prisma } from "@/lib/db";
 import type { Prisma } from "../generated/client";
 
-/* ─── LLM client (ZenMux, OpenAI-compatible) ───────────────────────── */
+/* ─── LLM client (NVIDIA NIM, OpenAI-compatible) ──────────────────── */
 
-const LLM_BASE = process.env.ZENMUX_BASE_URL || "https://zenmux.ai/api/v1";
-const LLM_KEY = process.env.ZENMUX_API_KEY || "";
+const LLM_BASE = process.env.NVIDIA_BASE_URL || "https://integrate.api.nvidia.com/v1";
+const LLM_KEY = process.env.NVIDIA_API_KEY || "";
+const LLM_MODEL = process.env.NVIDIA_MODEL || "z-ai/glm-5.2";
 
-// Free ZenMux model. Override with ZENMUX_MODEL if you have a paid one.
-const ZENMUX_MODELS = process.env.ZENMUX_MODEL
-  ? [process.env.ZENMUX_MODEL]
-  : ["z-ai/glm-4.7-flash-free"];
-
-/* ─── OpenRouter (fallback provider) ───────────────────────────────── */
-
-const OPENROUTER_API = "https://openrouter.ai/api/v1/chat/completions";
-
-const OR_KEYS = [
-  process.env.OPENROUTER_KEY_1,
-  process.env.OPENROUTER_KEY_2,
-  process.env.OPENROUTER_KEY_3,
-  process.env.OPENROUTER_KEY_4,
-].filter(Boolean) as string[];
-
-let orKeyIndex = 0;
-function getNextOrKey(): string {
-  if (OR_KEYS.length === 0) throw new Error("No OpenRouter API keys configured");
-  const key = OR_KEYS[orKeyIndex % OR_KEYS.length]!;
-  orKeyIndex++;
-  return key;
-}
-
-// OpenRouter fallback model (paid). Override with OPENROUTER_MODEL.
-const OR_MODELS = [process.env.OPENROUTER_MODEL || "openai/gpt-4o"];
-
-// Approximate openai/gpt-4o pricing (USD per 1M tokens) — used only to
-// estimate costCents for unit-economics guardrails, not a billing source.
-// Free (":free") models bypass this entirely (costCents = 0).
-const PRICE_PER_1M_INPUT = 2.5;
-const PRICE_PER_1M_OUTPUT = 10;
-
-function estimateCostCents(usage: {
-  prompt_tokens?: number;
-  completion_tokens?: number;
-}): number {
-  const input = ((usage.prompt_tokens ?? 0) / 1_000_000) * PRICE_PER_1M_INPUT;
-  const output = ((usage.completion_tokens ?? 0) / 1_000_000) * PRICE_PER_1M_OUTPUT;
-  return Math.max(1, Math.round((input + output) * 100));
+// NVIDIA NIM is free — costCents is always 0.
+function estimateCostCents(): number {
+  return 0;
 }
 
 // Extract the first balanced JSON object from a model response. Handles
@@ -262,15 +226,15 @@ For EACH repository listed above, score these 0-100: overall, architecture, docu
 - Return ONLY valid JSON. No markdown fences, no explanation outside the JSON.`;
 }
 
-/* ─── Call OpenRouter with 429 retry + key rotation ────────────────── */
+/* ─── Call NVIDIA NIM with 429 retry ──────────────────────────────── */
 
 interface LLMResult {
   content: string;
   usage: { prompt_tokens?: number; completion_tokens?: number };
 }
 
-async function callZenMux(prompt: string, model: string, attempt = 0): Promise<LLMResult> {
-  if (!LLM_KEY) throw new Error("ZENMUX_API_KEY is not configured");
+async function callLLM(prompt: string, attempt = 0): Promise<LLMResult> {
+  if (!LLM_KEY) throw new Error("NVIDIA_API_KEY is not configured");
 
   const res = await fetch(`${LLM_BASE}/chat/completions`, {
     method: "POST",
@@ -279,7 +243,7 @@ async function callZenMux(prompt: string, model: string, attempt = 0): Promise<L
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model,
+      model: LLM_MODEL,
       messages: [
         {
           role: "system",
@@ -289,70 +253,25 @@ async function callZenMux(prompt: string, model: string, attempt = 0): Promise<L
         { role: "user", content: prompt },
       ],
       temperature: 0.3,
-      max_tokens: 4096,
+      max_tokens: 16384,
+      seed: 42,
     }),
   });
 
   // Rate limited — retry with backoff.
   if (res.status === 429 && attempt < 3) {
     await new Promise((r) => setTimeout(r, 1000 * (attempt + 1)));
-    return callZenMux(prompt, model, attempt + 1);
+    return callLLM(prompt, attempt + 1);
   }
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`ZenMux API error: ${res.status} ${err}`);
+    throw new Error(`NVIDIA NIM API error: ${res.status} ${err}`);
   }
 
   const data = await res.json();
   const msg = data.choices?.[0]?.message ?? {};
-  // Reasoning models (e.g. glm-4.7-flash) may emit the JSON in `reasoning`.
-  const combined = `${msg.content ?? ""}\n${msg.reasoning ?? ""}`.trim();
-  return {
-    content: combined,
-    usage: data.usage ?? {},
-  };
-}
-
-async function callOpenRouter(prompt: string, model: string, attempt = 0): Promise<LLMResult> {
-  const key = getNextOrKey();
-
-  const res = await fetch(OPENROUTER_API, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001",
-      "X-Title": "GitRating Engineering Score",
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are GitRating's engineering analysis engine. Return only valid JSON. No markdown fences, no explanation.",
-        },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 4096,
-    }),
-  });
-
-  // Rate limited — rotate key and retry with backoff.
-  if (res.status === 429 && attempt < 3) {
-    await new Promise((r) => setTimeout(r, 1000 * (attempt + 1)));
-    return callOpenRouter(prompt, model, attempt + 1);
-  }
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`OpenRouter API error: ${res.status} ${err}`);
-  }
-
-  const data = await res.json();
-  const msg = data.choices?.[0]?.message ?? {};
+  // Some reasoning models may emit the JSON in `reasoning`.
   const combined = `${msg.content ?? ""}\n${msg.reasoning ?? ""}`.trim();
   return {
     content: combined,
@@ -405,12 +324,10 @@ export async function scoreDeveloper(
   });
 
   try {
-    // Early check: at least one LLM provider must be configured
-    const hasZenMux = !!LLM_KEY;
-    const hasOpenRouter = OR_KEYS.length > 0;
-    if (!hasZenMux && !hasOpenRouter) {
+    // Early check: NVIDIA API key must be configured
+    if (!LLM_KEY) {
       throw new Error(
-        "No AI provider configured. Set ZENMUX_API_KEY or OPENROUTER_KEY_1 in your environment."
+        "No AI provider configured. Set NVIDIA_API_KEY in your environment."
       );
     }
 
@@ -425,39 +342,25 @@ export async function scoreDeveloper(
       repoData
     );
 
-    // Try each model in the chain until one returns valid JSON.
-    // Provider chain: ZenMux (free) first, OpenRouter (paid) as fallback.
-    const providers: { name: string; models: string[]; call: typeof callZenMux }[] = [
-      { name: "zenmux", models: ZENMUX_MODELS, call: callZenMux },
-      { name: "openrouter", models: OR_MODELS, call: callOpenRouter },
-    ];
-
+    // Call NVIDIA NIM and parse the JSON response
     let result: ScoreResult | null = null;
     let usage: { prompt_tokens?: number; completion_tokens?: number } = {};
-    let usedModel = "";
-    let usedProvider = "";
     let lastErr: unknown;
-    for (const p of providers) {
-      for (const m of p.models) {
-        try {
-          const r = await p.call(prompt, m);
-          result = extractJson(r.content) as ScoreResult;
-          usage = r.usage;
-          usedModel = m;
-          usedProvider = p.name;
-          break;
-        } catch (e) {
-          lastErr = e;
-        }
-      }
-      if (result) break;
-    }
-    if (!result) {
-      throw lastErr ?? new Error("All LLM providers failed");
+
+    try {
+      const r = await callLLM(prompt);
+      result = extractJson(r.content) as ScoreResult;
+      usage = r.usage;
+    } catch (e) {
+      lastErr = e;
     }
 
-    // Free models cost $0; paid models are priced from usage.
-    const costCents = usedModel.includes(":free") ? 0 : estimateCostCents(usage);
+    if (!result) {
+      throw lastErr ?? new Error("NVIDIA NIM failed to return valid JSON");
+    }
+
+    // NVIDIA NIM is free — costCents is always 0
+    const costCents = 0;
 
     // Persist Analysis (transparency fields)
     await prisma.analysis.update({
