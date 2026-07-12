@@ -59,7 +59,7 @@ export default function TermsPage() {
       <div style={{ backgroundColor: "var(--ink)", borderTop: "var(--border-width) solid var(--ink)", borderBottom: "var(--border-width) solid var(--ink)", overflow: "hidden", whiteSpace: "nowrap", padding: "0.55rem 0" }}>
         <div style={{ display: "inline-flex", animation: "marquee 18s linear infinite" }}>
           {[...MARQUEE, ...MARQUEE].map((item, i) => (
-            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.25rem" }}>
+            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.75rem" }}>
               {item}
               <span style={{ width: 3, height: 3, backgroundColor: "var(--accent)", borderRadius: "50%", flexShrink: 0 }} />
             </span>

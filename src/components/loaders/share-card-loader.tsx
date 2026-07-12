@@ -64,7 +64,7 @@ export function ShareCardLoader({
       <div
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "0.7rem",
+          fontSize: "0.8rem",
           textTransform: "uppercase",
           letterSpacing: "0.1em",
           color: "var(--muted)",

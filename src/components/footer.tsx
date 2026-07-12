@@ -54,27 +54,25 @@ export function Footer() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 700,
-                fontSize: "1.25rem",
+                fontSize: "1.75rem",
                 color: "var(--ink)",
                 textDecoration: "none",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "0.5rem",
+                gap: "0.2rem",
                 marginBottom: "0.75rem",
               }}
             >
-              <span
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.png"
+                alt="GitRating Logo"
                 style={{
-                  backgroundColor: "var(--ink)",
-                  color: "var(--paper)",
-                  padding: "0.2rem 0.5rem",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.7rem",
-                  fontWeight: 600,
+                  height: "32px",
+                  width: "auto",
+                  display: "block",
                 }}
-              >
-                DS
-              </span>
+              />
               GitRating
             </Link>
             <p
@@ -95,7 +93,7 @@ export function Footer() {
               style={{
                 display: "flex",
                 gap: "0.75rem",
-                marginTop: "1.25rem",
+                marginTop: "1.75rem",
               }}
             >
               {[
@@ -200,7 +198,7 @@ export function Footer() {
         <div
           style={{
             borderTop: "var(--border-width) solid var(--ink)",
-            paddingTop: "1.25rem",
+            paddingTop: "1.75rem",
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "space-between",
@@ -211,7 +209,7 @@ export function Footer() {
           <p
             style={{
               fontFamily: "var(--font-mono)",
-              fontSize: "0.7rem",
+              fontSize: "0.8rem",
               color: "var(--muted)",
               letterSpacing: "0.02em",
             }}
@@ -230,7 +228,7 @@ export function Footer() {
               href="/privacy"
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 color: "var(--muted)",
                 textDecoration: "none",
                 transition: "color 0.12s",
@@ -242,7 +240,7 @@ export function Footer() {
               href="/terms"
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 color: "var(--muted)",
                 textDecoration: "none",
                 transition: "color 0.12s",
@@ -254,7 +252,7 @@ export function Footer() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 color: "var(--muted)",
                 background: "none",
                 border: "none",

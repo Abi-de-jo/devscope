@@ -73,7 +73,7 @@ export function LockedLeaderboardContent() {
       {/* Table */}
       <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", overflow: "hidden", boxShadow: "var(--shadow-md)" }}>
         {/* Header row */}
-        <div style={{ display: "grid", gridTemplateColumns: "40px 44px 1fr 90px 55px", gap: "0.75rem", alignItems: "center", padding: "0.65rem 1.25rem", backgroundColor: "var(--surface-1)", borderBottom: "var(--border-width) solid var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.6rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--muted)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "40px 44px 1fr 90px 55px", gap: "0.75rem", alignItems: "center", padding: "0.65rem 1.75rem", backgroundColor: "var(--surface-1)", borderBottom: "var(--border-width) solid var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.6rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--muted)" }}>
           <span>#</span>
           <span />
           <span>Developer</span>
@@ -95,7 +95,7 @@ export function LockedLeaderboardContent() {
                 gridTemplateColumns: "40px 44px 1fr 90px 55px",
                 gap: "0.75rem",
                 alignItems: "center",
-                padding: "0.85rem 1.25rem",
+                padding: "0.85rem 1.75rem",
                 borderTop: "var(--border-width) solid var(--surface-2, #e0e0d8)",
                 backgroundColor: row.rank % 2 === 0 ? "var(--paper-alt)" : "var(--paper)",
                 filter: rowBlur,

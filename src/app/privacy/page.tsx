@@ -56,7 +56,7 @@ export default function PrivacyPage() {
       <div style={{ backgroundColor: "var(--ink)", borderTop: "var(--border-width) solid var(--ink)", borderBottom: "var(--border-width) solid var(--ink)", overflow: "hidden", whiteSpace: "nowrap", padding: "0.55rem 0" }}>
         <div style={{ display: "inline-flex", animation: "marquee 18s linear infinite" }}>
           {[...MARQUEE, ...MARQUEE].map((item, i) => (
-            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.25rem" }}>
+            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.75rem" }}>
               {item}
               <span style={{ width: 3, height: 3, backgroundColor: "var(--accent)", borderRadius: "50%", flexShrink: 0 }} />
             </span>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "clamp(2rem, 5vw, 4rem) 1.5rem" }}>
         {/* Featured first section */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }} className="card" style={{ marginBottom: "1.25rem", backgroundColor: "var(--accent)", boxShadow: "var(--shadow-accent)", padding: "2rem" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }} className="card" style={{ marginBottom: "1.75rem", backgroundColor: "var(--accent)", boxShadow: "var(--shadow-accent)", padding: "2rem" }}>
           <div style={{ display: "flex", alignItems: "flex-start", gap: "1rem" }}>
             <div style={{ width: "2.25rem", height: "2.25rem", border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "var(--ink)", color: "var(--accent)", flexShrink: 0 }}>
               <FeaturedIcon size={14} />

@@ -88,7 +88,7 @@ export function LockedPreview({
             style={{
               width: "4rem",
               height: "4rem",
-              margin: "0 auto 1.25rem",
+              margin: "0 auto 1.75rem",
               border: "var(--border-width) solid var(--ink)",
               borderRadius: "var(--radius)",
               display: "flex",

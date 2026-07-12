@@ -58,7 +58,7 @@ export function LockedDashboardContent() {
       </div>
 
       {/* Score Card — score is SHARP, rest is blurred */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "4rem" }} className="dash-locked-grid">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.75rem", marginBottom: "4rem" }} className="dash-locked-grid">
         {/* Left: Score — SHARP */}
         <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", boxShadow: "var(--shadow-lg)", backgroundColor: "var(--paper-alt)", padding: "2.5rem 2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--muted)", marginBottom: "0.75rem" }}>
@@ -67,7 +67,7 @@ export function LockedDashboardContent() {
           <div style={{ fontFamily: "var(--font-display)", fontSize: "5rem", fontWeight: 700, lineHeight: 1, color: "var(--accent)" }}>
             {FAKE_SCORE}
           </div>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "var(--muted)", marginTop: "0.35rem" }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "var(--muted)", marginTop: "0.35rem" }}>
             out of 100
           </div>
           <div style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 700, marginTop: "0.75rem" }}>
@@ -77,7 +77,7 @@ export function LockedDashboardContent() {
 
         {/* Right: Skill bars — BLURRED */}
         <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", boxShadow: "var(--shadow-md)", backgroundColor: "var(--paper-alt)", padding: "2rem 1.5rem", filter: "blur(4px)" }}>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--muted)", marginBottom: "1.25rem" }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--muted)", marginBottom: "1.75rem" }}>
             Skill Breakdown
           </div>
           {FAKE_AXES.slice(0, 6).map((axis) => (

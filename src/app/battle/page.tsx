@@ -321,7 +321,7 @@ export default function BattlePage() {
           disabled={loading}
           className="btn-primary"
           style={{
-            marginTop: "1.25rem",
+            marginTop: "1.75rem",
             padding: "1rem 2rem",
             fontSize: "1rem",
           }}
@@ -442,7 +442,7 @@ export default function BattlePage() {
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${validProfiles.length}, 1fr)`,
-                gap: "1.25rem",
+                gap: "1.75rem",
                 marginBottom: "2.5rem",
               }}
             >
@@ -514,7 +514,7 @@ export default function BattlePage() {
                     style={{
                       marginBottom:
                         catIdx < CATEGORIES.length - 1 ? "2rem" : 0,
-                      padding: "1.25rem",
+                      padding: "1.75rem",
                       border: "1.5px solid var(--surface-3, #ddd)",
                       borderRadius: "var(--radius)",
                       backgroundColor: "var(--paper-alt)",
@@ -817,7 +817,7 @@ export default function BattlePage() {
             <div
               style={{
                 marginTop: "1.5rem",
-                padding: "1rem 1.25rem",
+                padding: "1rem 1.75rem",
                 borderLeft: "4px solid var(--accent)",
                 backgroundColor: "var(--accent-light)",
               }}
@@ -947,7 +947,7 @@ function UserCard({
           display: "flex",
           alignItems: "center",
           gap: "1rem",
-          marginBottom: "1.25rem",
+          marginBottom: "1.75rem",
         }}
       >
         {profile.avatarUrl ? (
@@ -1004,7 +1004,7 @@ function UserCard({
           alignItems: "center",
           gap: "1rem",
           marginBottom: "1rem",
-          padding: "1rem 1.25rem",
+          padding: "1rem 1.75rem",
           border: "1.5px solid var(--ink)",
           borderRadius: "var(--radius)",
           backgroundColor: isWinner ? "var(--accent-light)" : "var(--paper-alt)",

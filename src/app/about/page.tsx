@@ -63,7 +63,7 @@ export default function AboutPage() {
         {/* Right column: What I do, vertical stack */}
         <div>
           <div className="uppercase-label" style={{ marginBottom: "1.5rem" }}>What I do</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.75rem" }}>
             {ROLES.map((r) => (
               <div key={r.title} className="card" style={{ borderRadius: 0, padding: "1.5rem", cursor: "pointer" }}>
                 <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.05rem" }}>{r.title}</div>

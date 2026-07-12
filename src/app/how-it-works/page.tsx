@@ -132,7 +132,7 @@ export default function HowItWorksPage() {
                 padding: "0 1.75rem",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "1.25rem",
+                gap: "1.75rem",
               }}
             >
               {item}
@@ -196,7 +196,7 @@ export default function HowItWorksPage() {
 
         {/* ─── 10 Axes ────────────────────────────────────────────── */}
         <section style={{ marginBottom: "4rem" }}>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--muted)", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--muted)", marginBottom: "1.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <span style={{ width: 20, height: 2, backgroundColor: "var(--accent)" }} />
             The 10 Axes
           </div>
@@ -243,7 +243,7 @@ export default function HowItWorksPage() {
             ))}
           </div>
 
-          <div style={{ marginTop: "1.25rem" }}>
+          <div style={{ marginTop: "1.75rem" }}>
             <Link
               href="/methodology"
               style={{
@@ -266,7 +266,7 @@ export default function HowItWorksPage() {
 
         {/* ─── FAQ ────────────────────────────────────────────────── */}
         <section>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--muted)", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--muted)", marginBottom: "1.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <span style={{ width: 20, height: 2, backgroundColor: "var(--accent)" }} />
             FAQ
           </div>

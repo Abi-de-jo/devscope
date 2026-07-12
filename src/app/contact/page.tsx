@@ -54,7 +54,7 @@ export default function ContactPage() {
       <div style={{ backgroundColor: "var(--ink)", borderTop: "var(--border-width) solid var(--ink)", borderBottom: "var(--border-width) solid var(--ink)", overflow: "hidden", whiteSpace: "nowrap", padding: "0.55rem 0" }}>
         <div style={{ display: "inline-flex", animation: "marquee 20s linear infinite" }}>
           {[...MARQUEE, ...MARQUEE].map((item, i) => (
-            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.25rem" }}>
+            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.75rem" }}>
               {item}
               <span style={{ width: 3, height: 3, backgroundColor: "var(--accent)", borderRadius: "50%", flexShrink: 0 }} />
             </span>
@@ -78,7 +78,7 @@ export default function ContactPage() {
             const Icon = ch.icon;
             const isGithub = ch.icon === GithubIcon;
             return (
-              <motion.a key={ch.title} custom={i} initial="hidden" animate="show" variants={fadeUp} href={ch.href} target={ch.href.startsWith("mailto:") ? undefined : "_blank"} rel={ch.href.startsWith("mailto:") ? undefined : "noopener noreferrer"} className="card card-hover" style={{ display: "grid", gridTemplateColumns: "auto 1fr auto", alignItems: "center", gap: "1.25rem", padding: "1.25rem 1.5rem", textDecoration: "none", color: "var(--ink)" }}>
+              <motion.a key={ch.title} custom={i} initial="hidden" animate="show" variants={fadeUp} href={ch.href} target={ch.href.startsWith("mailto:") ? undefined : "_blank"} rel={ch.href.startsWith("mailto:") ? undefined : "noopener noreferrer"} className="card card-hover" style={{ display: "grid", gridTemplateColumns: "auto 1fr auto", alignItems: "center", gap: "1.75rem", padding: "1.75rem 1.5rem", textDecoration: "none", color: "var(--ink)" }}>
                 <div style={{ width: "2.75rem", height: "2.75rem", border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "var(--paper)", boxShadow: "var(--shadow-xs)", flexShrink: 0 }}>
                   {isGithub ? <Icon size={16} /> : <Icon size={18} />}
                 </div>

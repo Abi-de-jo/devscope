@@ -58,7 +58,7 @@ export default function SecurityPage() {
       <div style={{ backgroundColor: "var(--ink)", borderTop: "var(--border-width) solid var(--ink)", borderBottom: "var(--border-width) solid var(--ink)", overflow: "hidden", whiteSpace: "nowrap", padding: "0.55rem 0" }}>
         <div style={{ display: "inline-flex", animation: "marquee 22s linear infinite" }}>
           {[...MARQUEE, ...MARQUEE].map((item, i) => (
-            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.25rem" }}>
+            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.75rem" }}>
               {item}
               <span style={{ width: 3, height: 3, backgroundColor: "var(--accent)", borderRadius: "50%", flexShrink: 0 }} />
             </span>
@@ -98,11 +98,11 @@ export default function SecurityPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }} className="sec-grid">
           {/* We DO */}
           <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", overflow: "hidden", boxShadow: "var(--shadow-md)" }}>
-            <div style={{ backgroundColor: "var(--accent)", padding: "0.65rem 1.25rem", fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div style={{ backgroundColor: "var(--accent)", padding: "0.65rem 1.75rem", fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <Check size={12} /> We Access
             </div>
             {WE_ACCESS.map((d, i) => (
-              <div key={d.item} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "0.6rem", padding: "0.7rem 1.25rem", borderTop: "var(--border-width) solid var(--ink)", backgroundColor: i % 2 === 0 ? "var(--paper-alt)" : "var(--paper)" }}>
+              <div key={d.item} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "0.6rem", padding: "0.7rem 1.75rem", borderTop: "var(--border-width) solid var(--ink)", backgroundColor: i % 2 === 0 ? "var(--paper-alt)" : "var(--paper)" }}>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--accent)", fontWeight: 700 }}>✓</div>
                 <div>
                   <div style={{ fontFamily: "var(--font-body)", fontSize: "0.85rem", fontWeight: 600 }}>{d.item}</div>
@@ -113,11 +113,11 @@ export default function SecurityPage() {
           </div>
           {/* We DON'T */}
           <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", overflow: "hidden", boxShadow: "var(--shadow-md)" }}>
-            <div style={{ backgroundColor: "var(--surface-1)", padding: "0.65rem 1.25rem", fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div style={{ backgroundColor: "var(--surface-1)", padding: "0.65rem 1.75rem", fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <X size={12} /> We Never Access
             </div>
             {WE_DONT.map((item, i) => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.7rem 1.25rem", borderTop: i > 0 ? "var(--border-width) solid var(--ink)" : undefined, backgroundColor: i % 2 === 0 ? "var(--paper-alt)" : "var(--paper)" }}>
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.7rem 1.75rem", borderTop: i > 0 ? "var(--border-width) solid var(--ink)" : undefined, backgroundColor: i % 2 === 0 ? "var(--paper-alt)" : "var(--paper)" }}>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--danger)", fontWeight: 700 }}>✕</div>
                 <div style={{ fontFamily: "var(--font-body)", fontSize: "0.85rem" }}>{item}</div>
               </div>

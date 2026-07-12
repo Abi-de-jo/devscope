@@ -357,7 +357,7 @@ function SummarySection({ analysis }: { analysis: AnalysisData }) {
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
@@ -431,7 +431,7 @@ function SummarySection({ analysis }: { analysis: AnalysisData }) {
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
@@ -519,7 +519,7 @@ function SummarySection({ analysis }: { analysis: AnalysisData }) {
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
@@ -853,7 +853,7 @@ function ImpactProjection({
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 color: "var(--accent)",
                 fontWeight: 700,
                 marginLeft: "auto",

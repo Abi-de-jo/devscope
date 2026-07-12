@@ -57,7 +57,7 @@ export default function ChangelogPage() {
       <div style={{ backgroundColor: "var(--ink)", borderTop: "var(--border-width) solid var(--ink)", borderBottom: "var(--border-width) solid var(--ink)", overflow: "hidden", whiteSpace: "nowrap", padding: "0.55rem 0" }}>
         <div style={{ display: "inline-flex", animation: "marquee 25s linear infinite" }}>
           {[...MARQUEE, ...MARQUEE].map((item, i) => (
-            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.25rem" }}>
+            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: "var(--paper)", padding: "0 1.75rem", display: "inline-flex", alignItems: "center", gap: "1.75rem" }}>
               {item}
               <span style={{ width: 3, height: 3, backgroundColor: "var(--accent)", borderRadius: "50%", flexShrink: 0 }} />
             </span>
@@ -86,9 +86,9 @@ export default function ChangelogPage() {
                   <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.05rem" }}>{entry.title}</h3>
                 </div>
                 {/* Items */}
-                <ul style={{ listStyle: "none", padding: "1.25rem 1.5rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <ul style={{ listStyle: "none", padding: "1.75rem 1.5rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                   {entry.items.map((item) => (
-                    <li key={item} style={{ fontFamily: "var(--font-body)", fontSize: "0.88rem", lineHeight: 1.55, color: "var(--muted)", paddingLeft: "1.25rem", position: "relative" }}>
+                    <li key={item} style={{ fontFamily: "var(--font-body)", fontSize: "0.88rem", lineHeight: 1.55, color: "var(--muted)", paddingLeft: "1.75rem", position: "relative" }}>
                       <span style={{ position: "absolute", left: 0, top: "0.1em", color: "var(--accent)", fontWeight: 700, fontSize: "0.75rem" }}>→</span>
                       {item}
                     </li>

@@ -38,7 +38,7 @@ export function SkeletonProfile() {
           <SkeletonBlock width={140} height={14} radius={2} style={{ marginBottom: "0.75rem" }} />
           <SkeletonBlock width="60%" height={36} radius={2} style={{ marginBottom: "0.75rem" }} />
           <SkeletonBlock width="80%" height={16} radius={2} style={{ marginBottom: "0.5rem" }} />
-          <SkeletonBlock width="50%" height={16} radius={2} style={{ marginBottom: "1.25rem" }} />
+          <SkeletonBlock width="50%" height={16} radius={2} style={{ marginBottom: "1.75rem" }} />
           <div style={{ display: "flex", gap: "1.5rem" }}>
             {[0, 1, 2].map((i) => (
               <SkeletonBlock key={i} width={70} height={28} radius={2} />

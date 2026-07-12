@@ -55,7 +55,7 @@ function SkeletonRow({ index }: { index: number }) {
         display: "flex",
         alignItems: "center",
         gap: "1rem",
-        padding: "0.85rem 1.25rem",
+        padding: "0.85rem 1.75rem",
         borderBottom: "1px solid var(--surface-2, #e0e0d8)",
       }}
     >
@@ -621,7 +621,7 @@ export default function LeaderboardPage() {
             alignItems: "center",
             justifyContent: "space-between",
             gap: "1rem",
-            padding: "0.8rem 1.25rem",
+            padding: "0.8rem 1.75rem",
             marginBottom: "1.5rem",
             border: "1.5px solid var(--surface-3, #ddd)",
             borderRadius: "var(--radius)",
@@ -653,7 +653,7 @@ export default function LeaderboardPage() {
             style={{
               padding: "0.4rem 0.8rem",
               fontFamily: "var(--font-mono)",
-              fontSize: "0.7rem",
+              fontSize: "0.8rem",
               fontWeight: 600,
               textTransform: "uppercase",
               letterSpacing: "0.04em",
@@ -914,7 +914,7 @@ export default function LeaderboardPage() {
           <div
             style={{
               marginTop: "2rem",
-              padding: "1rem 1.25rem",
+              padding: "1rem 1.75rem",
               borderLeft: "4px solid var(--accent)",
               backgroundColor: "var(--accent-light)",
             }}
@@ -995,7 +995,7 @@ function RankRow({
         display: "flex",
         alignItems: "center",
         gap: "1rem",
-        padding: "0.85rem 1.25rem",
+        padding: "0.85rem 1.75rem",
         borderBottom: "1px solid var(--surface-2, #e0e0d8)",
         backgroundColor: rankBg,
         borderLeft: `3px solid ${rankBorder}`,
@@ -1042,7 +1042,7 @@ function RankRow({
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 700,
-              fontSize: "0.7rem",
+              fontSize: "0.8rem",
               color: "var(--ink)",
             }}
           >
@@ -1186,7 +1186,7 @@ function RankRow({
         <span
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "0.7rem",
+            fontSize: "0.8rem",
             color: "var(--ink)",
             display: "flex",
             alignItems: "center",

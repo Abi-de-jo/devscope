@@ -60,27 +60,16 @@ export function Navigation() {
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700,
-            fontSize: "1.25rem",
+            fontSize: "1.75rem",
             color: "var(--ink)",
             textDecoration: "none",
             display: "flex",
             alignItems: "center",
-            gap: "0.5rem",
+            gap: "0",
           }}
         >
-          <span
-            style={{
-              backgroundColor: "var(--ink)",
-              color: "var(--paper)",
-              padding: "0.2rem 0.5rem",
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.7rem",
-              fontWeight: 600,
-              letterSpacing: "0.04em",
-            }}
-          >
-            DS
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+ 
           GitRating
         </Link>
 
@@ -167,7 +156,7 @@ export function Navigation() {
               type="button"
               onClick={() => signInWithGithub()}
               className="btn-primary"
-              style={{ padding: "0.625rem 1.25rem", fontSize: "0.75rem" }}
+              style={{ padding: "0.625rem 1.75rem", fontSize: "0.75rem" }}
             >
               <GithubIcon size={15} />
               Connect GitHub

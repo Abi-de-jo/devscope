@@ -68,7 +68,7 @@ export function LanguageCapabilities({ repositories }: { repositories: RepoLang[
           flexWrap: "wrap",
         }}
       >
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
           Most used overall
         </span>
         <span style={{ fontFamily: "var(--font-display)", fontSize: "2.25rem", fontWeight: 700, color: "var(--accent)", lineHeight: 1 }}>

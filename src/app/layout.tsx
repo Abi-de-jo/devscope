@@ -28,6 +28,11 @@ export const metadata: Metadata = {
   title: "GitRating — GitHub Wrapped for Engineering Credibility",
   description:
     "Connect your GitHub, get a shareable Engineering Score card in 60 seconds, see exactly what's holding you back.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     title: "GitRating — GitHub Wrapped for Engineering Credibility",
     description:

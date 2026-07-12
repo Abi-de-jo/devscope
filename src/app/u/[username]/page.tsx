@@ -36,7 +36,7 @@ function ConfidenceTag({ value }: { value: number }) {
         alignItems: "center",
         gap: "0.35rem",
         fontFamily: "var(--font-mono)",
-        fontSize: "0.7rem",
+        fontSize: "0.8rem",
         fontWeight: 600,
         textTransform: "uppercase",
         letterSpacing: "0.04em",
@@ -162,7 +162,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             ].map((stat) => (
               <div key={stat.label}>
                 <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.1rem" }}>{stat.value}</span>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", marginLeft: "0.4rem" }}>{stat.label}</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", marginLeft: "0.4rem" }}>{stat.label}</span>
               </div>
             ))}
           </div>
@@ -322,11 +322,11 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                       <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", marginBottom: "1rem" }}>
                         {subScores.map((ss) => (
                           <div key={ss.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", width: "110px", textTransform: "uppercase", letterSpacing: "0.03em" }}>{ss.label}</span>
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", width: "110px", textTransform: "uppercase", letterSpacing: "0.03em" }}>{ss.label}</span>
                             <div style={{ flex: 1, height: "6px", background: "var(--paper)", border: "1.5px solid var(--ink)" }}>
                               <div style={{ height: "100%", width: `${ss.value ?? 0}%`, background: (ss.value ?? 0) >= 70 ? "var(--accent)" : (ss.value ?? 0) >= 40 ? "var(--ink)" : "#E74C3C" }} />
                             </div>
-                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", fontWeight: 700, width: "28px", textAlign: "right" }}>{ss.value ?? "—"}</span>
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", fontWeight: 700, width: "28px", textAlign: "right" }}>{ss.value ?? "—"}</span>
                           </div>
                         ))}
                       </div>

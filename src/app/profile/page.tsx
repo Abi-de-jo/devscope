@@ -111,7 +111,7 @@ export default function ProfilePage() {
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.06em",
-                padding: "0.75rem 1.25rem",
+                padding: "0.75rem 1.75rem",
                 cursor: "pointer",
                 background: active ? "var(--ink)" : "transparent",
                 color: active ? "var(--paper)" : "var(--ink)",
@@ -138,7 +138,7 @@ export default function ProfilePage() {
                   </div>
                   <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--muted)", marginTop: "0.5rem" }}>Engineering Score</div>
                   <div style={{ fontFamily: "var(--font-display)", fontSize: "1.5rem", fontWeight: 700, marginTop: "1rem" }}>{analysis.engineerLevel}</div>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.04em", marginTop: "1rem", color: conf >= 75 ? "var(--accent)" : conf >= 50 ? "var(--ink)" : "#E74C3C", border: "1.5px solid currentColor", borderRadius: "2px", padding: "0.15rem 0.5rem" }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.04em", marginTop: "1rem", color: conf >= 75 ? "var(--accent)" : conf >= 50 ? "var(--ink)" : "#E74C3C", border: "1.5px solid currentColor", borderRadius: "2px", padding: "0.15rem 0.5rem" }}>
                     Confidence {conf}%
                   </div>
                 </div>
