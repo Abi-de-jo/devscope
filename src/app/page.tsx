@@ -40,7 +40,7 @@ function KineticHero() {
         lineHeight: 1.02,
         letterSpacing: "-0.04em",
         color: "var(--ink)",
-        marginBottom: "1.25rem",
+        marginBottom: "1.75rem",
       }}
     >
       {heroLines.map((line, li) => (
@@ -249,7 +249,7 @@ function MetricsGrid() {
             <div
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.06em",
@@ -358,17 +358,17 @@ function HowItWorks() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                marginBottom: "1.25rem",
+                marginBottom: "1.75rem",
                 boxShadow: "var(--shadow-sm)",
                 backgroundColor: "var(--paper-alt)",
               }}
             >
-              <Icon size={16} strokeWidth={2} />
+              <Icon size={20} strokeWidth={2} />
             </div>
             <h3
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "1.25rem",
+                fontSize: "1.75rem",
                 fontWeight: 700,
                 marginBottom: "0.5rem",
                 letterSpacing: "-0.01em",
@@ -495,7 +495,7 @@ function WhatIDo() {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "1.25rem",
+          gap: "1.75rem",
         }}
         className="proof-grid"
       >
@@ -669,67 +669,139 @@ function WhatIDo() {
 
 /* ─── Testimonial ──────────────────────────────────────────────────── */
 
+const testimonials = [
+  {
+    quote:
+      "I had no idea my Backend score was that low until GitRating showed me the exact repo that dragged it down. Fixed it in a weekend.",
+    name: "Priya Venkatesh",
+    role: "Senior Backend Engineer",
+    initials: "PV",
+    avatarBg: "#E8F5E9",
+  },
+  {
+    quote:
+      "Used to think my GitHub looked solid. GitRating exposed zero test coverage across three repos I was most proud of. Now they all have green bars.",
+    name: "Marcus Chen",
+    role: "Full-Stack Developer",
+    initials: "MC",
+    avatarBg: "#E3F2FD",
+  },
+  {
+    quote:
+      "Shared my score on LinkedIn and it started more conversations than any side project ever did. Recruiters actually reply now.",
+    name: "Anjali Deshmukh",
+    role: "Software Engineer",
+    initials: "AD",
+    avatarBg: "#FFF3E0",
+  },
+];
+
 function Testimonial() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+    <section
       style={{
-        maxWidth: "640px",
+        maxWidth: "720px",
         margin: "0 auto",
-        textAlign: "center",
         padding: "4rem 1.5rem",
+        textAlign: "center",
       }}
     >
-      <div
-        style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
-          fontWeight: 600,
-          lineHeight: 1.4,
-          color: "var(--ink)",
-          marginBottom: "1.5rem",
-          fontStyle: "italic",
-          letterSpacing: "-0.01em",
-        }}
-      >
-        &ldquo;I had no idea my Backend score was that low until GitRating showed
-        me the exact repo that dragged it down. Fixed it in a weekend.&rdquo;
+      <div className="uppercase-label" style={{ marginBottom: "2rem", justifyContent: "center" }}>
+        What people are saying
       </div>
-      <div
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: "0.7rem",
-          fontWeight: 500,
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          color: "var(--muted)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "0.75rem",
-        }}
-      >
-        <span
+
+      {testimonials.map((t, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ delay: i * 0.12, duration: 0.5 }}
+          className="card"
           style={{
-            width: "2rem",
-            height: "1px",
-            backgroundColor: "var(--muted)",
-            display: "inline-block",
+            borderRadius: 0,
+            padding: "2rem 2.25rem",
+            marginBottom: i < testimonials.length - 1 ? "1rem" : 0,
+            textAlign: "left",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1.25rem",
           }}
-        />
-        GitRating Beta User
-        <span
-          style={{
-            width: "2rem",
-            height: "1px",
-            backgroundColor: "var(--muted)",
-            display: "inline-block",
-          }}
-        />
-      </div>
-    </motion.div>
+        >
+          {/* Quote */}
+          <div
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1rem, 2.2vw, 1.2rem)",
+              fontWeight: 600,
+              lineHeight: 1.45,
+              color: "var(--ink)",
+              letterSpacing: "-0.01em",
+              fontStyle: "italic",
+            }}
+          >
+            &ldquo;{t.quote}&rdquo;
+          </div>
+
+          {/* Author row */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              paddingTop: "0.25rem",
+              borderTop: "1px solid var(--border)",
+            }}
+          >
+            {/* Avatar circle with initials */}
+            <div
+              style={{
+                width: "2.25rem",
+                height: "2.25rem",
+                borderRadius: "var(--radius)",
+                border: "var(--border-width) solid var(--ink)",
+                backgroundColor: t.avatarBg,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                color: "var(--ink)",
+                flexShrink: 0,
+              }}
+            >
+              {t.initials}
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.7rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase" as const,
+                  letterSpacing: "0.06em",
+                }}
+              >
+                {t.name}
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6rem",
+                  color: "var(--muted)",
+                  letterSpacing: "0.03em",
+                }}
+              >
+                {t.role}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </section>
   );
 }
 
