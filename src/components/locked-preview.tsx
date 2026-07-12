@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { signInWithGithub } from "@/lib/auth-client";
 import { GithubIcon } from "@/components/brand-icons";
 
@@ -36,7 +37,11 @@ export function LockedPreview({
     dashboard: `Your score is waiting — ${statNumber} out of 100. Connect GitHub to unlock the full breakdown.`,
   };
 
+  const [connecting, setConnecting] = useState(false);
+
   const handleConnect = () => {
+    if (connecting) return;
+    setConnecting(true);
     // Store current path so post-auth redirect goes here
     try {
       localStorage.setItem("devscope:returnTo", window.location.pathname);
@@ -135,6 +140,7 @@ export function LockedPreview({
           <button
             type="button"
             onClick={handleConnect}
+            disabled={connecting}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -150,14 +156,18 @@ export function LockedPreview({
               border: "var(--border-width) solid var(--ink)",
               borderRadius: "var(--radius)",
               boxShadow: "var(--shadow-md)",
-              cursor: "pointer",
+              cursor: connecting ? "wait" : "pointer",
               transition: "all 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               width: "100%",
               justifyContent: "center",
+              opacity: connecting ? 0.7 : 1,
+              pointerEvents: connecting ? "none" : "auto",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "var(--shadow-sm)";
-              e.currentTarget.style.transform = "translate(2px, 2px)";
+              if (!connecting) {
+                e.currentTarget.style.boxShadow = "var(--shadow-sm)";
+                e.currentTarget.style.transform = "translate(2px, 2px)";
+              }
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.boxShadow = "var(--shadow-md)";
@@ -165,7 +175,7 @@ export function LockedPreview({
             }}
           >
             <GithubIcon size={15} />
-            Connect GitHub
+            {connecting ? "CONNECTING…" : "Connect GitHub"}
           </button>
 
           {/* Trust line */}

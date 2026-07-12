@@ -110,22 +110,23 @@ export async function POST() {
       );
     }
 
-    // Check for existing recent analysis (within 24 hours for free tier)
-    const recentAnalysis = await prisma.analysis.findFirst({
+    // TEMP RATE LIMIT: if user already has any completed analysis,
+    // return it instead of calling the AI API again.
+    const existingAnalysis = await prisma.analysis.findFirst({
       where: {
         userId: session.user.id,
         status: "completed",
-        completedAt: {
-          gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
-        },
       },
+      orderBy: { completedAt: "desc" },
     });
 
-    if (recentAnalysis) {
+    if (existingAnalysis) {
+      // Serve the existing analysis via GET path (cache + username attach)
+      cacheDelete(`score:${userId}`);
       return NextResponse.json({
         success: true,
-        analysisId: recentAnalysis.id,
-        message: "Recent analysis exists. Re-analysis available after 24h (free tier).",
+        analysisId: existingAnalysis.id,
+        message: "Returning existing analysis. One AI score per account for now.",
       });
     }
 
