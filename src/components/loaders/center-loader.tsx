@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Github, Search, Code2, BarChart3, Check } from "lucide-react";
 
 const STEPS = [
@@ -11,21 +10,23 @@ const STEPS = [
 ];
 
 /**
- * Centered loading overlay: dims the whole screen (low-opacity backdrop)
- * and shows an animated stepper (text + icons cycling through stages) plus
- * a 0–100 progress bar driven by the caller's `progress` value, which the
- * dashboard updates from the real request elapsed time.
+ * Centered loading overlay: dims the whole screen and shows a stepper
+ * whose steps advance based on the caller's `step` prop (0-3), not a
+ * timer. The `progress` bar (0-100) is also driven by the caller.
+ *
+ * Flow driven by the dashboard:
+ *   step 0 → /api/sync in flight
+ *   step 1 → /api/score POST in flight
+ *   step 2 → loadAnalysis in flight
+ *   step 3 → finalizing
  */
-export function CenterLoader({ progress = 0 }: { progress?: number }) {
-  const [active, setActive] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setActive((i) => (i + 1) % STEPS.length);
-    }, 1100);
-    return () => clearInterval(id);
-  }, []);
-
+export function CenterLoader({
+  progress = 0,
+  step = 0,
+}: {
+  progress?: number;
+  step?: number;
+}) {
   const pct = Math.max(0, Math.min(100, Math.round(progress)));
 
   return (
@@ -56,13 +57,13 @@ export function CenterLoader({ progress = 0 }: { progress?: number }) {
           minWidth: "340px",
         }}
       >
-        {STEPS.map((step, i) => {
-          const Icon = step.icon;
-          const isActive = i === active;
-          const isDone = i < active;
+        {STEPS.map((s, i) => {
+          const Icon = s.icon;
+          const isActive = i === step;
+          const isDone = i < step;
           return (
             <div
-              key={step.label}
+              key={s.label}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -87,12 +88,20 @@ export function CenterLoader({ progress = 0 }: { progress?: number }) {
                   flexShrink: 0,
                   border: "1.5px solid var(--ink)",
                   borderRadius: "2px",
-                  background: isActive ? "var(--accent)" : "transparent",
+                  background: isActive
+                    ? "var(--accent)"
+                    : isDone
+                      ? "var(--accent)"
+                      : "transparent",
                 }}
               >
-                {isDone ? <Check size={15} /> : <Icon size={15} />}
+                {isDone ? (
+                  <Check size={15} />
+                ) : (
+                  <Icon size={15} />
+                )}
               </span>
-              {step.label}
+              {s.label}
             </div>
           );
         })}
@@ -103,7 +112,7 @@ export function CenterLoader({ progress = 0 }: { progress?: number }) {
               display: "flex",
               justifyContent: "space-between",
               fontFamily: "var(--font-mono)",
-              fontSize: "0.7rem",
+              fontSize: "0.8rem",
               textTransform: "uppercase",
               letterSpacing: "0.06em",
               color: "var(--muted)",

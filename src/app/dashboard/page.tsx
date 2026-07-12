@@ -2,7 +2,7 @@
 
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { AnalysisView, type AnalysisData } from "@/components/analysis-view";
 import { HistorySection } from "@/components/history-section";
 import { motion } from "framer-motion";
@@ -20,8 +20,10 @@ export default function DashboardPage() {
   const [analysis, setAnalysis] = useState<AnalysisData | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [step, setStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [repositories, setRepositories] = useState<RepoLang[]>([]);
+  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const loadAnalysis = async () => {
     try {
@@ -43,42 +45,82 @@ export default function DashboardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, isPending, router]);
 
-  // Runs an async flow while driving a 0–100 progress bar from the real
-  // elapsed time. Fast responses fill the bar quickly; slow ones crawl.
-  const runWithProgress = async (fn: () => Promise<void>) => {
-    setBusy(true);
-    setProgress(0);
-    const start = Date.now();
-    const id = setInterval(() => {
-      const elapsed = Date.now() - start;
-      setProgress(Math.min(92, 92 * (1 - Math.exp(-elapsed / 2500))));
-    }, 80);
-    try {
-      await fn();
-    } finally {
-      clearInterval(id);
-      setProgress(100);
-      setTimeout(() => setBusy(false), 450);
-    }
-  };
+  // Clean up interval on unmount
+  useEffect(() => {
+    return () => {
+      if (progressRef.current) clearInterval(progressRef.current);
+    };
+  }, []);
+
+  /**
+   * Run a multi-step async flow with a progress bar.
+   * `steps` is an array of async callbacks. Each one advances the step
+   * counter when it completes. Progress is time-based (exponential curve)
+   * but caps at 95% until the final step finishes, then snaps to 100%.
+   */
+  const runWithSteps = useCallback(
+    async (steps: Array<() => Promise<void>>) => {
+      setBusy(true);
+      setStep(0);
+      setProgress(0);
+
+      const start = Date.now();
+      progressRef.current = setInterval(() => {
+        const elapsed = Date.now() - start;
+        // Exponential ease toward 95%, never reaches it until done
+        setProgress(Math.min(95, 95 * (1 - Math.exp(-elapsed / 4000))));
+      }, 80);
+
+      try {
+        for (let i = 0; i < steps.length; i++) {
+          setStep(i);
+          await steps[i]();
+        }
+      } finally {
+        if (progressRef.current) {
+          clearInterval(progressRef.current);
+          progressRef.current = null;
+        }
+        setProgress(100);
+        // Brief pause at 100% so user sees the checkmarks
+        setTimeout(() => setBusy(false), 600);
+      }
+    },
+    []
+  );
 
   const handleSync = () =>
-    runWithProgress(async () => {
-      const res = await fetch("/api/sync", { method: "POST" });
-      const data = await res.json();
-      if (data.success) {
-        const scoreRes = await fetch("/api/score", { method: "POST" });
-        await scoreRes.json();
+    runWithSteps([
+      // Step 0: Sync GitHub repos
+      async () => {
+        const res = await fetch("/api/sync", { method: "POST" });
+        await res.json();
+      },
+      // Step 1: Score (AI)
+      async () => {
+        const res = await fetch("/api/score", { method: "POST" });
+        await res.json();
+      },
+      // Step 2: Load results + repos
+      async () => {
         await loadAnalysis();
-      }
-    });
+      },
+    ]);
 
   const handleScore = () =>
-    runWithProgress(async () => {
-      const res = await fetch("/api/score", { method: "POST" });
-      await res.json();
-      await loadAnalysis();
-    });
+    runWithSteps([
+      // Step 1: Score (skip sync)
+      async () => {
+        setStep(1);
+        const res = await fetch("/api/score", { method: "POST" });
+        await res.json();
+      },
+      // Step 2: Load results
+      async () => {
+        setStep(2);
+        await loadAnalysis();
+      },
+    ]);
 
   // Locked preview: show blurred dummy content when not logged in
   if (!session && !isPending) {
@@ -96,7 +138,7 @@ export default function DashboardPage() {
 
   // Sync / score in flight — dim the screen, centered animated stepper + progress
   if (busy) {
-    return <CenterLoader progress={progress} />;
+    return <CenterLoader progress={progress} step={step} />;
   }
 
   return (
