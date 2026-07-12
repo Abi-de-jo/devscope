@@ -32,9 +32,9 @@ const FAKE_LANGUAGES = [
 
 export function LockedDashboardContent() {
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 1.5rem" }}>
       {/* Header */}
-      <div style={{ marginBottom: "3rem" }}>
+      <div style={{ marginBottom: "4rem" }}>
         <div
           style={{
             fontFamily: "var(--font-mono)",
@@ -58,7 +58,7 @@ export function LockedDashboardContent() {
       </div>
 
       {/* Score Card — score is SHARP, rest is blurred */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "3rem" }} className="dash-locked-grid">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "4rem" }} className="dash-locked-grid">
         {/* Left: Score — SHARP */}
         <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", boxShadow: "var(--shadow-lg)", backgroundColor: "var(--paper-alt)", padding: "2.5rem 2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--muted)", marginBottom: "0.75rem" }}>
@@ -82,7 +82,7 @@ export function LockedDashboardContent() {
           </div>
           {FAKE_AXES.slice(0, 6).map((axis) => (
             <div key={axis.name} style={{ marginBottom: "0.75rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.3rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.04em" }}>{axis.name}</span>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", fontWeight: 700, color: axis.score >= 70 ? "var(--accent)" : "var(--ink)" }}>{axis.score}</span>
               </div>
@@ -95,7 +95,7 @@ export function LockedDashboardContent() {
       </div>
 
       {/* Radar placeholder — BLURRED */}
-      <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", boxShadow: "var(--shadow-md)", backgroundColor: "var(--paper-alt)", padding: "2rem", marginBottom: "3rem", filter: "blur(5px)" }}>
+      <div style={{ border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)", boxShadow: "var(--shadow-md)", backgroundColor: "var(--paper-alt)", padding: "2rem", marginBottom: "4rem", filter: "blur(5px)" }}>
         <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--muted)", marginBottom: "1rem" }}>
           Radar Chart
         </div>
@@ -116,7 +116,7 @@ export function LockedDashboardContent() {
         </div>
         <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-end", height: "80px" }}>
           {FAKE_LANGUAGES.map((lang) => (
-            <div key={lang.name} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "0.3rem" }}>
+            <div key={lang.name} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "0.4rem" }}>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", fontWeight: 700 }}>{lang.pct}%</div>
               <div style={{ width: "100%", height: `${lang.pct * 1.5}px`, backgroundColor: "var(--ink)", border: "var(--border-width) solid var(--ink)", borderRadius: "var(--radius)" }} />
               <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.55rem", color: "var(--muted)", textTransform: "uppercase" }}>{lang.name}</div>

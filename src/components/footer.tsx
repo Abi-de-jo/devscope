@@ -34,7 +34,7 @@ export function Footer() {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "3rem 1.5rem 2rem",
+          padding: "4rem 1.5rem 2rem",
         }}
       >
         {/* Top Grid */}

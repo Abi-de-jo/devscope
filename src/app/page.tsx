@@ -35,7 +35,7 @@ function KineticHero() {
     <h1
       style={{
         fontFamily: "var(--font-display)",
-        fontSize: "clamp(3rem, 8vw, 6.5rem)",
+        fontSize: "clamp(4rem, 8vw, 6.5rem)",
         fontWeight: 700,
         lineHeight: 1.02,
         letterSpacing: "-0.04em",
@@ -464,7 +464,7 @@ function WhatIDo() {
         <h2
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(1.75rem, 4vw, 3rem)",
+            fontSize: "clamp(1.75rem, 4vw, 4rem)",
             fontWeight: 700,
             lineHeight: 1.15,
             letterSpacing: "-0.03em",
@@ -499,40 +499,40 @@ function WhatIDo() {
         }}
         className="proof-grid"
       >
-          {proofPoints.map((p, i) => {
-            const Icon = p.icon;
-            return (
-              <motion.button
-                key={i}
-                type="button"
-                className="card card-hover"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  delay: i * 0.1,
-                  duration: 0.5,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
-                onClick={() => {
-                  document
-                    .getElementById("proof")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
-                style={{
-                  borderRadius: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
-                  textAlign: "left",
-                  cursor: "pointer",
-                  width: "100%",
-                  border: "var(--border-width) solid var(--ink)",
-                  backgroundColor: "var(--paper-alt)",
-                  padding: "1.75rem",
-                  fontFamily: "inherit",
-                }}
-              >
+        {proofPoints.map((p, i) => {
+          const Icon = p.icon;
+          return (
+            <motion.button
+              key={i}
+              type="button"
+              className="card card-hover"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{
+                delay: i * 0.1,
+                duration: 0.5,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              onClick={() => {
+                document
+                  .getElementById("proof")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+              style={{
+                borderRadius: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                textAlign: "left",
+                cursor: "pointer",
+                width: "100%",
+                border: "var(--border-width) solid var(--ink)",
+                backgroundColor: "var(--paper-alt)",
+                padding: "1.75rem",
+                fontFamily: "inherit",
+              }}
+            >
               {/* Icon + Axis label row */}
               <div
                 style={{
@@ -651,9 +651,9 @@ function WhatIDo() {
                   />
                 </div>
               </div>
-              </motion.button>
-            );
-          })}
+            </motion.button>
+          );
+        })}
       </div>
 
       <style>{`
@@ -985,7 +985,7 @@ export default function Home() {
         @media (max-width: 900px) {
           .hero-grid {
             grid-template-columns: 1fr !important;
-            gap: 3rem !important;
+            gap: 4rem !important;
           }
         }
       `}</style>
@@ -1015,7 +1015,7 @@ export default function Home() {
             fontWeight: 700,
             lineHeight: 1.1,
             letterSpacing: "-0.02em",
-            marginBottom: "3rem",
+            marginBottom: "4rem",
             maxWidth: "500px",
           }}
         >
@@ -1049,7 +1049,7 @@ export default function Home() {
               fontWeight: 700,
               lineHeight: 1.1,
               letterSpacing: "-0.02em",
-              marginBottom: "3rem",
+              marginBottom: "4rem",
               maxWidth: "400px",
             }}
           >

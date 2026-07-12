@@ -30,9 +30,9 @@ export function SkeletonBlock({
  */
 export function SkeletonProfile() {
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 1.5rem" }}>
       {/* Profile header */}
-      <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start", marginBottom: "3rem", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start", marginBottom: "4rem", flexWrap: "wrap" }}>
         <SkeletonBlock width={96} height={96} />
         <div style={{ flex: 1, minWidth: 240 }}>
           <SkeletonBlock width={140} height={14} radius={2} style={{ marginBottom: "0.75rem" }} />
@@ -48,8 +48,8 @@ export function SkeletonProfile() {
       </div>
 
       {/* Score card + radar */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, marginBottom: "3rem" }}>
-        <div className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "3rem", borderRight: "var(--border-width) solid var(--ink)" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, marginBottom: "4rem" }}>
+        <div className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "4rem", borderRight: "var(--border-width) solid var(--ink)" }}>
           <SkeletonBlock width={140} height={140} radius="50%" />
           <SkeletonBlock width={90} height={12} radius={2} style={{ marginTop: "1rem" }} />
           <SkeletonBlock width={120} height={24} radius={2} style={{ marginTop: "1rem" }} />
@@ -62,7 +62,7 @@ export function SkeletonProfile() {
       </div>
 
       {/* Summary + strengths/gaps */}
-      <div className="card" style={{ borderRadius: 0, marginBottom: "3rem", padding: "2rem" }}>
+      <div className="card" style={{ borderRadius: 0, marginBottom: "4rem", padding: "2rem" }}>
         <SkeletonBlock width={140} height={14} radius={2} style={{ marginBottom: "1rem" }} />
         <SkeletonBlock width="100%" height={16} radius={2} style={{ marginBottom: "0.6rem" }} />
         <SkeletonBlock width="92%" height={16} radius={2} style={{ marginBottom: "0.6rem" }} />
@@ -90,13 +90,13 @@ const BAR_WIDTHS = ["82%", "64%", "73%", "45%", "90%", "58%"];
  */
 export function SkeletonDashboard() {
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 1.5rem" }}>
       <SkeletonBlock width={120} height={14} radius={2} style={{ marginBottom: "0.75rem" }} />
-      <SkeletonBlock width="40%" height={40} radius={2} style={{ marginBottom: "3rem" }} />
+      <SkeletonBlock width="40%" height={40} radius={2} style={{ marginBottom: "4rem" }} />
 
       {/* Score card + radar */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, marginBottom: "3rem" }}>
-        <div className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "3rem", borderRight: "var(--border-width) solid var(--ink)" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, marginBottom: "4rem" }}>
+        <div className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "4rem", borderRight: "var(--border-width) solid var(--ink)" }}>
           <SkeletonBlock width={140} height={140} radius="50%" />
           <SkeletonBlock width={90} height={12} radius={2} style={{ marginTop: "1rem" }} />
           <SkeletonBlock width={120} height={24} radius={2} style={{ marginTop: "1rem" }} />
@@ -108,7 +108,7 @@ export function SkeletonDashboard() {
       </div>
 
       {/* Skill breakdown bars */}
-      <div className="card" style={{ borderRadius: 0, marginBottom: "3rem", padding: "2rem" }}>
+      <div className="card" style={{ borderRadius: 0, marginBottom: "4rem", padding: "2rem" }}>
         <SkeletonBlock width={160} height={14} radius={2} style={{ marginBottom: "1.5rem" }} />
         <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
           {BAR_WIDTHS.map((w, i) => (

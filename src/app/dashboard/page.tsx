@@ -100,8 +100,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: "3rem" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 1.5rem" }}>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: "4rem" }}>
         <div className="uppercase-label" style={{ marginBottom: "0.75rem" }}>Dashboard</div>
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 4vw, 2.5rem)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "1rem" }}>
           Your Engineering Score
@@ -144,7 +144,7 @@ export default function DashboardPage() {
       )}
 
       {repositories.length > 0 && (
-        <div style={{ marginTop: "3rem" }}>
+        <div style={{ marginTop: "4rem" }}>
           <LanguageCapabilities repositories={repositories} />
         </div>
       )}

@@ -134,9 +134,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const recommendations = analysis ? asRecs(analysis.recommendations) : [];
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 1.5rem" }}>
       {/* Profile Header */}
-      <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start", marginBottom: "3rem", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start", marginBottom: "4rem", flexWrap: "wrap" }}>
         {profile.avatarUrl && (
           <img
             src={profile.avatarUrl}
@@ -172,8 +172,8 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       {analysis ? (
         <>
           {/* Score Card + Radar */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, marginBottom: "3rem" }}>
-            <div className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "3rem", borderRight: "var(--border-width) solid var(--ink)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, marginBottom: "4rem" }}>
+            <div className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "4rem", borderRight: "var(--border-width) solid var(--ink)" }}>
               <div style={{ fontFamily: "var(--font-display)", fontSize: "6rem", fontWeight: 700, lineHeight: 1, color: (analysis.overallScore ?? 0) >= 70 ? "var(--accent)" : (analysis.overallScore ?? 0) >= 40 ? "var(--ink)" : "#E74C3C" }}>
                 {analysis.overallScore}
               </div>
@@ -189,13 +189,13 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
           {/* Language Capabilities */}
           {profile.repositories.length > 0 && (
-            <div style={{ marginBottom: "3rem" }}>
+            <div style={{ marginBottom: "4rem" }}>
               <LanguageCapabilities repositories={profile.repositories} />
             </div>
           )}
 
           {/* Explanation (Feature 1) */}
-          <div className="card" style={{ borderRadius: 0, marginBottom: "3rem", padding: "2rem" }}>
+          <div className="card" style={{ borderRadius: 0, marginBottom: "4rem", padding: "2rem" }}>
             <div className="uppercase-label" style={{ marginBottom: "1rem" }}>Overall Summary</div>
             <p style={{ fontFamily: "var(--font-body)", fontSize: "1.1rem", lineHeight: 1.7, color: "var(--ink)", marginBottom: "1.5rem" }}>{analysis.summary}</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
@@ -239,7 +239,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           </div>
 
           {/* Category breakdown with evidence (Feature 2 + 5) */}
-          <div style={{ marginBottom: "3rem" }}>
+          <div style={{ marginBottom: "4rem" }}>
             <div className="uppercase-label" style={{ marginBottom: "1.5rem" }}>Category Breakdown — evidence for every score</div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 0, border: "var(--border-width) solid var(--ink)", borderRadius: "2px", overflow: "hidden" }}>
               {analysis.scores.map((s, i) => {
@@ -283,7 +283,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                       <div style={{ marginTop: "1rem", borderTop: "1px dashed var(--border)", paddingTop: "0.75rem" }}>
                         <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", marginBottom: "0.4rem" }}>Recommendations</div>
                         {recs.map((r, j) => (
-                          <div key={j} style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", lineHeight: 1.4, marginBottom: "0.3rem" }}>
+                          <div key={j} style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", lineHeight: 1.4, marginBottom: "0.4rem" }}>
                             <span style={{ fontWeight: 700 }}>{r.title}</span> <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--accent)" }}>{r.impact}</span>
                             <div style={{ color: "var(--muted)", fontSize: "0.75rem" }}>{r.reason}</div>
                           </div>
@@ -298,7 +298,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
           {/* Repository Intelligence (Feature 3) */}
           {analysis.repoScores.length > 0 && (
-            <div style={{ marginBottom: "3rem" }}>
+            <div style={{ marginBottom: "4rem" }}>
               <div className="uppercase-label" style={{ marginBottom: "1.5rem" }}>Repository Intelligence</div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 0, border: "var(--border-width) solid var(--ink)", borderRadius: "2px", overflow: "hidden" }}>
                 {analysis.repoScores.map((rs, i) => {
@@ -332,13 +332,13 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                       </div>
                       {asStr(rs.strengths).length > 0 && (
                         <div style={{ marginBottom: "0.5rem" }}>
-                          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--accent)", marginBottom: "0.3rem" }}>Strengths</div>
+                          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--accent)", marginBottom: "0.4rem" }}>Strengths</div>
                           <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", lineHeight: 1.4 }}>{asStr(rs.strengths).join(" · ")}</div>
                         </div>
                       )}
                       {asStr(rs.weaknesses).length > 0 && (
                         <div>
-                          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "#E74C3C", marginBottom: "0.3rem" }}>Weaknesses</div>
+                          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "#E74C3C", marginBottom: "0.4rem" }}>Weaknesses</div>
                           <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", lineHeight: 1.4 }}>{asStr(rs.weaknesses).join(" · ")}</div>
                         </div>
                       )}

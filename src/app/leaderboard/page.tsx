@@ -174,7 +174,7 @@ export default function LeaderboardPage() {
         setHideFromLeaderboards(data.hideFromLeaderboards ?? false);
         setShowOptOut(data.loggedIn ?? false);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [searchParams]);
 
   /* ── Sync URL ────────────────────────────────────────────────── */
@@ -314,7 +314,7 @@ export default function LeaderboardPage() {
       style={{
         maxWidth: "900px",
         margin: "0 auto",
-        padding: "3rem 1.5rem 6rem",
+        padding: "4rem 1.5rem 6rem",
       }}
     >
       {/* ── Header ───────────────────────────────────────────── */}

@@ -39,7 +39,7 @@ export function HistorySection() {
   const fmt = (n: number | null) => (n == null ? "—" : Math.round(n));
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: "3rem" }}>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: "4rem" }}>
       <div className="uppercase-label" style={{ marginBottom: "1.5rem" }}>Analysis History</div>
 
       {/* Timeline (F8) */}

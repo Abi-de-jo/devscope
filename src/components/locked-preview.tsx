@@ -86,8 +86,8 @@ export function LockedPreview({
           {/* Lock icon */}
           <div
             style={{
-              width: "3rem",
-              height: "3rem",
+              width: "4rem",
+              height: "4rem",
               margin: "0 auto 1.25rem",
               border: "var(--border-width) solid var(--ink)",
               borderRadius: "var(--radius)",

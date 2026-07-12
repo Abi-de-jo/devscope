@@ -132,7 +132,7 @@ export default function ProfilePage() {
           <motion.div key="profile" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }}>
             {analysis ? (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, border: "var(--border-width) solid var(--ink)", borderRadius: "2px", overflow: "hidden" }}>
-                <div className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "3rem", borderRight: "var(--border-width) solid var(--ink)" }}>
+                <div className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "4rem", borderRight: "var(--border-width) solid var(--ink)" }}>
                   <div style={{ fontFamily: "var(--font-display)", fontSize: "6rem", fontWeight: 700, lineHeight: 1, color: analysis.overallScore >= 70 ? "var(--accent)" : analysis.overallScore >= 40 ? "var(--ink)" : "#E74C3C" }}>
                     {analysis.overallScore}
                   </div>

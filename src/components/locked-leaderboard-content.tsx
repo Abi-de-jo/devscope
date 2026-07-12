@@ -14,7 +14,7 @@ const TROPHY_COLORS: Record<number, string> = {
  */
 export function LockedLeaderboardContent() {
   return (
-    <div style={{ maxWidth: "900px", margin: "0 auto", padding: "3rem 1.5rem 6rem" }}>
+    <div style={{ maxWidth: "900px", margin: "0 auto", padding: "4rem 1.5rem 6rem" }}>
       {/* Header */}
       <div style={{ marginBottom: "2.5rem" }}>
         <div

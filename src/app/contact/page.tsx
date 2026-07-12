@@ -65,7 +65,7 @@ export default function ContactPage() {
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "clamp(2rem, 5vw, 4rem) 1.5rem" }}>
         {/* Spec strip */}
-        <div className="spec-keys" style={{ justifyContent: "flex-start", marginBottom: "3rem" }}>
+        <div className="spec-keys" style={{ justifyContent: "flex-start", marginBottom: "4rem" }}>
           <div className="keycap"><span className="keycap-legend">Response Time</span><span className="keycap-text" style={{ color: "var(--accent)" }}>24–48h</span></div>
           <div className="keycap"><span className="keycap-legend">Fastest Channel</span><span className="keycap-text">GitHub Issues</span></div>
           <div className="keycap"><span className="keycap-legend">Availability</span><span className="keycap-text">Business Days</span></div>
@@ -109,7 +109,7 @@ export default function ContactPage() {
         </div>
 
         {/* CTA */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ marginTop: "3.5rem", textAlign: "center", padding: "3rem 0 1rem" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ marginTop: "3.5rem", textAlign: "center", padding: "4rem 0 1rem" }}>
           <Link href="/" className="btn-primary">Get your Engineering Score <ArrowRight size={15} /></Link>
         </motion.div>
       </div>

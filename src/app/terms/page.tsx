@@ -85,7 +85,7 @@ export default function TermsPage() {
         </div>
 
         {/* CTA */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ marginTop: "3rem", textAlign: "center", padding: "2rem 0 1rem" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ marginTop: "4rem", textAlign: "center", padding: "2rem 0 1rem" }}>
           <Link href="/" className="btn-primary">Get your Engineering Score <ArrowRight size={15} /></Link>
         </motion.div>
       </div>

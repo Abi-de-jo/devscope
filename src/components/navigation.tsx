@@ -117,7 +117,7 @@ export function Navigation() {
                   padding: "0.25rem 0",
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.3rem",
+                  gap: "0.4rem",
                 }}
                 onMouseEnter={(e) => {
                   const target = e.currentTarget;
@@ -241,7 +241,7 @@ export function Navigation() {
                       borderBottom: "var(--border-width) solid var(--ink)",
                       display: "flex",
                       alignItems: "center",
-                      gap: "0.3rem",
+                      gap: "0.4rem",
                     }}
                   >
                     {link.label}

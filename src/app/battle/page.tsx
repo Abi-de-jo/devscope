@@ -149,7 +149,7 @@ export default function BattlePage() {
       style={{
         maxWidth: "1080px",
         margin: "0 auto",
-        padding: "3rem 1.5rem 6rem",
+        padding: "4rem 1.5rem 6rem",
       }}
     >
       {/* ── Header ───────────────────────────────────────────────── */}
@@ -414,12 +414,12 @@ export default function BattlePage() {
                 <div>
                   <div
                     style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.8rem",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    color: "var(--muted)",
-                    marginBottom: "0.15rem",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.8rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      color: "var(--muted)",
+                      marginBottom: "0.15rem",
                     }}
                   >
                     Overall Winner
@@ -529,7 +529,7 @@ export default function BattlePage() {
                         marginBottom: "0.6rem",
                       }}
                     >
-                      <span style={{ fontSize: "1.3rem" }}>{icon}</span>
+                      <span style={{ fontSize: "1.4rem" }}>{icon}</span>
                       <span
                         style={{
                           fontFamily: "var(--font-mono)",
@@ -551,8 +551,8 @@ export default function BattlePage() {
                             repeat: Infinity,
                           }}
                           style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.8rem",
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "0.8rem",
                             color: "var(--accent)",
                             fontWeight: 700,
                             display: "flex",
@@ -585,7 +585,7 @@ export default function BattlePage() {
                               display: "flex",
                               alignItems: "center",
                               gap: "0.7rem",
-                              marginBottom: "0.3rem",
+                              marginBottom: "0.4rem",
                             }}
                           >
                             <span
@@ -980,7 +980,7 @@ function UserCard({
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 700,
-              fontSize: "1.3rem",
+              fontSize: "1.4rem",
             }}
           >
             {profile.displayName || profile.username}
@@ -1062,7 +1062,7 @@ function UserCard({
             marginBottom: "0.5rem",
             display: "flex",
             alignItems: "center",
-            gap: "0.3rem",
+            gap: "0.4rem",
           }}
         >
           <AlertTriangle size={13} />

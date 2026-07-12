@@ -300,7 +300,7 @@ export default function HowItWorksPage() {
           transition={{ delay: 0.5, duration: 0.5 }}
           style={{
             marginTop: "3.5rem",
-            padding: "clamp(2rem, 4vw, 3rem)",
+            padding: "clamp(2rem, 4vw, 4rem)",
             border: "var(--border-width) solid var(--ink)",
             borderRadius: "var(--radius)",
             boxShadow: "var(--shadow-xl)",
@@ -308,7 +308,7 @@ export default function HowItWorksPage() {
             textAlign: "center",
           }}
         >
-          <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(1.3rem, 3vw, 1.8rem)", marginBottom: "0.5rem" }}>
+          <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(1.4rem, 3vw, 1.8rem)", marginBottom: "0.5rem" }}>
             Ready to check your score?
           </h3>
           <p style={{ fontFamily: "var(--font-body)", fontSize: "0.95rem", color: "var(--ink)", marginBottom: "1.5rem", opacity: 0.7, maxWidth: "40ch", margin: "0 auto 1.5rem" }}>

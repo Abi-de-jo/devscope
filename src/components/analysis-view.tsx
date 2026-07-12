@@ -235,7 +235,7 @@ function ImpactProjection({ scores, overall }: { scores: AxisScore[]; overall: n
   const projectedOverall = clamp(overall + totalGain);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card" style={{ borderRadius: 0, marginBottom: "3rem", padding: "2rem", borderLeft: "6px solid var(--accent)" }}>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card" style={{ borderRadius: 0, marginBottom: "4rem", padding: "2rem", borderLeft: "6px solid var(--accent)" }}>
       <div className="uppercase-label" style={{ marginBottom: "1.25rem" }}>Improvement Impact</div>
 
       {/* Now → Potential */}
@@ -258,7 +258,7 @@ function ImpactProjection({ scores, overall }: { scores: AxisScore[]; overall: n
             color: "var(--accent)",
             border: "1.5px solid var(--accent)",
             borderRadius: "2px",
-            padding: "0.3rem 0.7rem",
+            padding: "0.4rem 0.7rem",
           }}
         >
           +{totalGain}
@@ -293,8 +293,8 @@ export function AnalysisView({ analysis, onReanalyze }: { analysis: AnalysisData
   return (
     <>
       {/* Score + Radar */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, marginBottom: "3rem" }}>
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "3rem", borderRight: "var(--border-width) solid var(--ink)" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 0, marginBottom: "4rem" }}>
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="card" style={{ borderRadius: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "4rem", borderRight: "var(--border-width) solid var(--ink)" }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: "6rem", fontWeight: 700, lineHeight: 1, color: analysis.overallScore >= 70 ? "var(--accent)" : analysis.overallScore >= 40 ? "var(--ink)" : "#E74C3C" }}>
             {analysis.overallScore}
           </div>
@@ -326,7 +326,7 @@ export function AnalysisView({ analysis, onReanalyze }: { analysis: AnalysisData
       </div>
 
       {/* Explanation (Feature 1) */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card" style={{ borderRadius: 0, marginBottom: "3rem", padding: "2rem" }}>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card" style={{ borderRadius: 0, marginBottom: "4rem", padding: "2rem" }}>
         <div className="uppercase-label" style={{ marginBottom: "1rem" }}>Overall Summary</div>
         <p style={{ fontFamily: "var(--font-body)", fontSize: "1.1rem", lineHeight: 1.7, color: "var(--ink)", marginBottom: "1.5rem" }}>{analysis.summary}</p>
 
@@ -386,7 +386,7 @@ export function AnalysisView({ analysis, onReanalyze }: { analysis: AnalysisData
 
       {/* Repository Intelligence (Feature 3) */}
       {(analysis.repoScores ?? []).length > 0 && (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} style={{ marginTop: "3rem" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} style={{ marginTop: "4rem" }}>
           <div className="uppercase-label" style={{ marginBottom: "1.5rem" }}>Repository Intelligence</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 0, border: "var(--border-width) solid var(--ink)", borderRadius: "2px", overflow: "hidden" }}>
             {analysis.repoScores.map((rs, i) => {
@@ -419,13 +419,13 @@ export function AnalysisView({ analysis, onReanalyze }: { analysis: AnalysisData
                   </div>
                   {(rs.strengths ?? []).length > 0 && (
                     <div style={{ marginBottom: "0.5rem" }}>
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--accent)", marginBottom: "0.3rem" }}>Strengths</div>
+                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--accent)", marginBottom: "0.4rem" }}>Strengths</div>
                       <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", lineHeight: 1.4 }}>{(rs.strengths ?? []).join(" · ")}</div>
                     </div>
                   )}
                   {(rs.weaknesses ?? []).length > 0 && (
                     <div>
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "#E74C3C", marginBottom: "0.3rem" }}>Weaknesses</div>
+                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "#E74C3C", marginBottom: "0.4rem" }}>Weaknesses</div>
                       <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", lineHeight: 1.4 }}>{(rs.weaknesses ?? []).join(" · ")}</div>
                     </div>
                   )}

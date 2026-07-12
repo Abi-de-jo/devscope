@@ -69,7 +69,7 @@ export default function SecurityPage() {
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "clamp(2rem, 5vw, 4rem) 1.5rem" }}>
         {/* Spec strip */}
-        <div className="spec-keys" style={{ justifyContent: "flex-start", marginBottom: "3rem" }}>
+        <div className="spec-keys" style={{ justifyContent: "flex-start", marginBottom: "4rem" }}>
           <div className="keycap"><span className="keycap-legend">Tokens Stored</span><span className="keycap-text" style={{ color: "var(--accent)" }}>0</span></div>
           <div className="keycap"><span className="keycap-legend">OAuth Scope</span><span className="keycap-text">Read-Only</span></div>
           <div className="keycap"><span className="keycap-legend">Disclosure Response</span><span className="keycap-text" style={{ color: "var(--accent)" }}>48h</span></div>
@@ -126,7 +126,7 @@ export default function SecurityPage() {
         </div>
 
         {/* CTA */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ marginTop: "3.5rem", textAlign: "center", padding: "3rem 0 1rem" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ marginTop: "3.5rem", textAlign: "center", padding: "4rem 0 1rem" }}>
           <Link href="/" className="btn-primary">Get your Engineering Score <ArrowRight size={15} /></Link>
         </motion.div>
       </div>

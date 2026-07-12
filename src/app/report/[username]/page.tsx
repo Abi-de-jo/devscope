@@ -61,7 +61,7 @@ export default async function ReportPage({ params }: { params: Promise<{ usernam
   const shareUrl = `${proto}://${host}/u/${profile.login}`;
 
   return (
-    <div style={{ maxWidth: 820, margin: "0 auto", padding: "3rem 1.5rem", fontFamily: "Georgia, serif", color: "#111", background: "#fff" }}>
+    <div style={{ maxWidth: 820, margin: "0 auto", padding: "4rem 1.5rem", fontFamily: "Georgia, serif", color: "#111", background: "#fff" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderBottom: "3px solid #111", paddingBottom: "1rem", marginBottom: "2rem" }}>
         <div>
           <div style={{ fontSize: "0.8rem", letterSpacing: "0.2em", textTransform: "uppercase" }}>GitRating Engineering Report</div>
@@ -69,7 +69,7 @@ export default async function ReportPage({ params }: { params: Promise<{ usernam
           <div style={{ fontSize: "0.9rem", color: "#555" }}>@{profile.login} · Generated {analysis.createdAt.toLocaleDateString()}</div>
         </div>
         <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: "3rem", fontWeight: 700, lineHeight: 1 }}>{overall}</div>
+          <div style={{ fontSize: "4rem", fontWeight: 700, lineHeight: 1 }}>{overall}</div>
           <div style={{ fontSize: "0.75rem", color: "#555" }}>Confidence {Math.round(confidence)}%</div>
         </div>
       </div>
@@ -118,7 +118,7 @@ export default async function ReportPage({ params }: { params: Promise<{ usernam
         </>
       )}
 
-      <div style={{ marginTop: "3rem", paddingTop: "1rem", borderTop: "1px solid #111", fontSize: "0.8rem", color: "#555" }}>
+      <div style={{ marginTop: "4rem", paddingTop: "1rem", borderTop: "1px solid #111", fontSize: "0.8rem", color: "#555" }}>
         This report is an AI estimate based on public GitHub evidence — not a hiring decision. View online: {shareUrl}
       </div>
 

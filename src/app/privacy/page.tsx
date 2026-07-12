@@ -98,7 +98,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* CTA */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ marginTop: "3rem", textAlign: "center", padding: "2rem 0 1rem" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ marginTop: "4rem", textAlign: "center", padding: "2rem 0 1rem" }}>
           <p style={{ fontFamily: "var(--font-body)", fontSize: "0.88rem", color: "var(--muted)", marginBottom: "1rem" }}>
             Privacy questions? Email <strong style={{ color: "var(--ink)" }}>privacy@mozen.in</strong>
           </p>

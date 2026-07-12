@@ -18,7 +18,7 @@ export default function MethodologyPage() {
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 1.5rem" }}>
       {/* Hero */}
-      <div style={{ marginBottom: "3rem" }}>
+      <div style={{ marginBottom: "4rem" }}>
         <div className="uppercase-label" style={{ marginBottom: "1rem", color: "var(--accent)" }}>Methodology</div>
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem, 6vw, 4rem)", fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.03em", marginBottom: "1.5rem", maxWidth: "800px" }}>
           We show our work.
@@ -33,7 +33,7 @@ export default function MethodologyPage() {
       <MethodologyInteractive />
 
       {/* CTA */}
-      <div style={{ textAlign: "center", padding: "3rem 0 1rem" }}>
+      <div style={{ textAlign: "center", padding: "4rem 0 1rem" }}>
         <Link href="/" className="btn-primary">
           Get your Engineering Score
           <ArrowRight size={16} />
