@@ -188,7 +188,8 @@ exports.Prisma.GithubProfileScalarFieldEnum = {
   lastSyncedAt: 'lastSyncedAt',
   shareCount: 'shareCount',
   viewCount: 'viewCount',
-  hideFromLeaderboards: 'hideFromLeaderboards'
+  hideFromLeaderboards: 'hideFromLeaderboards',
+  privateRepoConsent: 'privateRepoConsent'
 };
 
 exports.Prisma.RepositoryScalarFieldEnum = {

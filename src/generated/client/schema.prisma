@@ -103,6 +103,7 @@ model GithubProfile {
   shareCount           Int     @default(0) // incremented when the OG/share card is fetched
   viewCount            Int     @default(0) // incremented on public profile view
   hideFromLeaderboards Boolean @default(false) // opt-out of leaderboard rankings
+  privateRepoConsent   Boolean @default(false) // user allowed private + org repo analysis
 
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   repositories Repository[]

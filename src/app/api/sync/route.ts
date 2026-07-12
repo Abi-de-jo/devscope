@@ -43,9 +43,16 @@ export async function POST() {
       );
     }
 
+    // Check consent flag — only fetch private + org repos if user allowed
+    const profile = await prisma.githubProfile.findUnique({
+      where: { userId: session.user.id },
+      select: { privateRepoConsent: true },
+    });
+    const includePrivate = profile?.privateRepoConsent ?? false;
+
     // Run full sync
     const syncStart = Date.now();
-    const result = await fullSync(session.user.id, account.accessToken);
+    const result = await fullSync(session.user.id, account.accessToken, includePrivate);
 
     logGitHubCall(userId, "github.com/user/repos", 200, { login: result.profile.login, repoCount: result.repos.length });
     logSyncEvent(userId, result.repos.length, "success", `Synced ${result.repos.length} repos for ${result.profile.login}`);
