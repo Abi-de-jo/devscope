@@ -49,7 +49,9 @@ export async function GET() {
     });
 
     if (!analysis) {
-      await cacheSet(cacheKey, null, TTL.SCORE_NULL);
+      // Don't cache null — DB query for "no analysis" is fast (indexed).
+      // Caching null wastes Redis space since callers check `if (cached)`
+      // which is falsy for null, so it never actually short-circuits.
       return NextResponse.json(
         { success: true, analysis: null, cached: false },
         { headers: rateLimitHeaders(rl) }

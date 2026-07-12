@@ -21,7 +21,6 @@
 // your actual code."
 
 import { cacheGet, cacheSet, TTL } from "./cache";
-import { redis } from "./redis";
 
 /* ─── Constants ─────────────────────────────────────────────────────── */
 
