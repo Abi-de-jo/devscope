@@ -21,6 +21,7 @@ export function Navigation() {
     signInWithGithub(window.location.pathname);
   };
 
+  
   const LOCKED_PAGES = new Set(["/leaderboard", "/dashboard"]);
 
   useEffect(() => {
