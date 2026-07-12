@@ -16,6 +16,7 @@ import type {
   CompareResponse,
   CompareResult,
 } from "@/lib/compare-engine";
+import { buildCompareResponse } from "@/lib/compare-engine";
 import { handleApiResponse } from "@/lib/errors";
 import { BattleCompareLoader } from "@/components/loaders/battle-compare-loader";
 
@@ -94,6 +95,9 @@ export default function BattlePage() {
   const loaderIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const loaderStartRef = useRef(0);
 
+  // Client-side profile cache — instant re-compare for same usernames
+  const profileCacheRef = useRef(new Map<string, CompareResult>());
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -127,7 +131,33 @@ export default function BattlePage() {
       return;
     }
 
-    // Start loader
+    // Split into cached vs uncached
+    const cached: CompareResult[] = [];
+    const uncached: string[] = [];
+    for (const u of valid) {
+      const hit = profileCacheRef.current.get(u);
+      if (hit && !hit.error) cached.push(hit);
+      else uncached.push(u);
+    }
+
+    const allCached = uncached.length === 0;
+
+    // ── All cached → instant results, no loader ──
+    if (allCached) {
+      setLoading(true);
+      setError(null);
+      setResults(null);
+
+      const profiles = valid.map(
+        (u) => profileCacheRef.current.get(u)!
+      );
+      const response = buildCompareResponse(profiles);
+      setResults(response);
+      setLoading(false);
+      return;
+    }
+
+    // ── Some uncached → show loader, fetch only new ones ──
     setLoaderUsernames(valid);
     setLoaderAvatars({});
     setShowLoader(true);
@@ -141,7 +171,6 @@ export default function BattlePage() {
       const elapsed = Date.now() - loaderStartRef.current;
       const raw = 92 * (1 - Math.exp(-elapsed / 3000));
       setLoaderProgress(Math.min(raw, 92));
-      // Advance steps
       if (elapsed > 7000) setLoaderStep(3);
       else if (elapsed > 4500) setLoaderStep(2);
       else if (elapsed > 1800) setLoaderStep(1);
@@ -156,7 +185,7 @@ export default function BattlePage() {
       const res = await fetch("/api/compare", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usernames: valid }),
+        body: JSON.stringify({ usernames: uncached }),
       });
       if (await handleApiResponse(res)) return;
       const data: CompareResponse = await res.json();
@@ -168,9 +197,20 @@ export default function BattlePage() {
         return;
       }
 
-      // Extract avatar URLs from the response profiles
-      const avatarMap: Record<string, string> = {};
+      // Store freshly fetched profiles in cache
       for (const p of data.profiles) {
+        if (!p.error) profileCacheRef.current.set(p.username, p);
+      }
+
+      // Build full response: cached + freshly fetched, in the original order
+      const allProfiles = valid.map(
+        (u) => profileCacheRef.current.get(u)!
+      );
+      const mergedResponse = buildCompareResponse(allProfiles);
+
+      // Extract avatars for loader reveal
+      const avatarMap: Record<string, string> = {};
+      for (const p of allProfiles) {
         if (p.avatarUrl) avatarMap[p.username] = p.avatarUrl;
       }
 
@@ -180,13 +220,12 @@ export default function BattlePage() {
       setLoaderStep(4);
       setLoaderProgress(100);
 
-      // Pause to let avatars pop in and register visually
+      // Pause to let avatars pop in
       await new Promise((r) => setTimeout(r, 1200));
       setShowLoader(false);
 
-      setResults(data);
+      setResults(mergedResponse);
     } catch (err) {
-      // Network error — show friendly toast
       const { showErrorToast } = await import("@/lib/errors");
       showErrorToast(err instanceof Error ? err : null);
       setError(

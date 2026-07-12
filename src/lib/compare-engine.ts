@@ -774,7 +774,7 @@ export async function fetchAndScore(username: string): Promise<CompareResult> {
 
 /* ─── Main entry point ──────────────────────────────────────────────── */
 
-const CATEGORY_KEYS = [
+export const CATEGORY_KEYS = [
   "code-activity",
   "repository-quality",
   "technical-stack",
@@ -782,6 +782,45 @@ const CATEGORY_KEYS = [
   "collaboration",
   "project-maturity",
 ] as const;
+
+/**
+ * Build a CompareResponse from already-fetched profiles.
+ * Used client-side to reconstruct results from cache without hitting the API.
+ */
+export function buildCompareResponse(profiles: CompareResult[]): CompareResponse {
+  const winners: Record<string, string | null> = {};
+
+  for (const key of CATEGORY_KEYS) {
+    let best = -1;
+    let winner: string | null = null;
+    let anyData = false;
+
+    for (const p of profiles) {
+      if (p.error) continue;
+      const cat = p.categories[key];
+      if (!cat) continue;
+      anyData = true;
+      if (cat.score > best) {
+        best = cat.score;
+        winner = p.username;
+      }
+    }
+
+    winners[key] = anyData ? winner : null;
+  }
+
+  let overallBest = -1;
+  let overallWinner: string | null = null;
+  for (const p of profiles) {
+    if (p.error) continue;
+    if (p.overallScore > overallBest) {
+      overallBest = p.overallScore;
+      overallWinner = p.username;
+    }
+  }
+
+  return { success: true, profiles, winners, overallWinner };
+}
 
 export async function compareProfiles(
   usernames: string[]
