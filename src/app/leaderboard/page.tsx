@@ -265,8 +265,6 @@ function LeaderboardContent() {
 
   /* ── Render ─────────────────────────────────────────────────── */
   // Locked preview: show blurred dummy content when not logged in
-  // FOR NOW: always enable the leaderboard view
-  /*
   if (!session && !isPending) {
     return (
       <LockedPreview page="leaderboard" statNumber="127" statDetail="developers ranked">
@@ -274,7 +272,6 @@ function LeaderboardContent() {
       </LockedPreview>
     );
   }
-  */
 
   // Still loading session — render nothing
   if (isPending) return null;
