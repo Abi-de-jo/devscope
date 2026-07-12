@@ -114,6 +114,18 @@ export async function POST() {
       );
     }
 
+    // Check if user has any repos — can't score with 0 repos
+    const repoCount = await prisma.repository.count({
+      where: { profileId: profile.id },
+    });
+
+    if (repoCount === 0) {
+      return NextResponse.json(
+        { error: "No public repositories found. Make sure your GitHub account has public repos." },
+        { status: 400 }
+      );
+    }
+
     // TEMP RATE LIMIT: if user already has any completed analysis,
     // return it instead of calling the AI API again.
     const existingAnalysis = await prisma.analysis.findFirst({
@@ -151,9 +163,10 @@ export async function POST() {
       summary: result.summary,
     });
   } catch (error) {
-    console.error("Score error:", error);
+    const detail = error instanceof Error ? error.message : String(error);
+    console.error("Score POST error:", detail, error);
     return NextResponse.json(
-      { error: "Scoring failed" },
+      { error: detail || "Scoring failed" },
       { status: 500 }
     );
   }
