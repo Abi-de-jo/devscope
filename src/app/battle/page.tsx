@@ -131,18 +131,12 @@ export default function BattlePage() {
       return;
     }
 
-    // Split into cached vs uncached
-    const cached: CompareResult[] = [];
-    const uncached: string[] = [];
-    for (const u of valid) {
-      const hit = profileCacheRef.current.get(u);
-      if (hit && !hit.error) cached.push(hit);
-      else uncached.push(u);
-    }
+    // Split into cached vs uncached (for instant all-cached path)
+    const allCached = valid.every(
+      (u) => profileCacheRef.current.has(u) && !profileCacheRef.current.get(u)!.error
+    );
 
-    const allCached = uncached.length === 0;
-
-    // ── All cached → instant results, no loader ──
+    // ── All cached → instant results, no loader, no API call ──
     if (allCached) {
       setLoading(true);
       setError(null);
@@ -157,7 +151,9 @@ export default function BattlePage() {
       return;
     }
 
-    // ── Some uncached → show loader, fetch only new ones ──
+    // ── Some uncached → show loader, send ALL usernames ──
+    // Server Redis cache handles fast hits for already-cached users.
+    // This keeps the loader/UI consistent — always shows all usernames.
     setLoaderUsernames(valid);
     setLoaderAvatars({});
     setShowLoader(true);
@@ -185,7 +181,7 @@ export default function BattlePage() {
       const res = await fetch("/api/compare", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usernames: uncached }),
+        body: JSON.stringify({ usernames: valid }),
       });
       if (await handleApiResponse(res)) return;
       const data: CompareResponse = await res.json();
@@ -197,20 +193,20 @@ export default function BattlePage() {
         return;
       }
 
-      // Store freshly fetched profiles in cache
+      // Store freshly fetched profiles in client cache
       for (const p of data.profiles) {
         if (!p.error) profileCacheRef.current.set(p.username, p);
       }
 
-      // Build full response: cached + freshly fetched, in the original order
-      const allProfiles = valid.map(
-        (u) => profileCacheRef.current.get(u)!
+      // Server returns profiles in the same order as requested — use directly
+      const profiles = valid.map(
+        (u) => data.profiles.find((p) => p.username === u) ?? profileCacheRef.current.get(u)!
       );
-      const mergedResponse = buildCompareResponse(allProfiles);
+      const mergedResponse = buildCompareResponse(profiles);
 
       // Extract avatars for loader reveal
       const avatarMap: Record<string, string> = {};
-      for (const p of allProfiles) {
+      for (const p of profiles) {
         if (p.avatarUrl) avatarMap[p.username] = p.avatarUrl;
       }
 
