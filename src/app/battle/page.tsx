@@ -132,9 +132,12 @@ export default function BattlePage() {
     }
 
     // Split into cached vs uncached (for instant all-cached path)
-    const allCached = valid.every(
-      (u) => profileCacheRef.current.has(u) && !profileCacheRef.current.get(u)!.error
-    );
+    // Use lowercase keys for cache lookup (server lowercases usernames)
+    const allCached = valid.every((u) => {
+      const key = u.toLowerCase();
+      const entry = profileCacheRef.current.get(key);
+      return entry !== undefined && !entry.error;
+    });
 
     // ── All cached → instant results, no loader, no API call ──
     if (allCached) {
@@ -143,7 +146,7 @@ export default function BattlePage() {
       setResults(null);
 
       const profiles = valid.map(
-        (u) => profileCacheRef.current.get(u)!
+        (u) => profileCacheRef.current.get(u.toLowerCase())!
       );
       const response = buildCompareResponse(profiles);
       setResults(response);
@@ -183,7 +186,11 @@ export default function BattlePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ usernames: valid }),
       });
-      if (await handleApiResponse(res)) return;
+      if (await handleApiResponse(res)) {
+        if (loaderIntervalRef.current) clearInterval(loaderIntervalRef.current);
+        setShowLoader(false);
+        return;
+      }
       const data: CompareResponse = await res.json();
 
       if (!data.success) {
@@ -193,21 +200,21 @@ export default function BattlePage() {
         return;
       }
 
-      // Store freshly fetched profiles in client cache
+      // Store freshly fetched profiles in client cache (lowercase key)
       for (const p of data.profiles) {
-        if (!p.error) profileCacheRef.current.set(p.username, p);
+        if (!p.error) profileCacheRef.current.set(p.username.toLowerCase(), p);
       }
 
-      // Server returns profiles in the same order as requested — use directly
+      // Server returns profiles in the same order as requested — match by lowercase username
       const profiles = valid.map(
-        (u) => data.profiles.find((p) => p.username === u) ?? profileCacheRef.current.get(u)!
+        (u) => data.profiles.find((p) => p.username === u.toLowerCase()) ?? profileCacheRef.current.get(u.toLowerCase())!
       );
       const mergedResponse = buildCompareResponse(profiles);
 
       // Extract avatars for loader reveal
       const avatarMap: Record<string, string> = {};
       for (const p of profiles) {
-        if (p.avatarUrl) avatarMap[p.username] = p.avatarUrl;
+        if (p && p.avatarUrl) avatarMap[p.username] = p.avatarUrl;
       }
 
       // Snap progress to 100%, advance all steps, inject avatars
