@@ -6521,6 +6521,7 @@ export namespace Prisma {
     shareCount: number | null
     viewCount: number | null
     hideFromLeaderboards: boolean | null
+    privateRepoConsent: boolean | null
   }
 
   export type GithubProfileMaxAggregateOutputType = {
@@ -6544,6 +6545,7 @@ export namespace Prisma {
     shareCount: number | null
     viewCount: number | null
     hideFromLeaderboards: boolean | null
+    privateRepoConsent: boolean | null
   }
 
   export type GithubProfileCountAggregateOutputType = {
@@ -6567,6 +6569,7 @@ export namespace Prisma {
     shareCount: number
     viewCount: number
     hideFromLeaderboards: number
+    privateRepoConsent: number
     _all: number
   }
 
@@ -6612,6 +6615,7 @@ export namespace Prisma {
     shareCount?: true
     viewCount?: true
     hideFromLeaderboards?: true
+    privateRepoConsent?: true
   }
 
   export type GithubProfileMaxAggregateInputType = {
@@ -6635,6 +6639,7 @@ export namespace Prisma {
     shareCount?: true
     viewCount?: true
     hideFromLeaderboards?: true
+    privateRepoConsent?: true
   }
 
   export type GithubProfileCountAggregateInputType = {
@@ -6658,6 +6663,7 @@ export namespace Prisma {
     shareCount?: true
     viewCount?: true
     hideFromLeaderboards?: true
+    privateRepoConsent?: true
     _all?: true
   }
 
@@ -6768,6 +6774,7 @@ export namespace Prisma {
     shareCount: number
     viewCount: number
     hideFromLeaderboards: boolean
+    privateRepoConsent: boolean
     _count: GithubProfileCountAggregateOutputType | null
     _avg: GithubProfileAvgAggregateOutputType | null
     _sum: GithubProfileSumAggregateOutputType | null
@@ -6810,6 +6817,7 @@ export namespace Prisma {
     shareCount?: boolean
     viewCount?: boolean
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     repositories?: boolean | GithubProfile$repositoriesArgs<ExtArgs>
     _count?: boolean | GithubProfileCountOutputTypeDefaultArgs<ExtArgs>
@@ -6836,6 +6844,7 @@ export namespace Prisma {
     shareCount?: boolean
     viewCount?: boolean
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["githubProfile"]>
 
@@ -6860,6 +6869,7 @@ export namespace Prisma {
     shareCount?: boolean
     viewCount?: boolean
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["githubProfile"]>
 
@@ -6884,9 +6894,10 @@ export namespace Prisma {
     shareCount?: boolean
     viewCount?: boolean
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
   }
 
-  export type GithubProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "githubId" | "login" | "displayName" | "bio" | "avatarUrl" | "blog" | "location" | "company" | "publicRepos" | "publicGists" | "followers" | "following" | "createdAt" | "updatedAt" | "lastSyncedAt" | "shareCount" | "viewCount" | "hideFromLeaderboards", ExtArgs["result"]["githubProfile"]>
+  export type GithubProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "githubId" | "login" | "displayName" | "bio" | "avatarUrl" | "blog" | "location" | "company" | "publicRepos" | "publicGists" | "followers" | "following" | "createdAt" | "updatedAt" | "lastSyncedAt" | "shareCount" | "viewCount" | "hideFromLeaderboards" | "privateRepoConsent", ExtArgs["result"]["githubProfile"]>
   export type GithubProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     repositories?: boolean | GithubProfile$repositoriesArgs<ExtArgs>
@@ -6926,6 +6937,7 @@ export namespace Prisma {
       shareCount: number
       viewCount: number
       hideFromLeaderboards: boolean
+      privateRepoConsent: boolean
     }, ExtArgs["result"]["githubProfile"]>
     composites: {}
   }
@@ -7371,6 +7383,7 @@ export namespace Prisma {
     readonly shareCount: FieldRef<"GithubProfile", 'Int'>
     readonly viewCount: FieldRef<"GithubProfile", 'Int'>
     readonly hideFromLeaderboards: FieldRef<"GithubProfile", 'Boolean'>
+    readonly privateRepoConsent: FieldRef<"GithubProfile", 'Boolean'>
   }
     
 
@@ -15253,7 +15266,8 @@ export namespace Prisma {
     lastSyncedAt: 'lastSyncedAt',
     shareCount: 'shareCount',
     viewCount: 'viewCount',
-    hideFromLeaderboards: 'hideFromLeaderboards'
+    hideFromLeaderboards: 'hideFromLeaderboards',
+    privateRepoConsent: 'privateRepoConsent'
   };
 
   export type GithubProfileScalarFieldEnum = (typeof GithubProfileScalarFieldEnum)[keyof typeof GithubProfileScalarFieldEnum]
@@ -15840,6 +15854,7 @@ export namespace Prisma {
     shareCount?: IntFilter<"GithubProfile"> | number
     viewCount?: IntFilter<"GithubProfile"> | number
     hideFromLeaderboards?: BoolFilter<"GithubProfile"> | boolean
+    privateRepoConsent?: BoolFilter<"GithubProfile"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     repositories?: RepositoryListRelationFilter
   }
@@ -15865,6 +15880,7 @@ export namespace Prisma {
     shareCount?: SortOrder
     viewCount?: SortOrder
     hideFromLeaderboards?: SortOrder
+    privateRepoConsent?: SortOrder
     user?: UserOrderByWithRelationInput
     repositories?: RepositoryOrderByRelationAggregateInput
   }
@@ -15893,6 +15909,7 @@ export namespace Prisma {
     shareCount?: IntFilter<"GithubProfile"> | number
     viewCount?: IntFilter<"GithubProfile"> | number
     hideFromLeaderboards?: BoolFilter<"GithubProfile"> | boolean
+    privateRepoConsent?: BoolFilter<"GithubProfile"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     repositories?: RepositoryListRelationFilter
   }, "id" | "userId" | "githubId">
@@ -15918,6 +15935,7 @@ export namespace Prisma {
     shareCount?: SortOrder
     viewCount?: SortOrder
     hideFromLeaderboards?: SortOrder
+    privateRepoConsent?: SortOrder
     _count?: GithubProfileCountOrderByAggregateInput
     _avg?: GithubProfileAvgOrderByAggregateInput
     _max?: GithubProfileMaxOrderByAggregateInput
@@ -15949,6 +15967,7 @@ export namespace Prisma {
     shareCount?: IntWithAggregatesFilter<"GithubProfile"> | number
     viewCount?: IntWithAggregatesFilter<"GithubProfile"> | number
     hideFromLeaderboards?: BoolWithAggregatesFilter<"GithubProfile"> | boolean
+    privateRepoConsent?: BoolWithAggregatesFilter<"GithubProfile"> | boolean
   }
 
   export type RepositoryWhereInput = {
@@ -16931,6 +16950,7 @@ export namespace Prisma {
     shareCount?: number
     viewCount?: number
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
     user: UserCreateNestedOneWithoutGithubProfileInput
     repositories?: RepositoryCreateNestedManyWithoutProfileInput
   }
@@ -16956,6 +16976,7 @@ export namespace Prisma {
     shareCount?: number
     viewCount?: number
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
     repositories?: RepositoryUncheckedCreateNestedManyWithoutProfileInput
   }
 
@@ -16979,6 +17000,7 @@ export namespace Prisma {
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
     hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
+    privateRepoConsent?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutGithubProfileNestedInput
     repositories?: RepositoryUpdateManyWithoutProfileNestedInput
   }
@@ -17004,6 +17026,7 @@ export namespace Prisma {
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
     hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
+    privateRepoConsent?: BoolFieldUpdateOperationsInput | boolean
     repositories?: RepositoryUncheckedUpdateManyWithoutProfileNestedInput
   }
 
@@ -17028,6 +17051,7 @@ export namespace Prisma {
     shareCount?: number
     viewCount?: number
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
   }
 
   export type GithubProfileUpdateManyMutationInput = {
@@ -17050,6 +17074,7 @@ export namespace Prisma {
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
     hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
+    privateRepoConsent?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type GithubProfileUncheckedUpdateManyInput = {
@@ -17073,6 +17098,7 @@ export namespace Prisma {
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
     hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
+    privateRepoConsent?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RepositoryCreateInput = {
@@ -18156,6 +18182,7 @@ export namespace Prisma {
     shareCount?: SortOrder
     viewCount?: SortOrder
     hideFromLeaderboards?: SortOrder
+    privateRepoConsent?: SortOrder
   }
 
   export type GithubProfileAvgOrderByAggregateInput = {
@@ -18189,6 +18216,7 @@ export namespace Prisma {
     shareCount?: SortOrder
     viewCount?: SortOrder
     hideFromLeaderboards?: SortOrder
+    privateRepoConsent?: SortOrder
   }
 
   export type GithubProfileMinOrderByAggregateInput = {
@@ -18212,6 +18240,7 @@ export namespace Prisma {
     shareCount?: SortOrder
     viewCount?: SortOrder
     hideFromLeaderboards?: SortOrder
+    privateRepoConsent?: SortOrder
   }
 
   export type GithubProfileSumOrderByAggregateInput = {
@@ -19888,6 +19917,7 @@ export namespace Prisma {
     shareCount?: number
     viewCount?: number
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
     repositories?: RepositoryCreateNestedManyWithoutProfileInput
   }
 
@@ -19911,6 +19941,7 @@ export namespace Prisma {
     shareCount?: number
     viewCount?: number
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
     repositories?: RepositoryUncheckedCreateNestedManyWithoutProfileInput
   }
 
@@ -20121,6 +20152,7 @@ export namespace Prisma {
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
     hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
+    privateRepoConsent?: BoolFieldUpdateOperationsInput | boolean
     repositories?: RepositoryUpdateManyWithoutProfileNestedInput
   }
 
@@ -20144,6 +20176,7 @@ export namespace Prisma {
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
     hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
+    privateRepoConsent?: BoolFieldUpdateOperationsInput | boolean
     repositories?: RepositoryUncheckedUpdateManyWithoutProfileNestedInput
   }
 
@@ -20623,6 +20656,7 @@ export namespace Prisma {
     shareCount?: number
     viewCount?: number
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
     user: UserCreateNestedOneWithoutGithubProfileInput
   }
 
@@ -20647,6 +20681,7 @@ export namespace Prisma {
     shareCount?: number
     viewCount?: number
     hideFromLeaderboards?: boolean
+    privateRepoConsent?: boolean
   }
 
   export type GithubProfileCreateOrConnectWithoutRepositoriesInput = {
@@ -20778,6 +20813,7 @@ export namespace Prisma {
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
     hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
+    privateRepoConsent?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutGithubProfileNestedInput
   }
 
@@ -20802,6 +20838,7 @@ export namespace Prisma {
     shareCount?: IntFieldUpdateOperationsInput | number
     viewCount?: IntFieldUpdateOperationsInput | number
     hideFromLeaderboards?: BoolFieldUpdateOperationsInput | boolean
+    privateRepoConsent?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RepositoryScoreUpsertWithWhereUniqueWithoutRepositoryInput = {
