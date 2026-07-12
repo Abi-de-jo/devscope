@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/client"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/client"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -96,8 +97,9 @@ model GithubProfile {
   updatedAt    DateTime  @updatedAt
   lastSyncedAt DateTime?
 
-  shareCount Int @default(0) // incremented when the OG/share card is fetched
-  viewCount  Int @default(0) // incremented on public profile view
+  shareCount           Int     @default(0) // incremented when the OG/share card is fetched
+  viewCount            Int     @default(0) // incremented on public profile view
+  hideFromLeaderboards Boolean @default(false) // opt-out of leaderboard rankings
 
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   repositories Repository[]
