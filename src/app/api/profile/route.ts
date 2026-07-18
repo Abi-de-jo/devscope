@@ -6,8 +6,7 @@ import { prisma } from "@/lib/db";
 /**
  * GET /api/profile
  *
- * Returns the user's GitHub profile data including consent status.
- * Used by the dashboard to check privateRepoConsent before showing the prompt.
+ * Returns the user's GitHub profile data.
  */
 export async function GET() {
   try {
@@ -25,21 +24,19 @@ export async function GET() {
         login: true,
         displayName: true,
         avatarUrl: true,
-        privateRepoConsent: true,
         hideFromLeaderboards: true,
       },
     });
 
     if (!profile) {
       return NextResponse.json(
-        { success: true, profile: null, privateRepoConsent: null },
+        { success: true, profile: null },
       );
     }
 
     return NextResponse.json({
       success: true,
       profile,
-      privateRepoConsent: profile.privateRepoConsent,
     });
   } catch (error) {
     console.error("Profile load error:", error);

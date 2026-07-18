@@ -10,7 +10,7 @@ dotenv.config();
 const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
 const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
 const PORT = parseInt(process.env.LINKEDIN_OAUTH_PORT || "9876", 10);
-const REDIRECT_URI = `http://localhost:${PORT}/callback`;
+const REDIRECT_URI = PORT === 3939 ? `http://localhost:${PORT}/callback` : `http://127.0.0.1:${PORT}/callback`;
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error("Error: LINKEDIN_CLIENT_ID or LINKEDIN_CLIENT_SECRET is missing from .env.");
@@ -18,18 +18,47 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
 }
 
 // 1. Post details
-const POST_COMMENTARY = `Everyone's a "10x engineer" on LinkedIn. Let's check GitHub.
+const POST_COMMENTARY = `Everyone’s a "10x engineer" on LinkedIn. 🤫
 
-We built DevScope to bring real, defensible engineering credibility to your social profiles. No vanity metrics or star counting—just real signal, automated scoring, and actual repo citations.
+Let's check GitHub. 
 
-Check out your score, battle other developers, or rank on the local leaderboard:
-👉 https://gitrating.mozen.in
+Most developer metrics are a joke. 
+We look at green commit squares, star counts, and lines of code. But none of that measures actual engineering depth, architecture skills, or system design judgment.
 
-#GitHub #WebDevelopment #SoftwareEngineering #NextJS #OpenSource`;
+So, we built GitRating — an automated AI auditor that scores your engineering credibility in 60 seconds.
 
-// Local images to upload (located in the public directory)
+No black box. No guessing. Here is what GitRating does:
+
+📊 Scores your public repositories across 10 critical axes:
+   - Architecture & Design
+   - Backend & Frontend judgment
+   - Code Quality & Maintainability
+   - Testing & Security
+   - DevOps & Documentation
+
+🔍 Deep Evidence Citations:
+Every score comes with citations pointing to actual files and lines of code in your repos. If the AI claims you write solid modular backend code, it cites the exact files to prove it.
+
+🛠️ Improvement Roadmap:
+See your potential score and get direct recommendations on what to fix (e.g., "Add unit tests to repo X", "Improve documentation in repo Y").
+
+⚔️ Quick Battle:
+Compare up to 4 GitHub handles side-by-side with zero login required. 
+
+🌍 Local Leaderboards:
+See how you rank against developers in your city, state, or country.
+
+Want to check your score? Connect your GitHub and get your engineering card in 60 seconds flat. 
+
+👉 Check your rating here: gitrating.mozen.in (Link is also in the first comment! 👇)
+
+Leave a comment with your score or tag a developer you want to challenge to a battle! ⚔️
+
+#GitHub #SoftwareEngineering #AI #Coding #WebDevelopment #DeveloperPortfolio #CareerGrowth #Tech`;
+
+// Local images to upload (located in the public directory or screenshots directory)
 const IMAGE_FILES = [
-  path.join(process.cwd(), "public", "app.png"),
+  "C:\\Users\\narea\\OneDrive\\Pictures\\Screenshots\\Screenshot 2026-07-13 171724.png",
   path.join(process.cwd(), "public", "og.png"),
 ];
 
@@ -119,7 +148,7 @@ async function getAccessToken(): Promise<string> {
       }
     });
 
-    server.listen(PORT, () => {
+    server.listen(PORT, "127.0.0.1", () => {
       const authUrl = getAuthUrl();
       console.log("\n========================================================");
       console.log("PLEASE DO THE FOLLOWING:");
@@ -242,9 +271,9 @@ async function publishPost(accessToken: string, personUrn: string, imageUrns: st
     author: personUrn,
     commentary: POST_COMMENTARY,
     visibility: "PUBLIC",
+    lifecycleState: "PUBLISHED",
     distribution: {
       feedDistribution: "MAIN_FEED",
-      targeterParameters: [],
     },
   };
 
