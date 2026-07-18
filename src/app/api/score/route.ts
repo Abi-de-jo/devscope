@@ -60,13 +60,12 @@ export async function GET() {
 
     const profile = await prisma.githubProfile.findUnique({
       where: { userId: userId },
-      select: { login: true, privateRepoConsent: true },
+      select: { login: true },
     });
 
     const payload = {
       ...analysis,
       username: profile?.login ?? null,
-      privateRepoConsent: profile?.privateRepoConsent ?? false,
     };
     // Stash for 10 minutes; invalidated on POST score
     await cacheSet(cacheKey, payload, TTL.SCORE_READ);
